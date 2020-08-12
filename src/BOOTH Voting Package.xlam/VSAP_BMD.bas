@@ -47,32 +47,16 @@ Sub Import_VSAPBMD_data(control As IRibbonControl)
     'Loop to process multiple files consecutively
     For j = 1 To Application.FileDialog(msoFileDialogFilePicker).SelectedItems.count
     
-        'Adds an additional Worksheet to write VSAP BMD data to if only one sheet is open
-        If ActiveWorkbook.Sheets.count = 1 Then
-            ActiveWorkbook.Sheets.Add after:=ActiveSheet
-        End If
-    
-        'Check for duplicate precincts and delete the duplicate sheets
-        c = 1
-        While c < ActiveWorkbook.Sheets.count + 1
-            If ActiveWorkbook.Sheets(c).Name = "Precinct " & Left(Replace(Right$(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), Len(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j)) - InStrRev(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), "\")), ".txt", ""), 10) Then
-                GoTo skipit
-            Else: c = c + 1
-            End If
-        Wend
-    
         'Add an additional sheet and activate it to populate it with VSAP BMD data
-        ActiveWorkbook.Sheets.Add after:=ActiveWorkbook.Sheets(j)
-        ActiveWorkbook.Sheets(j + 1).Activate
-    
-    
+        ActiveWorkbook.Sheets.Add after:=ActiveSheet
+
         'Pulling file path for a specific file
-        Dim nam As String
-        nam = Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j)
+        Dim filePath As String
+        filePath = Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j)
     
         'importing text file as a query table
         With ActiveSheet.QueryTables.Add(Connection:= _
-               "TEXT;" & nam _
+               "TEXT;" & filePath _
                , destination:=Range("$A$1"))
                .Name = "Precinct " & j
                .FieldNames = True
@@ -102,23 +86,13 @@ Sub Import_VSAPBMD_data(control As IRibbonControl)
         End With
     
         'Rename the Worksheet to the file name of the selected data file
-        ActiveWorkbook.ActiveSheet.Name = "Precinct " & Left(Replace(Right$(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), Len(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j)) - InStrRev(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), "\")), ".log", ""), 10)
+        'TODO: check if name is already taken
+        Dim parts() As String
+        parts = Split(filePath, "\")
+        ActiveWorkbook.ActiveSheet.Name = parts(UBound(parts))
 skipit:
     
     Next j
-    
-    'Deletes any blank sheets while more than one sheet is open
-    d = ActiveWorkbook.Sheets.count
-    For t = 1 To d
-        If t <= d And t > 1 Then
-            If IsEmpty(ActiveWorkbook.Sheets(t).Range("A1")) = True Then
-                ActiveWorkbook.Worksheets(t).Delete
-                d = ActiveWorkbook.Sheets.count
-                t = 0
-            End If
-        End If
-        d = ActiveWorkbook.Sheets.count
-    Next t
     
     'Allow the Excel file to actively update
     Application.ScreenUpdating = True

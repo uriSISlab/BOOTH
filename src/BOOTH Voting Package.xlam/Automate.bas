@@ -12,15 +12,18 @@ Attribute VB_Name = "Automate"
         CountFiles = count
     End Function
     
-    Sub openAndProcessDirectory(control As IRibbonControl)
+Sub openAndProcessDirectory(control As IRibbonControl)
         Const ONE_FILE_LIMIT As Long = 5000
         
         Dim folder As String
         ' Create folder picker
         With Application.FileDialog(msoFileDialogFolderPicker)
-        .Show
-        .AllowMultiSelect = False
-        folder = CStr(.SelectedItems(1))
+            .AllowMultiSelect = False
+            If .Show = -1 Then
+                folder = CStr(.SelectedItems(1))
+            Else
+                Exit Sub
+            End If
         End With
         
         'Prevent showing Excel document updates to improve performance
@@ -60,7 +63,6 @@ Attribute VB_Name = "Automate"
                 writeHeader = False
             End If
             outputRow = Process_Single_VSAPBMD_Data_From_Stream(inputStream, fileStream, outputRow, writeHeader, True, fileName)
-            ActiveWorkbook.ActiveSheet.UsedRange.ClearContents
             fileName = Dir
             fileNum = fileNum + 1
             If fileNum Mod 5 = 0 Then
