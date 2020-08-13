@@ -40,7 +40,7 @@ For j = 1 To Application.FileDialog(msoFileDialogFilePicker).SelectedItems.count
     'Check for duplicate precincts and delete the duplicate sheets
     c = 1
     While c < ActiveWorkbook.Sheets.count + 1
-        If ActiveWorkbook.Sheets(c).Name = "Precinct " & Left(Replace(Right$(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), Len(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j)) - InStrRev(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), "\")), ".txt", ""), 10) Then
+        If ActiveWorkbook.Sheets(c).name = "Precinct " & Left(Replace(Right$(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), Len(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j)) - InStrRev(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), "\")), ".txt", ""), 10) Then
             GoTo skipit
         Else: c = c + 1
         End If
@@ -59,7 +59,7 @@ For j = 1 To Application.FileDialog(msoFileDialogFilePicker).SelectedItems.count
     With ActiveSheet.QueryTables.Add(Connection:= _
            "TEXT;" & nam _
            , destination:=Range("$A$1"))
-           .Name = "Precinct " & j
+           .name = "Precinct " & j
            .FieldNames = True
            .RowNumbers = False
            .FillAdjacentFormulas = False
@@ -86,7 +86,7 @@ For j = 1 To Application.FileDialog(msoFileDialogFilePicker).SelectedItems.count
     End With
 
     'Rename the Worksheet to the file name of the selected data file
-    ActiveWorkbook.ActiveSheet.Name = "Precinct " & Left(Replace(Right$(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), Len(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j)) - InStrRev(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), "\")), ".txt", ""), 10)
+    ActiveWorkbook.ActiveSheet.name = "Precinct " & Left(Replace(Right$(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), Len(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j)) - InStrRev(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), "\")), ".txt", ""), 10)
 skipit:
 
 Next j
@@ -116,7 +116,7 @@ Dim u As Long
 Dim lrow As Long
 Dim var As String
 Dim k As Long
-Dim Name As String
+Dim name As String
 Dim pctCom As Single
 
 'Displays the progress bar
@@ -131,10 +131,10 @@ Application.ScreenUpdating = False
 
 'Checks that current sheet has raw DS200 data
 If Range("A1") = 1114111 Then
-    Name = ActiveWorkbook.ActiveSheet.Name
+    name = ActiveWorkbook.ActiveSheet.name
     'Check if the data chosen was already processed
     For n = 1 To ActiveWorkbook.Sheets.count
-        If ActiveWorkbook.Sheets(n).Name = Name & " Processed" Then
+        If ActiveWorkbook.Sheets(n).name = name & " Processed" Then
             Exit Sub
         End If
     Next n
@@ -147,16 +147,16 @@ If Range("A1") = 1114111 Then
     ActiveWorkbook.Sheets.Add after:=ActiveWorkbook.Sheets(ActiveWorkbook.Sheets.count)
     
     'Name the created Worksheet to the name of the precinct selected with the "Processed" qualifier
-    ActiveWorkbook.Sheets(ActiveWorkbook.Sheets.count).Name = Name & " Processed"
+    ActiveWorkbook.Sheets(ActiveWorkbook.Sheets.count).name = name & " Processed"
   
     'Defining loop variables
     u = 2
    
     'Copies the data from the current Worksheet to the newly created worksheet
-    ActiveWorkbook.Sheets(Name).Activate
+    ActiveWorkbook.Sheets(name).Activate
     lrow = Cells(ActiveWorkbook.ActiveSheet.rows.count, 1).End(xlUp).row
     Range("A1", "E" & lrow).Copy
-    ActiveWorkbook.Sheets(Name & " Processed").Activate
+    ActiveWorkbook.Sheets(name & " Processed").Activate
     Range("A1", "E" & lrow).PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
          :=True, Transpose:=False
    
@@ -288,7 +288,7 @@ Dim u As Long
 Dim lrow As Long
 Dim var As String
 Dim k As Long
-Dim Name As String
+Dim name As String
 Dim pctCom As Single
 Dim TWS As Integer
 Dim y As Long
@@ -317,17 +317,21 @@ ElseIf ActiveWorkbook.ActiveSheet.Cells(1, 1).NumberFormat = "General" And Activ
 ElseIf InStr(ActiveWorkbook.ActiveSheet.Cells(1, 2), "Logging service initialized") <> 0 Then
     ' If the worksheet is identified as Dominion ImageCast Evolution data, the appropriate function is called
     Call Process_DICE_Data_Single
+ElseIf is_DICX_Log(ActiveWorkbook.ActiveSheet) Then
+    ' If the worksheet is identified as Dominion ImageCast X data, the appropriate function is called
+    Call Process_DICX_Data_Single
 Else
+
     If ActiveWorkbook.ActiveSheet.Cells(2, 1).NumberFormat = "General" And ActiveWorkbook.ActiveSheet.Cells(2, 2).NumberFormat = "m/d/yyyy h:mm" And ActiveWorkbook.ActiveSheet.Cells(2, 3).NumberFormat = "General" Then
         'If the worksheet is identified as PollPad data, the PollPad processing function is called
         Call PollPadProcessing
     Else
         'If the sheet is already processed or blank, it is skipped
-        If WorksheetFunction.CountA(ActiveWorkbook.ActiveSheet.UsedRange) = 0 Or Right(ActiveWorkbook.ActiveSheet.Name, 9) = "Processed" Or ActiveWorkbook.ActiveSheet.Cells(2, 3).NumberFormat = "h:mm" Then
+        If WorksheetFunction.CountA(ActiveWorkbook.ActiveSheet.UsedRange) = 0 Or Right(ActiveWorkbook.ActiveSheet.name, 9) = "Processed" Or ActiveWorkbook.ActiveSheet.Cells(2, 3).NumberFormat = "h:mm" Then
             GoTo ExitIf
         Else
             'Indicating which file(s) has issues
-            MsgBox ("The sheet: " & ActiveWorkbook.Sheets(y).Name & " does not contain compatible data.")
+            MsgBox ("The sheet: " & ActiveWorkbook.Sheets(y).name & " does not contain compatible data.")
             GoTo ExitIf
         End If
     End If
@@ -375,7 +379,7 @@ Dim tbook As ThisWorkbook
 Dim f As Integer
 Dim w As Long
 Dim FileNam As String
-Dim Name As String
+Dim name As String
 
 
 'When File Explorer opens, only display text files
@@ -397,7 +401,7 @@ For j = 1 To Application.FileDialog(msoFileDialogFilePicker).SelectedItems.count
  'Check for duplicate precincts and delete the duplicate sheets
     c = 1
     While c < ActiveWorkbook.Sheets.count + 1
-        If ActiveWorkbook.Sheets(c).Name = Left(Replace(Right$(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), Len(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j)) - InStrRev(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), "\")), ".csv", ""), 10) & " PollPad" Then
+        If ActiveWorkbook.Sheets(c).name = Left(Replace(Right$(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), Len(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j)) - InStrRev(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), "\")), ".csv", ""), 10) & " PollPad" Then
                 MsgBox (FileNam & " shares the first 10 characters with a current worksheet. Please rename the file and import again.")
                 GoTo skipit
         Else:
@@ -409,7 +413,7 @@ For j = 1 To Application.FileDialog(msoFileDialogFilePicker).SelectedItems.count
     ActiveWorkbook.Sheets(j + 1).Activate
  
     'Names the worksheet after the file name
-    ActiveWorkbook.ActiveSheet.Name = Left(Replace(Right$(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), Len(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j)) - InStrRev(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), "\")), ".csv", ""), 10) & " PollPad"
+    ActiveWorkbook.ActiveSheet.name = Left(Replace(Right$(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), Len(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j)) - InStrRev(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), "\")), ".csv", ""), 10) & " PollPad"
     
     'Pulling file path for a specific file
     Dim nam As String
@@ -419,7 +423,7 @@ For j = 1 To Application.FileDialog(msoFileDialogFilePicker).SelectedItems.count
     With ActiveSheet.QueryTables.Add(Connection:= _
            "TEXT;" & nam _
            , destination:=Range("$A$1"))
-           .Name = "Precinct " & j
+           .name = "Precinct " & j
            .FieldNames = True
            .RowNumbers = False
            .FillAdjacentFormulas = False
@@ -503,16 +507,19 @@ ElseIf ActiveWorkbook.ActiveSheet.Cells(1, 1).NumberFormat = "General" And Activ
 ElseIf InStr(ActiveWorkbook.ActiveSheet.Cells(1, 2), "Logging service initialized") <> 0 Then
     ' If the worksheet is identified as Dominion ImageCast Evolution data, the appropriate function is called
     Call Process_DICE_Data_Single
+ElseIf is_DICX_Log(ActiveWorkbook.ActiveSheet) Then
+    ' If the worksheet is identified as Dominion ImageCast X data, the appropriate function is called
+    Call Process_DICX_Data_Single
 Else
 
     If ActiveWorkbook.ActiveSheet.Cells(2, 1).NumberFormat = "General" And ActiveWorkbook.ActiveSheet.Cells(2, 2).NumberFormat = "m/d/yyyy h:mm" And ActiveWorkbook.ActiveSheet.Cells(2, 3).NumberFormat = "General" Then
         Call PollPadProcessing
     Else
         'Provides error message when incompatible data is selected
-        If WorksheetFunction.CountA(ActiveWorkbook.ActiveSheet.UsedRange) = 0 Or Right(ActiveWorkbook.ActiveSheet.Name, 9) = "Processed" Or ActiveWorkbook.ActiveSheet.Cells(2, 3).NumberFormat = "h:mm" Or ActiveWorkbook.ActiveSheet.Cells(2, 4).NumberFormat = "h:mm" Then
+        If WorksheetFunction.CountA(ActiveWorkbook.ActiveSheet.UsedRange) = 0 Or Right(ActiveWorkbook.ActiveSheet.name, 9) = "Processed" Or ActiveWorkbook.ActiveSheet.Cells(2, 3).NumberFormat = "h:mm" Or ActiveWorkbook.ActiveSheet.Cells(2, 4).NumberFormat = "h:mm" Then
             GoTo ExitIf
         Else
-            MsgBox ("The sheet: " & ActiveWorkbook.ActiveSheet.Name & " does not contain compatible data.")
+            MsgBox ("The sheet: " & ActiveWorkbook.ActiveSheet.name & " does not contain compatible data.")
             GoTo ExitIf
         End If
     End If
@@ -530,7 +537,7 @@ Else
     If ActiveWorkbook.ActiveSheet.Cells(2, 1).NumberFormat = "General" And ActiveWorkbook.ActiveSheet.Cells(2, 2).NumberFormat = "m/d/yyyy h:mm" And ActiveWorkbook.ActiveSheet.Cells(2, 3).NumberFormat = "m/d/yyyy" And ActiveWorkbook.ActiveSheet.Cells(2, 4).NumberFormat = "h:mm" Then
         Call pivottablepollpad
     'Provides error message when incompatible data is selected
-    Else: MsgBox ("The sheet: " & ActiveWorkbook.ActiveSheet.Name & " does not contain compatible data.")
+    Else: MsgBox ("The sheet: " & ActiveWorkbook.ActiveSheet.name & " does not contain compatible data.")
         GoTo ExitIf
     End If
 End If
@@ -546,9 +553,9 @@ Dim Late As Date
 Application.ScreenUpdating = False
 
 'Storing shortened file names
-FirstName = ActiveWorkbook.ActiveSheet.Name
-SecondName = Left(ActiveWorkbook.ActiveSheet.Name, 10) + " PrecinctTurnout"
-ThirdName = Left(ActiveWorkbook.ActiveSheet.Name, 10) + " TotalTurnout"
+FirstName = ActiveWorkbook.ActiveSheet.name
+SecondName = Left(ActiveWorkbook.ActiveSheet.name, 10) + " PrecinctTurnout"
+ThirdName = Left(ActiveWorkbook.ActiveSheet.name, 10) + " TotalTurnout"
 RawRows = ActiveWorkbook.ActiveSheet.Cells(ActiveWorkbook.ActiveSheet.rows.count, 1).End(xlUp).row
   
   
@@ -556,7 +563,7 @@ i = 0
 
 'Tests to see if sheet name is already taken
 For y = 1 To ActiveWorkbook.Sheets.count
-If SecondName = ActiveWorkbook.Sheets(y).Name Then
+If SecondName = ActiveWorkbook.Sheets(y).name Then
 MsgBox ("Sheet name already taken for precinct turnout, please rename the sheet.")
 i = 1
 GoTo CheckName1
@@ -605,7 +612,7 @@ ActiveWorkbook.ActiveSheet.Range("C1").Select
    
 'Adds new worksheet and names it after the file
 ActiveWorkbook.Sheets.Add after:=ActiveWorkbook.ActiveSheet
-ActiveWorkbook.ActiveSheet.Name = SecondName
+ActiveWorkbook.ActiveSheet.name = SecondName
 
 'Pulls precinct number and name from the data sheet to the stats sheet
 ActiveWorkbook.Sheets(FirstName).Range("F:F").Copy ActiveWorkbook.ActiveSheet.Range("BD1")
@@ -632,7 +639,7 @@ ActiveWorkbook.Sheets("" & FirstName & "").Range("E:E").Copy ActiveWorkbook.Shee
 ActiveSheet.Range("BF:BG").RemoveDuplicates Columns:=1, Header:=xlYes
   
 'Creates a table out of the precinct numbers for the dropdown menus
-ActiveSheet.ListObjects.Add(xlSrcRange, Range("$BD$1:$BD$" & rowscount), , xlYes).Name _
+ActiveSheet.ListObjects.Add(xlSrcRange, Range("$BD$1:$BD$" & rowscount), , xlYes).name _
         = "Table23"
        Range("B2").Select
     'Creates the dropdown menus
@@ -794,7 +801,7 @@ CheckName1:
 
 'Check for sheets with same name
 For y = 1 To ActiveWorkbook.Sheets.count
-If ThirdName = ActiveWorkbook.Sheets(y).Name Then
+If ThirdName = ActiveWorkbook.Sheets(y).name Then
 MsgBox ("Sheet name already taken for total turnout, please rename the sheet.")
 i = 1
 GoTo ENDIT
@@ -804,30 +811,30 @@ Next y
 
 'Adds new worksheet and names it
 ActiveWorkbook.Sheets.Add after:=ActiveWorkbook.ActiveSheet
-ActiveWorkbook.ActiveSheet.Name = ThirdName
+ActiveWorkbook.ActiveSheet.name = ThirdName
 
 'Formatting and labeling
 ActiveWorkbook.ActiveSheet.Range("A1") = "All Precincts"
 ActiveWorkbook.ActiveSheet.Range("A1:E1").Merge
 
-p = 5
+P = 5
 
 'Calculates counts and percentages for turnout across the entire data sheet
 While Early2 <= Late
 With ActiveWorkbook.ActiveSheet
-    .Range("B" & p) = Early2
-    .Range("C" & p).Formula = "=COUNTIFS('" & FirstName & "'!C4,"">=""&'" & ThirdName & "'!RC[-1],'" & FirstName & "'!C4,""<""&'" & ThirdName & "'!R[1]C[-1])"
-    .Range("D" & p) = "=C" & p & "/C2*100"
-    .Range("E" & p) = "=C" & p & "/C2"
+    .Range("B" & P) = Early2
+    .Range("C" & P).Formula = "=COUNTIFS('" & FirstName & "'!C4,"">=""&'" & ThirdName & "'!RC[-1],'" & FirstName & "'!C4,""<""&'" & ThirdName & "'!R[1]C[-1])"
+    .Range("D" & P) = "=C" & P & "/C2*100"
+    .Range("E" & P) = "=C" & P & "/C2"
 End With
 Early2 = DateAdd("h", 1, Early2)
-p = p + 1
+P = P + 1
 Wend
 
 'Formatting and labeling
 With ActiveWorkbook.ActiveSheet
     .Range("B2") = "Total Count:"
-    .Range("C2") = "=sum(C5:C" & p - 1 & ")"
+    .Range("C2") = "=sum(C5:C" & P - 1 & ")"
     .Range("B4") = "Time"
     .Range("C4") = "Count"
     .Range("D4") = "Percent"
@@ -840,10 +847,10 @@ With ActiveWorkbook.ActiveSheet
 End With
 
 'Creates figures to display turnout counts and percentages per hour
-ActiveWorkbook.ActiveSheet.Range("B4:C" & p - 1).Select
+ActiveWorkbook.ActiveSheet.Range("B4:C" & P - 1).Select
     ActiveSheet.Shapes.AddChart2(332, xlLineMarkers).Select
 With ActiveChart
-    .SetSourceData source:=ActiveWorkbook.ActiveSheet.Range("$B$4:$C$" & p - 1)
+    .SetSourceData source:=ActiveWorkbook.ActiveSheet.Range("$B$4:$C$" & P - 1)
     .ChartTitle.Text = "All Precincts"
     .Parent.Top = -100
     .Parent.Left = 300
@@ -856,10 +863,10 @@ With ActiveChart
     .SeriesCollection(1).MarkerBackgroundColor = RGB(200, 0, 255)
 End With
 
-ActiveWorkbook.ActiveSheet.Range("B4:B" & p - 1 & ",D4:D" & p - 1).Select
+ActiveWorkbook.ActiveSheet.Range("B4:B" & P - 1 & ",D4:D" & P - 1).Select
     ActiveSheet.Shapes.AddChart2(332, xlLineMarkers).Select
 With ActiveChart
-    .SetSourceData source:=ActiveWorkbook.ActiveSheet.Range("B4:B" & p - 1 & ",D4:D" & p - 1)
+    .SetSourceData source:=ActiveWorkbook.ActiveSheet.Range("B4:B" & P - 1 & ",D4:D" & P - 1)
     .ChartTitle.Text = "All Precincts"
     .Parent.Top = 215
     .Parent.Left = 300
@@ -901,12 +908,12 @@ Dim StartPvt As String
 Dim SrcData As String
 
 'Store name information
-Name = Left(ActiveWorkbook.ActiveSheet.Name, 21) + "... Stats"
+name = Left(ActiveWorkbook.ActiveSheet.name, 21) + "... Stats"
 i = 0
 
 'Check if sheet name is already taken
 For y = 1 To ActiveWorkbook.Sheets.count
-If Name = ActiveWorkbook.Sheets(y).Name Then
+If name = ActiveWorkbook.Sheets(y).name Then
 MsgBox ("Sheet name already taken, please rename the sheet.")
 i = 1
 GoTo ENDIT
@@ -915,13 +922,13 @@ End If
 Next y
 
 'Determine the data range you want to pivot
-  SrcData = ActiveWorkbook.ActiveSheet.Name & "!" & ActiveWorkbook.ActiveSheet.UsedRange.Address(ReferenceStyle:=xlR1C1)
+  SrcData = ActiveWorkbook.ActiveSheet.name & "!" & ActiveWorkbook.ActiveSheet.UsedRange.Address(ReferenceStyle:=xlR1C1)
 
 'Create a new worksheet
   Set sht = Sheets.Add
 
 'Where do you want Pivot Table to start?
-  StartPvt = sht.Name & "!" & sht.Range("A3").Address(ReferenceStyle:=xlR1C1)
+  StartPvt = sht.name & "!" & sht.Range("A3").Address(ReferenceStyle:=xlR1C1)
 
 'Create Pivot Cache from Source Data
   Set pvtCache = ActiveWorkbook.PivotCaches.Create( _
@@ -945,9 +952,9 @@ pvt.PivotFields("Standard Deviation of Scan Type").NumberFormat = "mm:ss"
 pvt.PivotFields("Scan Type").Orientation = xlRowField
 
 'Formatting and labeling
-ActiveSheet.Name = Name
+ActiveSheet.name = name
 ActiveSheet.Range("A2").Font.Bold = True
-ActiveSheet.Range("A2") = Name
+ActiveSheet.Range("A2") = name
 
 
 ENDIT:
