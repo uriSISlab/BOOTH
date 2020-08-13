@@ -30,16 +30,16 @@ Application.FileDialog(msoFileDialogFilePicker).AllowMultiSelect = True
 Application.ScreenUpdating = False
 
 'Loop to process multiple files consecutively
-For j = 1 To Application.FileDialog(msoFileDialogFilePicker).SelectedItems.Count
+For j = 1 To Application.FileDialog(msoFileDialogFilePicker).SelectedItems.count
 
     'Adds an additional Worksheet to write DS200 data to if only one sheet is open
-    If ActiveWorkbook.Sheets.Count = 1 Then
+    If ActiveWorkbook.Sheets.count = 1 Then
         ActiveWorkbook.Sheets.Add after:=ActiveSheet
     End If
 
     'Check for duplicate precincts and delete the duplicate sheets
     c = 1
-    While c < ActiveWorkbook.Sheets.Count + 1
+    While c < ActiveWorkbook.Sheets.count + 1
         If ActiveWorkbook.Sheets(c).Name = "Precinct " & Left(Replace(Right$(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), Len(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j)) - InStrRev(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), "\")), ".txt", ""), 10) Then
             GoTo skipit
         Else: c = c + 1
@@ -58,7 +58,7 @@ For j = 1 To Application.FileDialog(msoFileDialogFilePicker).SelectedItems.Count
     'importing text file as a query table
     With ActiveSheet.QueryTables.Add(Connection:= _
            "TEXT;" & nam _
-           , Destination:=Range("$A$1"))
+           , destination:=Range("$A$1"))
            .Name = "Precinct " & j
            .FieldNames = True
            .RowNumbers = False
@@ -92,16 +92,16 @@ skipit:
 Next j
 
 'Deletes any blank sheets while more than one sheet is open
-d = ActiveWorkbook.Sheets.Count
+d = ActiveWorkbook.Sheets.count
 For t = 1 To d
     If t <= d And t > 1 Then
         If IsEmpty(ActiveWorkbook.Sheets(t).Range("A1")) = True Then
             ActiveWorkbook.Worksheets(t).Delete
-            d = ActiveWorkbook.Sheets.Count
+            d = ActiveWorkbook.Sheets.count
             t = 0
         End If
     End If
-    d = ActiveWorkbook.Sheets.Count
+    d = ActiveWorkbook.Sheets.count
 Next t
 
 'Allow the Excel file to actively update
@@ -117,14 +117,14 @@ Dim lrow As Long
 Dim var As String
 Dim k As Long
 Dim Name As String
-Dim PCTCom As Single
+Dim pctCom As Single
 
 'Displays the progress bar
 UserForm1.Show vbModeless
 
 'Updates the progress bar
-PCTCom = 0
-progress PCTCom
+pctCom = 0
+progress pctCom
 
 'Prevent showing Excel document updates to improve performance
 Application.ScreenUpdating = False
@@ -133,36 +133,36 @@ Application.ScreenUpdating = False
 If Range("A1") = 1114111 Then
     Name = ActiveWorkbook.ActiveSheet.Name
     'Check if the data chosen was already processed
-    For n = 1 To ActiveWorkbook.Sheets.Count
+    For n = 1 To ActiveWorkbook.Sheets.count
         If ActiveWorkbook.Sheets(n).Name = Name & " Processed" Then
             Exit Sub
         End If
     Next n
   
   'Updates the progress bar
-  PCTCom = 1 / 4 * 100
-  progress PCTCom
+  pctCom = 1 / 4 * 100
+  progress pctCom
   
     'Add a Worksheet in which processed precinct data will be populated
-    ActiveWorkbook.Sheets.Add after:=ActiveWorkbook.Sheets(ActiveWorkbook.Sheets.Count)
+    ActiveWorkbook.Sheets.Add after:=ActiveWorkbook.Sheets(ActiveWorkbook.Sheets.count)
     
     'Name the created Worksheet to the name of the precinct selected with the "Processed" qualifier
-    ActiveWorkbook.Sheets(ActiveWorkbook.Sheets.Count).Name = Name & " Processed"
+    ActiveWorkbook.Sheets(ActiveWorkbook.Sheets.count).Name = Name & " Processed"
   
     'Defining loop variables
     u = 2
    
     'Copies the data from the current Worksheet to the newly created worksheet
     ActiveWorkbook.Sheets(Name).Activate
-    lrow = Cells(ActiveWorkbook.ActiveSheet.Rows.Count, 1).End(xlUp).Row
+    lrow = Cells(ActiveWorkbook.ActiveSheet.rows.count, 1).End(xlUp).row
     Range("A1", "E" & lrow).Copy
     ActiveWorkbook.Sheets(Name & " Processed").Activate
     Range("A1", "E" & lrow).PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
          :=True, Transpose:=False
    
    'Updates the progress bar
-   PCTCom = 2 / 4 * 100
-   progress PCTCom
+   pctCom = 2 / 4 * 100
+   progress pctCom
     'Deletes rows not pertaining to scanning a ballot. Keeps only the start scan, stop scan, and error code lines
     For i = 1 To lrow - 1
          If Range("A" & lrow) <> 1004115 And Range("A" & lrow) <> 1004163 And Range("A" & lrow) <> 3013006 And Range("A" & lrow) <> 1004138 And Range("A" & lrow) <> 1004016 And Range("A" & lrow) <> 1004056 And Range("A" & lrow) <> 1004022 And Range("A" & lrow) <> 1004111 And Range("A" & lrow) <> 1004113 And Range("A" & lrow) <> 3013005 And Range("A" & lrow) <> 3003337 And Range("A" & lrow) <> 3013001 And Range("A" & lrow) <> 3013004 And Range("A" & lrow) <> 3013008 And Range("A" & lrow) <> 3013002 And Range("A" & lrow) <> 7003009 And Range("A" & lrow) <> 3013003 And Range("A" & lrow) <> 3013007 And Range("A" & lrow) <> 3013009 And Range("A" & lrow) <> 3003335 And Range("A" & lrow) <> 3003336 And Range("A" & lrow) <> 3003339 And Range("A" & lrow) <> 3003340 And Range("A" & lrow) <> 3003318 And Range("A" & lrow) <> 3003341 And Range("A" & lrow) <> 1004122 And Range("A" & lrow) <> 1004112 And Range("A" & lrow) <> 1004114 And Range("A" & lrow) <> 1004328 Then
@@ -176,7 +176,7 @@ If Range("A1") = 1114111 Then
     Range("1:1").ClearContents
     
     ' Recount number of rows for next loop
-    l2row = Cells(Rows.Count, 1).End(xlUp).Row
+    l2row = Cells(rows.count, 1).End(xlUp).row
  
     ' Trims the space that precedes the time stamp to allow for mathematical operations
     If Left(Range("B2").Value, 1) = " " Then
@@ -188,11 +188,11 @@ If Range("A1") = 1114111 Then
     End If
     
     'Updates the progress bar
-    PCTCom = 3 / 4 * 100
-    progress PCTCom
+    pctCom = 3 / 4 * 100
+    progress pctCom
 
     'Refreshes the cells which were trimmed in order to set them in a number format capable of mathmatical operations
-    Range("B:B").TextToColumns Destination:=Range("B1"), DataType:=xlDelimited, _
+    Range("B:B").TextToColumns destination:=Range("B1"), DataType:=xlDelimited, _
         TextQualifier:=xlDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True, _
         Semicolon:=False, Comma:=False, Space:=False, Other:=False, FieldInfo _
         :=Array(1, 1), TrailingMinusNumbers:=True
@@ -276,8 +276,8 @@ End If
     Application.ScreenUpdating = True
     
 'Updates the progress bar
-PCTCom = 4 / 4 * 100
-progress PCTCom
+pctCom = 4 / 4 * 100
+progress pctCom
 Unload UserForm1
 
   End Sub
@@ -289,12 +289,12 @@ Dim lrow As Long
 Dim var As String
 Dim k As Long
 Dim Name As String
-Dim PCTCom As Single
+Dim pctCom As Single
 Dim TWS As Integer
 Dim y As Long
 
 'Variable to determine progress
-TWS = ActiveWorkbook.Sheets.Count
+TWS = ActiveWorkbook.Sheets.count
 
 'Shows the progress bar
 UserForm1.Show vbModeless
@@ -303,14 +303,20 @@ UserForm1.Show vbModeless
 Application.ScreenUpdating = False
 
 'Loops for every open Worksheet
-For y = 1 To ActiveWorkbook.Sheets.Count
+For y = 1 To ActiveWorkbook.Sheets.count
 
     ActiveWorkbook.Sheets(y).Activate
   
-'Tests if the worksheet selected is in the expected format and whether it is a PollPad file or a DS200 file
-If ActiveWorkbook.ActiveSheet.Cells(1, 1).NumberFormat = "General" And ActiveWorkbook.ActiveSheet.Cells(1, 2).NumberFormat = "@" And ActiveWorkbook.ActiveSheet.Cells(1, 3).NumberFormat = "@" And ActiveWorkbook.ActiveSheet.Cells(1, 4).NumberFormat = "@" Then
+'Tests if the worksheet selected is in the expected format and whether it is a PollPad, DS200, or a VSAP BMD file
+If Right(ActiveWorkbook.ActiveSheet.Cells(1, 1), 1) = "Z" And Mid(ActiveWorkbook.ActiveSheet.Cells(1, 1), 11, 1) = "T" Then
+    'If the worksheet is identified as VSAP_BMD data, the DS200 processing function is called
+    Call Process_VSAPBMD_Data_Single
+ElseIf ActiveWorkbook.ActiveSheet.Cells(1, 1).NumberFormat = "General" And ActiveWorkbook.ActiveSheet.Cells(1, 2).NumberFormat = "@" And ActiveWorkbook.ActiveSheet.Cells(1, 3).NumberFormat = "@" And ActiveWorkbook.ActiveSheet.Cells(1, 4).NumberFormat = "@" Then
     'If the worksheet is identified as a DS200 data, the DS200 processing function is called
     Call Process_DS200_Data_Single
+ElseIf InStr(ActiveWorkbook.ActiveSheet.Cells(1, 2), "Logging service initialized") <> 0 Then
+    ' If the worksheet is identified as Dominion ImageCast Evolution data, the appropriate function is called
+    Call Process_DICE_Data_Single
 Else
     If ActiveWorkbook.ActiveSheet.Cells(2, 1).NumberFormat = "General" And ActiveWorkbook.ActiveSheet.Cells(2, 2).NumberFormat = "m/d/yyyy h:mm" And ActiveWorkbook.ActiveSheet.Cells(2, 3).NumberFormat = "General" Then
         'If the worksheet is identified as PollPad data, the PollPad processing function is called
@@ -336,19 +342,19 @@ Next y
 Application.ScreenUpdating = True
 
 'Updates the progress bar
-PCTCom = 100
-progress PCTCom
+pctCom = 100
+progress pctCom
 
 Unload UserForm1
 MsgBox "All Worksheets Have Been Processed."
 
 End Sub
 
-Sub progress(PCTCom As Single)
+Sub progress(pctCom As Single)
 
 'Progress bar function
-UserForm1.Text.Caption = Round(PCTCom, 0) & "% Completed"
-UserForm1.Bar.Width = Round(PCTCom * 2, 0)
+UserForm1.Text.Caption = Round(pctCom, 0) & "% Completed"
+UserForm1.Bar.Width = Round(pctCom * 2, 0)
 
 DoEvents
 
@@ -386,11 +392,11 @@ Application.FileDialog(msoFileDialogFilePicker).AllowMultiSelect = True
 Application.ScreenUpdating = False
 
 'Loop to process multiple files consecutively
-For j = 1 To Application.FileDialog(msoFileDialogFilePicker).SelectedItems.Count
+For j = 1 To Application.FileDialog(msoFileDialogFilePicker).SelectedItems.count
  FileNam = Left(Right$(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), Len(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j)) - InStrRev(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), "\")), 10)
  'Check for duplicate precincts and delete the duplicate sheets
     c = 1
-    While c < ActiveWorkbook.Sheets.Count + 1
+    While c < ActiveWorkbook.Sheets.count + 1
         If ActiveWorkbook.Sheets(c).Name = Left(Replace(Right$(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), Len(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j)) - InStrRev(Application.FileDialog(msoFileDialogFilePicker).SelectedItems(j), "\")), ".csv", ""), 10) & " PollPad" Then
                 MsgBox (FileNam & " shares the first 10 characters with a current worksheet. Please rename the file and import again.")
                 GoTo skipit
@@ -412,7 +418,7 @@ For j = 1 To Application.FileDialog(msoFileDialogFilePicker).SelectedItems.Count
     'importing text file as a query table
     With ActiveSheet.QueryTables.Add(Connection:= _
            "TEXT;" & nam _
-           , Destination:=Range("$A$1"))
+           , destination:=Range("$A$1"))
            .Name = "Precinct " & j
            .FieldNames = True
            .RowNumbers = False
@@ -454,7 +460,7 @@ Sub PollPadProcessing()
 
 Application.ScreenUpdating = False
 
-ColNum = ActiveWorkbook.ActiveSheet.UsedRange.Columns.Count
+ColNum = ActiveWorkbook.ActiveSheet.UsedRange.Columns.count
 
 'Loops through worksheet to format data, separating date and time
 For i = 1 To ColNum
@@ -487,10 +493,18 @@ End Sub
 
 Sub TestDataSet(control As IRibbonControl)
 
+
 'Tests which type of data is in the worksheet in order to call the appropriate single sheet processing function
-If ActiveWorkbook.ActiveSheet.Cells(1, 1).NumberFormat = "General" And ActiveWorkbook.ActiveSheet.Cells(1, 2).NumberFormat = "@" And ActiveWorkbook.ActiveSheet.Cells(1, 3).NumberFormat = "@" And ActiveWorkbook.ActiveSheet.Cells(1, 4).NumberFormat = "@" Then
+If Right(ActiveWorkbook.ActiveSheet.Cells(1, 1), 1) = "Z" And Mid(ActiveWorkbook.ActiveSheet.Cells(1, 1), 11, 1) = "T" Then
+    'If the worksheet is identified as VSAP_BMD data, the DS200 processing function is called
+    Call Process_VSAPBMD_Data_Single
+ElseIf ActiveWorkbook.ActiveSheet.Cells(1, 1).NumberFormat = "General" And ActiveWorkbook.ActiveSheet.Cells(1, 2).NumberFormat = "@" And ActiveWorkbook.ActiveSheet.Cells(1, 3).NumberFormat = "@" And ActiveWorkbook.ActiveSheet.Cells(1, 4).NumberFormat = "@" Then
     Call Process_DS200_Data_Single
+ElseIf InStr(ActiveWorkbook.ActiveSheet.Cells(1, 2), "Logging service initialized") <> 0 Then
+    ' If the worksheet is identified as Dominion ImageCast Evolution data, the appropriate function is called
+    Call Process_DICE_Data_Single
 Else
+
     If ActiveWorkbook.ActiveSheet.Cells(2, 1).NumberFormat = "General" And ActiveWorkbook.ActiveSheet.Cells(2, 2).NumberFormat = "m/d/yyyy h:mm" And ActiveWorkbook.ActiveSheet.Cells(2, 3).NumberFormat = "General" Then
         Call PollPadProcessing
     Else
@@ -535,13 +549,13 @@ Application.ScreenUpdating = False
 FirstName = ActiveWorkbook.ActiveSheet.Name
 SecondName = Left(ActiveWorkbook.ActiveSheet.Name, 10) + " PrecinctTurnout"
 ThirdName = Left(ActiveWorkbook.ActiveSheet.Name, 10) + " TotalTurnout"
-RawRows = ActiveWorkbook.ActiveSheet.Cells(ActiveWorkbook.ActiveSheet.Rows.Count, 1).End(xlUp).Row
+RawRows = ActiveWorkbook.ActiveSheet.Cells(ActiveWorkbook.ActiveSheet.rows.count, 1).End(xlUp).row
   
   
 i = 0
 
 'Tests to see if sheet name is already taken
-For y = 1 To ActiveWorkbook.Sheets.Count
+For y = 1 To ActiveWorkbook.Sheets.count
 If SecondName = ActiveWorkbook.Sheets(y).Name Then
 MsgBox ("Sheet name already taken for precinct turnout, please rename the sheet.")
 i = 1
@@ -596,7 +610,7 @@ ActiveWorkbook.ActiveSheet.Name = SecondName
 'Pulls precinct number and name from the data sheet to the stats sheet
 ActiveWorkbook.Sheets(FirstName).Range("F:F").Copy ActiveWorkbook.ActiveSheet.Range("BD1")
 ActiveSheet.Range("BD:BD").RemoveDuplicates Columns:=1, Header:=xlYes
-rowscount = ActiveWorkbook.ActiveSheet.Cells(Rows.Count, 56).End(xlUp).Row
+rowscount = ActiveWorkbook.ActiveSheet.Cells(rows.count, 56).End(xlUp).row
 Range("BD1").Select
     Range(Selection, Selection.End(xlDown)).Select
     Application.CutCopyMode = False
@@ -724,7 +738,7 @@ End With
 'Creates figures of hourly voter turnout by count and percent per hour
     ActiveSheet.Shapes.AddChart2(332, xlLineMarkers).Select
 With ActiveChart
-    .SetSourceData Source:=ActiveWorkbook.ActiveSheet.Range("$B$5:$C$" & t)
+    .SetSourceData source:=ActiveWorkbook.ActiveSheet.Range("$B$5:$C$" & t)
     .ChartTitle.Caption = "='" & SecondName & "'!$A$4"
     .Parent.Top = -100
     .Parent.Left = 810
@@ -733,8 +747,8 @@ With ActiveChart
     .Axes(xlValue, xlPrimary).HasTitle = True
     .Axes(xlValue, xlPrimary).AxisTitle.Characters.Text = "Count of Voters"
     .SeriesCollection.Add _
-        Source:=ActiveWorkbook.ActiveSheet.Range("$G$6:$G$" & t)
-    .SeriesCollection(1).Format.Line.ForeColor.RGB = RGB(0, 128, 0)
+        source:=ActiveWorkbook.ActiveSheet.Range("$G$6:$G$" & t)
+    .SeriesCollection(1).Format.line.ForeColor.RGB = RGB(0, 128, 0)
     .SeriesCollection(1).MarkerForegroundColor = RGB(0, 128, 0)
     .SeriesCollection(1).MarkerBackgroundColor = RGB(0, 128, 0)
 End With
@@ -742,7 +756,7 @@ End With
 ActiveWorkbook.ActiveSheet.Range("B4:B" & t - 1 & ",D4:D" & t - 1).Select
     ActiveSheet.Shapes.AddChart2(332, xlLineMarkers).Select
 With ActiveChart
-    .SetSourceData Source:=ActiveWorkbook.ActiveSheet.Range("B5:B" & t & ",D5:D" & t)
+    .SetSourceData source:=ActiveWorkbook.ActiveSheet.Range("B5:B" & t & ",D5:D" & t)
     .ChartTitle.Caption = "='" & SecondName & "'!$A$4"
     .Parent.Top = 215
     .Parent.Left = 810
@@ -751,8 +765,8 @@ With ActiveChart
     .Axes(xlValue, xlPrimary).HasTitle = True
     .Axes(xlValue, xlPrimary).AxisTitle.Characters.Text = "Percent of Voters"
     .SeriesCollection.Add _
-        Source:=ActiveWorkbook.ActiveSheet.Range("$H$6:$H$" & t)
-    .SeriesCollection(1).Format.Line.ForeColor.RGB = RGB(0, 128, 0)
+        source:=ActiveWorkbook.ActiveSheet.Range("$H$6:$H$" & t)
+    .SeriesCollection(1).Format.line.ForeColor.RGB = RGB(0, 128, 0)
     .SeriesCollection(1).MarkerForegroundColor = RGB(0, 128, 0)
     .SeriesCollection(1).MarkerBackgroundColor = RGB(0, 128, 0)
 End With
@@ -779,7 +793,7 @@ Range("B3").Select
 CheckName1:
 
 'Check for sheets with same name
-For y = 1 To ActiveWorkbook.Sheets.Count
+For y = 1 To ActiveWorkbook.Sheets.count
 If ThirdName = ActiveWorkbook.Sheets(y).Name Then
 MsgBox ("Sheet name already taken for total turnout, please rename the sheet.")
 i = 1
@@ -829,7 +843,7 @@ End With
 ActiveWorkbook.ActiveSheet.Range("B4:C" & p - 1).Select
     ActiveSheet.Shapes.AddChart2(332, xlLineMarkers).Select
 With ActiveChart
-    .SetSourceData Source:=ActiveWorkbook.ActiveSheet.Range("$B$4:$C$" & p - 1)
+    .SetSourceData source:=ActiveWorkbook.ActiveSheet.Range("$B$4:$C$" & p - 1)
     .ChartTitle.Text = "All Precincts"
     .Parent.Top = -100
     .Parent.Left = 300
@@ -837,7 +851,7 @@ With ActiveChart
     .Axes(xlCategory, xlPrimary).AxisTitle.Characters.Text = "Time"
     .Axes(xlValue, xlPrimary).HasTitle = True
     .Axes(xlValue, xlPrimary).AxisTitle.Characters.Text = "Count of Voters"
-    .SeriesCollection(1).Format.Line.ForeColor.RGB = RGB(200, 0, 255)
+    .SeriesCollection(1).Format.line.ForeColor.RGB = RGB(200, 0, 255)
     .SeriesCollection(1).MarkerForegroundColor = RGB(200, 0, 255)
     .SeriesCollection(1).MarkerBackgroundColor = RGB(200, 0, 255)
 End With
@@ -845,7 +859,7 @@ End With
 ActiveWorkbook.ActiveSheet.Range("B4:B" & p - 1 & ",D4:D" & p - 1).Select
     ActiveSheet.Shapes.AddChart2(332, xlLineMarkers).Select
 With ActiveChart
-    .SetSourceData Source:=ActiveWorkbook.ActiveSheet.Range("B4:B" & p - 1 & ",D4:D" & p - 1)
+    .SetSourceData source:=ActiveWorkbook.ActiveSheet.Range("B4:B" & p - 1 & ",D4:D" & p - 1)
     .ChartTitle.Text = "All Precincts"
     .Parent.Top = 215
     .Parent.Left = 300
@@ -853,7 +867,7 @@ With ActiveChart
     .Axes(xlCategory, xlPrimary).AxisTitle.Characters.Text = "Time"
     .Axes(xlValue, xlPrimary).HasTitle = True
     .Axes(xlValue, xlPrimary).AxisTitle.Characters.Text = "Percent of Voters"
-    .SeriesCollection(1).Format.Line.ForeColor.RGB = RGB(200, 0, 255)
+    .SeriesCollection(1).Format.line.ForeColor.RGB = RGB(200, 0, 255)
     .SeriesCollection(1).MarkerForegroundColor = RGB(200, 0, 255)
     .SeriesCollection(1).MarkerBackgroundColor = RGB(200, 0, 255)
 End With
@@ -891,7 +905,7 @@ Name = Left(ActiveWorkbook.ActiveSheet.Name, 21) + "... Stats"
 i = 0
 
 'Check if sheet name is already taken
-For y = 1 To ActiveWorkbook.Sheets.Count
+For y = 1 To ActiveWorkbook.Sheets.count
 If Name = ActiveWorkbook.Sheets(y).Name Then
 MsgBox ("Sheet name already taken, please rename the sheet.")
 i = 1
