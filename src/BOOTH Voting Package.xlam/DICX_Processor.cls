@@ -41,23 +41,10 @@ Private Sub clearState()
     state = DICXState.Ready
 End Sub
 
-Private Function getDifferenceMinutes(startTime As Date, endTime As Date) As Integer
-    getDifferenceMinutes = DateDiff("s", startTime, endTime) \ 60
-End Function
-
-Private Function getTimeDifference(startTime As Date, endTime As Date) As String
-    Dim mins As String
-    Dim secs As String
-    Dim totalSecs As Long
-    totalSecs = CLng(DateDiff("s", startTime, endTime))
-    mins = Format(CStr(totalSecs \ 60), "00")
-    secs = Format(CStr(totalSecs Mod 60), "00")
-    getTimeDifference = mins & ":" & secs
-End Function
 
 Private Sub writeBallotCastNormalRecord(startTimestamp As Date, endTimestamp As Date)
     Dim lineArr(3) As String
-    lineArr(0) = getTimeDifference(startTimestamp, endTimestamp)
+    lineArr(0) = Util.getTimeDifference(startTimestamp, endTimestamp)
     lineArr(1) = endTimestamp
     lineArr(2) = "Ballot cast normally"
     writer.writeLine lineArr

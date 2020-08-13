@@ -1,20 +1,5 @@
 Attribute VB_Name = "VSAP_BMD"
 
-'Enum to represent states of the VSAP BMD
-Enum BMDState
-            ' Initial state
-            INIT = 0
-            ' Loading state is entered after the ballot loading has begun
-            Loading = 1
-            ' Ballot has been activated, user can now vote (or cast their vote
-            ' if ballot is already voted in)
-            Activated = 2
-            ' Ballot has been printed
-            printed = 3
-            ' An out-of-place removed ballot log has occured
-            UnexpectedRemovedBallot = 4
-End Enum
-
 Sub Import_VSAPBMD_data(control As IRibbonControl)
     
     Dim lrow As Long
@@ -58,7 +43,7 @@ Sub Import_VSAPBMD_data(control As IRibbonControl)
         With ActiveSheet.QueryTables.Add(Connection:= _
                "TEXT;" & filePath _
                , destination:=Range("$A$1"))
-               .Name = "Precinct " & j
+               .name = "Precinct " & j
                .FieldNames = True
                .RowNumbers = False
                .FillAdjacentFormulas = False
@@ -89,7 +74,7 @@ Sub Import_VSAPBMD_data(control As IRibbonControl)
         'TODO: check if name is already taken
         Dim parts() As String
         parts = Split(filePath, "\")
-        ActiveWorkbook.ActiveSheet.Name = parts(UBound(parts))
+        ActiveWorkbook.ActiveSheet.name = parts(UBound(parts))
 skipit:
     
     Next j
@@ -99,300 +84,39 @@ skipit:
     
     
     End Sub
-Function parseDate(dateString As String) As Date
-    Dim dateObj As Date
-    Dim dateAndTime() As String
-    dateAndTime = Split(dateString, "T")
-    dateObj = dateAndTime(0) & " " & Split(dateAndTime(1), ".")(0)
-    parseDate = dateObj
-End Function
-Function getTimeDifference(startTime As String, endTime As String) As String
-    startLocal = parseDate(startTime)
-    endlocal = parseDate(endTime)
-    Dim mins As String
-    Dim secs As String
-    mins = Format(CStr(CLng(DateDiff("n", startLocal, endlocal))), "00")
-    secs = Format(CStr(CLng(DateDiff("s", startLocal, endlocal)) Mod 60), "00")
-    getTimeDifference = mins & ":" & secs
-    'Debug.Assert (mins < 100)
-End Function
-Function getDifferenceMinutes(startTime As String, endTime As String) As Long
-    startLocal = parseDate(startTime)
-    endlocal = parseDate(endTime)
-    getDifferenceMinutes = CLng(DateDiff("n", startLocal, endlocal))
-End Function
-Function Process_Single_VSAPBMD_Data_From_Stream(source As TextStream, destination As Object, startRow As Long, _
-            writeHeader As Boolean, writeFileName As Boolean, fileName As String) As Long
 
-        Const loadingBallotLog As String = "Loading Ballot"
-        Const languageSelectedLog As String = "Language Selected"
-        Const removedBallotLog As String = "Voter removed ballot before read by BMD"
-        Const ballotActivatedLog As String = "Ballot Activated and User session is ended"
-        Const printedBallotLog As String = "Printed ballot successfully"
-        Const castBallotLog As String = "Casted ballot successfullly" ' Typo in "sucessfully" as it appears in logs
-        Const removedPrintedBallotLog As String = "Ballot removed after printing"
-        Const provisionalBallotEjectedLog As String = "Provisonal Ballot ejected" ' Typo in "provisional" as it appears in logs
-        Const pollPassScannedLog As String = "poll-pass successfully scanned"
-        Const votingSessionLockedLog As String = "voting session locked after timeout done (Ballot not in BMD)"
-        Const errorScanningBPMLog As String = "Error scanning BPM - BPM not present"
-        Const quitVotingLog As String = "Returning ballot - quit voting"
-        Const startLog As String = "screen diagnostics Successful"
-        
-        Dim writer As VSAPBMD_Writer
-        Set writer = New VSAPBMD_Writer
-        Set writer.destination = destination
-        If writeFileName Then
-            writer.fileName = fileName
-        End If
-                
-        ' Timestamp (string) of the instant when current transaction was started
-        Dim startTime As String
-        startTime = ""
-        Dim thisTime As String
-        Dim j As Long
-        Dim pollPassUsed As Boolean
-        state = BMDState.INIT
-        writer.row = startRow
-        
-        If writeHeader Then
-            writer.writeHeader
-        End If
-        Dim i As Long
+Sub Process_Single_VSAPBMD_Data_From_Stream(source As TextStream, processor As VSAPBMD_Processor)
         Dim line As String
-        i = 1
         Do While Not source.AtEndOfStream
-                line = source.readLine
-                elements = Split(line, "|")
-                If UBound(elements) - LBound(elements) + 1 = 7 Then
-                    thisTime = elements(1)
-                    thisLog = elements(6)
-                    If Not state = BMDState.INIT And Len(startTime) > 0 Then
-                        If getDifferenceMinutes(startTime, thisTime) > 60 Then
-                            ' A more than 60 minute difference probably indicates something suspicious.
-                            ' So we reset state here.
-                            state = BMDState.INIT
-                        End If
-                    End If
-                    If state = BMDState.INIT Then
-                        If Trim(thisLog) = loadingBallotLog Then
-                            startTime = thisTime
-                            state = BMDState.Loading
-                            pollPassUsed = False
-                        ElseIf Trim(thisLog) = removedBallotLog Then
-                            state = BMDState.UnexpectedRemovedBallot
-                        End If
-                    ElseIf state = BMDState.UnexpectedRemovedBallot Then
-                        If Trim(thisLog) = loadingBallotLog Then
-                            ' Since this loading ballot log appears after an unexpected removed ballot log,
-                            ' we will assume that this log line is the one that should have come before
-                            ' the unexpected one we encountered before.
-                            writer.writeBallotRemovedRecordNoTime
-                            state = BMDState.INIT
-                        End If
-                    ElseIf state = BMDState.Loading Then
-                        If Trim(thisLog) = loadingBallotLog Then
-                            ' I wfe encounter another "loading" log at this state,
-                            ' the first one most probably came after a mis-ordered one
-                            writer.writeBallotRemovedRecordNoTime
-                            pollPassUsed = False
-                            startTime = thisTime
-                        ElseIf Trim(thisLog) = removedBallotLog Then
-                            ' This means the ballot was removed from the machine before it could
-                            ' be read and activated. We need to record it and reset state.
-                            writer.writeBallotRemovedRecord getTimeDifference(startTime, thisTime)
-                            state = BMDState.INIT
-                        ElseIf Trim(thisLog) = ballotActivatedLog Then
-                            state = BMDState.Activated
-                        ElseIf Trim(thisLog) = errorScanningBPMLog Then
-                            writer.writeBPMScanErrorLog getTimeDifference(startTime, thisTime)
-                            state = BMDState.INIT
-                        ElseIf Trim(thisLog) = startLog Then
-                            writer.writeMachineRestartedLog getTimeDifference(startTime, thisTime), False
-                            state = BMDState.INIT
-                        ElseIf Trim(thisLog) = quitVotingLog Then
-                            writer.writeQuitVotingLog getTimeDifference(startTime, thisTime), pollPassUsed
-                            state = BMDState.INIT
-                        End If
-                    ElseIf state = BMDState.Activated Then
-                        If Trim(thisLog) = pollPassScannedLog Then
-                            pollPassUsed = True
-                        ElseIf Trim(thisLog) = printedBallotLog Then
-                            state = BMDState.printed
-                        ElseIf Trim(thisLog) = castBallotLog Then ' Typo in "sucessfully" as it appears in logs
-                            ' If the ballot was cast without being printed in this transaction.
-                            ' This means a pre-printed ballot was inserted.
-                            writer.writeBallotCastRecord getTimeDifference(startTime, thisTime), False, pollPassUsed
-                            state = BMDState.INIT
-                        ElseIf Trim(thisLog) = provisionalBallotEjectedLog Then
-                            writer.writeProvisionalBallotEjectedRecord getTimeDifference(startTime, thisTime), False, pollPassUsed
-                            state = BMDState.INIT
-                        ElseIf Trim(thisLog) = votingSessionLockedLog Then
-                            writer.writeVotingTimedOutLog getTimeDifference(startTime, thisTime), pollPassUsed
-                            state = BMDState.INIT
-                        ElseIf Trim(thisLog) = quitVotingLog Then
-                            writer.writeQuitVotingLog getTimeDifference(startTime, thisTime), pollPassUsed
-                            state = BMDState.INIT
-                        ElseIf Trim(thisLog) = startLog Then
-                            writer.writeMachineRestartedLog getTimeDifference(startTime, thisTime), pollPassUsed
-                            state = BMDState.INIT
-                        ElseIf Trim(thisLog) = languageSelectedLog Then
-                            writer.writeQuitVotingLog getTimeDifference(startTime, thisTime), pollPassUsed
-                            state = BMDState.INIT
-                        End If
-                    ElseIf state = BMDState.printed Then
-                        If Trim(thisLog) = removedPrintedBallotLog Then
-                            writer.writePrintedBallotRemovedRecord getTimeDifference(startTime, thisTime), pollPassUsed
-                            state = BMDState.INIT
-                        ElseIf Trim(thisLog) = castBallotLog Then
-                            writer.writeBallotCastRecord getTimeDifference(startTime, thisTime), True, pollPassUsed
-                            state = BMDState.INIT
-                        ElseIf Trim(thisLog) = provisionalBallotEjectedLog Then
-                            writer.writeProvisionalBallotEjectedRecord getTimeDifference(startTime, thisTime), True, pollPassUsed
-                            state = BMDState.INIT
-                        ElseIf Trim(thisLog) = startLog Then
-                            writer.writeMachineRestartedLog getTimeDifference(startTime, thisTime), pollPassUsed
-                            state = BMDState.INIT
-                        End If
-                        ' TODO Find out whether provisional ballots can be cast just after printing
-                    End If
-                End If
-                i = i + 1
-            Loop
-        
-        ' Return the next row (the one after the last written row)
-        Process_Single_VSAPBMD_Data_From_Stream = writer.row
-End Function
-Function Process_Single_VSAPBMD_Data_From(source As Worksheet, destination As Object, startRow As Long, _
-            writeHeader As Boolean, writeFileName As Boolean, fileName As String) As Long
+            line = source.readLine
+            processor.readLine line
+        Loop
+End Sub
+Sub Process_Single_VSAPBMD_Data_From(source As Worksheet, processor As VSAPBMD_Processor)
         ' Count the number of rows in source sheet
         l2row = source.UsedRange.rows.count
-        
-        Const loadingBallotLog As String = "Loading Ballot"
-        Const removedBallotLog As String = "Voter removed ballot before read by BMD"
-        Const ballotActivatedLog As String = "Ballot Activated and User session is ended"
-        Const printedBallotLog As String = "Printed ballot successfully"
-        Const castBallotLog As String = "Casted ballot successfullly" ' Typo in "sucessfully" as it appears in logs
-        Const removedPrintedBallotLog As String = "Ballot removed after printing"
-        Const provisionalBallotEjectedLog As String = "Provisonal Ballot ejected" ' Typo in "provisional" as it appears in logs
-        Const pollPassScannedLog As String = "poll-pass successfully scanned"
-        Const votingSessionLockedLog As String = "voting session locked after timeout done (Ballot not in BMD)"
-        Const errorScanningBPMLog As String = "Error scanning BPM - BPM not present"
-        Const quitVotingLog As String = "Returning ballot - quit voting"
-        Const startLog As String = "screen diagnostics Successful"
-        
-        Dim writer As VSAPBMD_Writer
-        Set writer = New VSAPBMD_Writer
-        Set writer.destination = destination
-        If writeFileName Then
-            writer.fileName = fileName
-        End If
-                
-        ' Timestamp (string) of the instant when current transaction was started
-        Dim startTime As String
-        Dim thisTime As String
-        Dim j As Long
-        Dim pollPassUsed As Boolean
-        state = BMDState.INIT
-        writer.row = startRow
-        
-        If writeHeader Then
-            writer.writeHeader
-        End If
-            
+
+        Dim i, j As Integer
         With source
             ' Main loop
             For i = 1 To l2row
-                thisLog = CStr(.Range("E" & i))
-                thisTime = CStr(.Range("A" & i))
-                If state = BMDState.INIT Then
-                    If Trim(thisLog) = loadingBallotLog Then
-                        startTime = thisTime
-                        state = BMDState.Loading
-                        pollPassUsed = False
-                    ElseIf Trim(thisLog) = removedBallotLog Then
-                        state = BMDState.UnexpectedRemovedBallot
-                    End If
-                ElseIf state = BMDState.UnexpectedRemovedBallot Then
-                    If Trim(thisLog) = loadingBallotLog Then
-                        ' Since this loading ballot log appears after an unexpected removed ballot log,
-                        ' we will assume that this log line is the one that should have come before
-                        ' the unexpected one we encountered before.
-                        writer.writeBallotRemovedRecordNoTime
-                        state = BMDState.INIT
-                    End If
-                ElseIf state = BMDState.Loading Then
-                    If Trim(thisLog) = loadingBallotLog Then
-                        ' If we encounter another "loading" log at this state,
-                        ' the first one most probably came after a mis-ordered one
-                        writer.writeBallotRemovedRecordNoTime
-                        pollPassUsed = False
-                        startTime = thisTime
-                    ElseIf Trim(thisLog) = removedBallotLog Then
-                        ' This means the ballot was removed from the machine before it could
-                        ' be read and activated. We need to record it and reset state.
-                        writer.writeBallotRemovedRecord getTimeDifference(startTime, thisTime)
-                        state = BMDState.INIT
-                    ElseIf Trim(thisLog) = ballotActivatedLog Then
-                        state = BMDState.Activated
-                    ElseIf Trim(thisLog) = errorScanningBPMLog Then
-                        writer.writeBPMScanErrorLog getTimeDifference(startTime, thisTime)
-                        state = BMDState.INIT
-                    ElseIf Trim(thisLog) = startLog Then
-                        writer.writeMachineRestartedLog getTimeDifference(startTime, thisTime), False
-                        state = BMDState.INIT
-                    End If
-                ElseIf state = BMDState.Activated Then
-                    If Trim(thisLog) = pollPassScannedLog Then
-                        pollPassUsed = True
-                    ElseIf Trim(thisLog) = printedBallotLog Then
-                        state = BMDState.printed
-                    ElseIf Trim(thisLog) = castBallotLog Then ' Typo in "sucessfully" as it appears in logs
-                        ' If the ballot was cast without being printed in this transaction.
-                        ' This means a pre-printed ballot was inserted.
-                        writer.writeBallotCastRecord getTimeDifference(startTime, thisTime), False, pollPassUsed
-                        state = BMDState.INIT
-                    ElseIf Trim(thisLog) = provisionalBallotEjectedLog Then
-                        writer.writeProvisionalBallotEjectedRecord getTimeDifference(startTime, thisTime), False, pollPassUsed
-                        state = BMDState.INIT
-                    ElseIf Trim(thisLog) = votingSessionLockedLog Then
-                        writer.writeVotingTimedOutLog getTimeDifference(startTime, thisTime), pollPassUsed
-                        state = BMDState.INIT
-                    ElseIf Trim(thisLog) = quitVotingLog Then
-                        writer.writeQuitVotingLog getTimeDifference(startTime, thisTime), pollPassUsed
-                        state = BMDState.INIT
-                    ElseIf Trim(thisLog) = startLog Then
-                        writer.writeMachineRestartedLog getTimeDifference(startTime, thisTime), pollPassUsed
-                        state = BMDState.INIT
-                    End If
-                ElseIf state = BMDState.printed Then
-                    If Trim(thisLog) = removedPrintedBallotLog Then
-                        writer.writePrintedBallotRemovedRecord getTimeDifference(startTime, thisTime), pollPassUsed
-                        state = BMDState.INIT
-                    ElseIf Trim(thisLog) = castBallotLog Then
-                        writer.writeBallotCastRecord getTimeDifference(startTime, thisTime), True, pollPassUsed
-                        state = BMDState.INIT
-                    ElseIf Trim(thisLog) = provisionalBallotEjectedLog Then
-                        writer.writeProvisionalBallotEjectedRecord getTimeDifference(startTime, thisTime), True, pollPassUsed
-                        state = BMDState.INIT
-                    ElseIf Trim(thisLog) = startLog Then
-                        writer.writeMachineRestartedLog getTimeDifference(startTime, thisTime), pollPassUsed
-                        state = BMDState.INIT
-                    End If
-                    ' TODO Find out whether provisional ballots can be cast just after printing
-                End If
+                Dim line As String
+                line = i & "|" & CStr(.Range("A" & i)) & "|placeholder"
+                For j = 2 To 5
+                    ' Join the row with pipes
+                    line = line & "|" & .Range(getLetterFromNumber(j) & i)
+                Next j
+                processor.readLine line
             Next i
         End With
-        
-        ' Return the next row (the one after the last written row)
-        Process_Single_VSAPBMD_Data_From = writer.row
-End Function
+End Sub
 Sub Process_VSAPBMD_Data_Single_To_Worksheet()
     
     Dim u As Long
     Dim lrow As Long
     Dim var As String
     Dim k As Long
-    Dim Name As String
+    Dim name As String
     Dim pctCom As Single
     
     'Displays the progress bar
@@ -407,10 +131,10 @@ Sub Process_VSAPBMD_Data_Single_To_Worksheet()
     
     'TODO Verify that this is a good test for VSAP BMDs.
     If Trim(Range("B1")) = "Logger.js-Loading page-Manual Diagnostic Status" Then
-        Name = ActiveWorkbook.ActiveSheet.Name
+        name = ActiveWorkbook.ActiveSheet.name
         'Check if the data chosen was already processed
         For n = 1 To ActiveWorkbook.Sheets.count
-            If ActiveWorkbook.Sheets(n).Name = Name & " Processed" Then
+            If ActiveWorkbook.Sheets(n).name = name & " Processed" Then
                 Exit Sub
             End If
         Next n
@@ -423,13 +147,13 @@ Sub Process_VSAPBMD_Data_Single_To_Worksheet()
         ActiveWorkbook.Sheets.Add after:=ActiveWorkbook.Sheets(ActiveWorkbook.Sheets.count)
         
         'Name the created Worksheet to the name of the precinct selected with the "Processed" qualifier
-        ActiveWorkbook.Sheets(ActiveWorkbook.Sheets.count).Name = Name & " Processed"
+        ActiveWorkbook.Sheets(ActiveWorkbook.Sheets.count).name = name & " Processed"
        
         'Copies the data from the current Worksheet to the newly created worksheet
-        ActiveWorkbook.Sheets(Name).Activate
+        ActiveWorkbook.Sheets(name).Activate
         lrow = Cells(ActiveWorkbook.ActiveSheet.rows.count, 1).End(xlUp).row
         Range("A1", "E" & lrow).Copy
-        ActiveWorkbook.Sheets(Name & " Processed").Activate
+        ActiveWorkbook.Sheets(name & " Processed").Activate
         Range("A1", "E" & lrow).PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
              :=True, Transpose:=False
        
@@ -446,7 +170,17 @@ Sub Process_VSAPBMD_Data_Single_To_Worksheet()
         progress pctCom
         
         l2row = Cells(rows.count, 1).End(xlUp).row
-        next_row = Process_Single_VSAPBMD_Data_From(ActiveWorkbook.ActiveSheet, ActiveWorkbook.ActiveSheet, 2, True, False, "")
+        Dim writer As OutputWriter
+        Set writer = New OutputWriter
+        Dim processor As VSAPBMD_Processor
+        Set processor = New VSAPBMD_Processor
+        writer.setOutputSheet ActiveWorkbook.ActiveSheet
+        processor.setWriter writer
+        processor.writeHeader
+        
+        Process_Single_VSAPBMD_Data_From ActiveWorkbook.ActiveSheet, processor
+        
+        next_row = writer.getRowNum
         ActiveWorkbook.ActiveSheet.Columns("A:E").AutoFit
         ActiveWorkbook.ActiveSheet.Range("A" & next_row, "E" & l2row).Clear
         ActiveWorkbook.ActiveSheet.Range("E1", "E" & (next_row - 1)).Clear
@@ -471,17 +205,17 @@ Sub Process_VSAPBMD_Data_Single()
     Dim lrow As Long
     Dim var As String
     Dim k As Long
-    Dim Name As String
+    Dim name As String
 
     'Prevent showing Excel document updates to improve performance
     Application.ScreenUpdating = False
     
     'TODO Verify that this is a good test for VSAP BMDs.
     If Trim(Range("B1")) = "Logger.js-Loading page-Manual Diagnostic Status" Then
-        Name = ActiveWorkbook.ActiveSheet.Name
+        name = ActiveWorkbook.ActiveSheet.name
         'Check if the data chosen was already processed
         For n = 1 To ActiveWorkbook.Sheets.count
-            If ActiveWorkbook.Sheets(n).Name = Name & " Processed" Then
+            If ActiveWorkbook.Sheets(n).name = name & " Processed" Then
                 Exit Sub
             End If
         Next n
@@ -493,8 +227,16 @@ Sub Process_VSAPBMD_Data_Single()
         Set fso = New FileSystemObject
         Dim fileStream As TextStream
         Set fileStream = fso.CreateTextFile(filePath)
+        Dim writer As OutputWriter
+        Set writer = New OutputWriter
+        Dim processor As VSAPBMD_Processor
+        Set processor = New VSAPBMD_Processor
+        writer.setOutputStream fileStream
+        processor.setWriter writer
+        processor.writeHeader
 
-        next_row = Process_Single_VSAPBMD_Data_From(ActiveWorkbook.ActiveSheet, fileStream, 2, True, False, "")
+        Process_Single_VSAPBMD_Data_From ActiveWorkbook.ActiveSheet, processor
+
         fileStream.Close
     Else
         'If the file does not contain VSAP BMD Data, the program exits

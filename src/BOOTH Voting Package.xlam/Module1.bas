@@ -583,7 +583,7 @@ ActiveWorkbook.ActiveSheet.Range("C1").Select
         :=Range("D:D"), SortOn:=xlSortOnValues, Order:=xlAscending, _
         DataOption:=xlSortNormal
     With ActiveWorkbook.ActiveSheet.AutoFilter.Sort
-        .Header = xlYes
+        .header = xlYes
         .MatchCase = False
         .Orientation = xlTopToBottom
         .SortMethod = xlPinYin
@@ -600,7 +600,7 @@ ActiveWorkbook.ActiveSheet.Range("C1").Select
         :=Range("D:D"), SortOn:=xlSortOnValues, Order:=xlDescending, _
         DataOption:=xlSortNormal
     With ActiveWorkbook.ActiveSheet.AutoFilter.Sort
-        .Header = xlYes
+        .header = xlYes
         .MatchCase = False
         .Orientation = xlTopToBottom
         .SortMethod = xlPinYin
@@ -616,7 +616,7 @@ ActiveWorkbook.ActiveSheet.name = SecondName
 
 'Pulls precinct number and name from the data sheet to the stats sheet
 ActiveWorkbook.Sheets(FirstName).Range("F:F").Copy ActiveWorkbook.ActiveSheet.Range("BD1")
-ActiveSheet.Range("BD:BD").RemoveDuplicates Columns:=1, Header:=xlYes
+ActiveSheet.Range("BD:BD").RemoveDuplicates Columns:=1, header:=xlYes
 rowscount = ActiveWorkbook.ActiveSheet.Cells(rows.count, 56).End(xlUp).row
 Range("BD1").Select
     Range(Selection, Selection.End(xlDown)).Select
@@ -627,7 +627,7 @@ Range("BD1").Select
         xlSortNormal
     With ActiveWorkbook.ActiveSheet.Sort
         .SetRange Range("BD1:BD" & rowscount)
-        .Header = xlYes
+        .header = xlYes
         .MatchCase = False
         .Orientation = xlTopToBottom
         .SortMethod = xlPinYin
@@ -636,7 +636,7 @@ Range("BD1").Select
     
 ActiveWorkbook.Sheets("" & FirstName & "").Range("F:F").Copy ActiveWorkbook.Sheets("" & SecondName & "").Range("BF1")
 ActiveWorkbook.Sheets("" & FirstName & "").Range("E:E").Copy ActiveWorkbook.Sheets("" & SecondName & "").Range("BG1")
-ActiveSheet.Range("BF:BG").RemoveDuplicates Columns:=1, Header:=xlYes
+ActiveSheet.Range("BF:BG").RemoveDuplicates Columns:=1, header:=xlYes
   
 'Creates a table out of the precinct numbers for the dropdown menus
 ActiveSheet.ListObjects.Add(xlSrcRange, Range("$BD$1:$BD$" & rowscount), , xlYes).name _

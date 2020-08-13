@@ -61,20 +61,6 @@ Private Sub clearState()
     ballotNotRecognized = False
 End Sub
 
-Private Function getDifferenceMinutes(startTime As Date, endTime As Date) As Integer
-    getDifferenceMinutes = DateDiff("s", startTime, endTime) \ 60
-End Function
-
-Private Function getTimeDifference(startTime As Date, endTime As Date) As String
-    Dim mins As String
-    Dim secs As String
-    Dim totalSecs As Long
-    totalSecs = CLng(DateDiff("s", startTime, endTime))
-    mins = Format(CStr(totalSecs \ 60), "00")
-    secs = Format(CStr(totalSecs Mod 60), "00")
-    getTimeDifference = mins & ":" & secs
-End Function
-
 Private Function getMonthOrder(month As String) As Integer
     Dim m As String
     Dim o As Integer
@@ -105,7 +91,7 @@ End Function
 
 Private Sub writeBallotCastNormalRecord(startTimestamp As Date, endTimestamp As Date)
     Dim lineArr(5) As String
-    lineArr(0) = getTimeDifference(startTimestamp, endTimestamp)
+    lineArr(0) = Util.getTimeDifference(startTimestamp, endTimestamp)
     lineArr(1) = endTimestamp
     lineArr(2) = "Ballot cast normally"
     lineArr(3) = CStr(misreads)
@@ -119,7 +105,7 @@ End Sub
 
 Private Sub writeBallotNotCastRecord(startTimestamp As Date, endTimestamp As Date)
     Dim lineArr(5) As String
-    lineArr(0) = getTimeDifference(startTimestamp, endTimestamp)
+    lineArr(0) = Util.getTimeDifference(startTimestamp, endTimestamp)
     lineArr(1) = endTimestamp
     lineArr(2) = "Ballot not cast"
     lineArr(3) = misreads
@@ -133,7 +119,7 @@ End Sub
 
 Private Sub writePaperJamRecord(startTimestamp As Date, endTimestamp As Date)
     Dim lineArr(5) As String
-    lineArr(0) = getTimeDifference(startTimestamp, endTimestamp)
+    lineArr(0) = Util.getTimeDifference(startTimestamp, endTimestamp)
     lineArr(1) = endTimestamp
     lineArr(2) = "Paper jam when accepting ballot"
     lineArr(3) = misreads
@@ -143,7 +129,7 @@ End Sub
 
 Private Sub writeBallotNotRecognizedRecord(startTimestamp As Date, endTimestamp As Date)
     Dim lineArr(5) As String
-    lineArr(0) = getTimeDifference(startTimestamp, endTimestamp)
+    lineArr(0) = Util.getTimeDifference(startTimestamp, endTimestamp)
     lineArr(1) = endTimestamp
     lineArr(2) = "Ballot not recognized"
     lineArr(3) = misreads
@@ -153,7 +139,7 @@ End Sub
 
 Private Sub writeAccessibleBallotMarkedRecord(startTimestamp As Date, endTimestamp As Date)
     Dim lineArr(5) As String
-    lineArr(0) = getTimeDifference(startTimestamp, endTimestamp)
+    lineArr(0) = Util.getTimeDifference(startTimestamp, endTimestamp)
     lineArr(1) = endTimestamp
     lineArr(2) = "Accessible voting : ballot marked"
     lineArr(3) = "-"
@@ -203,7 +189,7 @@ Public Sub readLine(line As String)
         state = Ready
         writeAccessibleBallotMarkedRecord startTime, thisTime
     ElseIf rest = s_ballotInserted Then
-        If getDifferenceMinutes(lastTimestamp, thisTime) > 2 Then
+        If Util.getDifferenceMinutes(lastTimestamp, thisTime) > 2 Then
             ' If there's a large difference in time here, the earlier session
             ' was probably abandoned due to something. So we clear the state.
             clearState

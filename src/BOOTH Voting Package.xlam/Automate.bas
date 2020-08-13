@@ -1,13 +1,13 @@
 Attribute VB_Name = "Automate"
     Option Explicit
     Function CountFiles(glob As String) As Long
-        Dim fileName As String
+        Dim filename As String
         Dim count As Long
         count = 0
-        fileName = Dir(glob)
-        Do While Len(fileName) > 0
+        filename = Dir(glob)
+        Do While Len(filename) > 0
             count = count + 1
-            fileName = Dir
+            filename = Dir
         Loop
         CountFiles = count
     End Function
@@ -37,11 +37,11 @@ Sub openAndProcessDirectory(control As IRibbonControl)
         outputRow = 2
         outputFileName = folder & "\processed_all.csv"
         
-        Dim fileName As String
+        Dim filename As String
         Dim filesGlob As String
         filesGlob = folder & "\BEL_*_*.log"
         fileCount = CountFiles(filesGlob)
-        fileName = Dir(filesGlob)
+        filename = Dir(filesGlob)
     
         Dim fso As FileSystemObject
         Set fso = New FileSystemObject
@@ -53,17 +53,29 @@ Sub openAndProcessDirectory(control As IRibbonControl)
         UserForm1.Show vbModeless
         progress 0
         
+        Dim writer As OutputWriter
+        Set writer = New OutputWriter
+        writer.setOutputStream fileStream
+        'TODO Do this dynamically
+        Dim header() As String
+        header = Util.getVSAPBMDHeader
+        Dim fileNameArr(1) As String
+        
         'Loop to process multiple files consecutively
-        Do While Len(fileName) > 0
-            Set inputStream = fso.OpenTextFile(folder & "\" & fileName, ForReading, False)
-            Dim writeHeader As Boolean
+        Do While Len(filename) > 0
+            Set inputStream = fso.OpenTextFile(folder & "\" & filename, ForReading, False)
+
+            Dim processor As VSAPBMD_Processor
+            Set processor = New VSAPBMD_Processor
+            processor.setWriter writer
+            processor.setFileName filename
             If outputRow = 2 Then
-                writeHeader = True
-            Else
-                writeHeader = False
+                processor.writeHeader
             End If
-            outputRow = Process_Single_VSAPBMD_Data_From_Stream(inputStream, fileStream, outputRow, writeHeader, True, fileName)
-            fileName = Dir
+
+            Process_Single_VSAPBMD_Data_From_Stream inputStream, processor
+            outputRow = writer.getRowNum
+            filename = Dir
             fileNum = fileNum + 1
             If fileNum Mod 5 = 0 Then
                 progress fileNum / fileCount * 100

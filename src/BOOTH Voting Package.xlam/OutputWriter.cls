@@ -33,7 +33,7 @@ Public Sub setOutputStream(ts As TextStream)
     output_type = OutputType.Stream
 End Sub
 
-Public Sub writeLine(lineArray() As String)
+Public Sub writeLineArr(lineArray() As String)
     If output_type = OutputType.Stream Then
         ' TODO wrap item in quotes if it contains a comma so that output proper CSV
         output_stream.writeLine Join(lineArray, ", ")
@@ -44,3 +44,18 @@ Public Sub writeLine(lineArray() As String)
         row_num = row_num + 1
     End If
 End Sub
+
+Public Sub writeLine(ParamArray var() As Variant)
+    Dim lineArr() As String
+    Dim itemCount As Integer
+    itemCount = UBound(var) - LBound(var) + 1
+    ReDim lineArr(itemCount - 1)
+    For i = 0 To itemCount - 1
+        lineArr(i) = var(LBound(var) + i)
+    Next i
+    writeLineArr lineArr
+End Sub
+
+Public Function getRowNum() As Long
+    getRowNum = row_num
+End Function

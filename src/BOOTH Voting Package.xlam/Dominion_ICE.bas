@@ -31,7 +31,7 @@ Sub Import_DICE_data(control As IRibbonControl)
         'TODO: check if name is already taken
         Dim parts() As String
         parts = Split(filePath, "\")
-        ActiveWorkbook.ActiveSheet.Name = parts(UBound(parts))
+        ActiveWorkbook.ActiveSheet.name = parts(UBound(parts))
     Next j
     
     'Allow the Excel file to actively update
@@ -67,10 +67,10 @@ Sub Process_DICE_Data_Single()
     Application.ScreenUpdating = False
 
     If InStr(ActiveWorkbook.ActiveSheet.Cells(1, 2), "Logging service initialized") <> 0 Then
-        Name = ActiveWorkbook.ActiveSheet.Name
+        name = ActiveWorkbook.ActiveSheet.name
         'Check if the data chosen was already processed
         For n = 1 To ActiveWorkbook.Sheets.count
-            If ActiveWorkbook.Sheets(n).Name = Name & " Processed" Then
+            If ActiveWorkbook.Sheets(n).name = name & " Processed" Then
                 Exit Sub
             End If
         Next n
@@ -79,10 +79,10 @@ Sub Process_DICE_Data_Single()
         ActiveWorkbook.Sheets.Add after:=ActiveWorkbook.Sheets(ActiveWorkbook.Sheets.count)
         
         'Name the created Worksheet to the name of the precinct selected with the "Processed" qualifier
-        ActiveWorkbook.Sheets(ActiveWorkbook.Sheets.count).Name = Name & " Processed"
+        ActiveWorkbook.Sheets(ActiveWorkbook.Sheets.count).name = name & " Processed"
        
         'Copies the data from the current Worksheet to the newly created worksheet
-        ActiveWorkbook.Sheets(Name & " Processed").Activate
+        ActiveWorkbook.Sheets(name & " Processed").Activate
         
         Dim processor As DICE_Processor
         Set processor = New DICE_Processor
@@ -96,7 +96,7 @@ Sub Process_DICE_Data_Single()
         headerArr = Split("Duration,Timestamp,Event,Misreads,Ballot Reviewed", ",")
         writer.writeLine headerArr
         
-        Process_DICE_Data_From_Sheet ActiveWorkbook.Sheets(Name), processor
+        Process_DICE_Data_From_Sheet ActiveWorkbook.Sheets(name), processor
         ActiveWorkbook.ActiveSheet.Range("A1:E1").Font.Bold = True
         ActiveWorkbook.ActiveSheet.UsedRange.Columns.AutoFit
     Else
