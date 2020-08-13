@@ -12,29 +12,66 @@ Private Enum DICEState
     Ready = 0
     ' A ballot has just been inserted into the device for scanning
     BallotInserted = 1
+    ' A ballot was just cast into the machine
+    BallotCast = 2
+    ' An accessible voting session has been started
+    AccessibleStarted = 3
+    ' A ballot has been inserted for accessible voting
+    AccessibleBallotInserted = 4
+    ' A ballot has been accepted for accessible voting
+    AccessibleBallotAccepted = 5
 End Enum
 
 Private Const s_ballotInserted As String = "[Voting] A ballot has been inserted into the unit."
+Private Const s_invokingBallotReview As String = "[Voting] Invoking ballot review for the current ballot."
 Private Const s_ballotCast As String = "[Voting] Ballot successfully cast and dropped into ballot box"
 Private Const s_endOfSession As String = "[Voting] The end of the current session. The system is ready to accept a new ballot."
+
+Private Const s_accessibleStarted As String = "[Admin] Accessible Voting (Contest by Contest) started"
+Private Const s_accessibleBallotInserted As String = "[Accessible Voting] A ballot has been inserted into the unit"
+Private Const s_accessibleBallotAccepted As String = "[Accessible Voting] A ballot has been accepted by the system."
+Private Const s_accessibleMarkingCompleted As String = "[Accessible Voting] A ballot marking has been completed."
+
+Private Const s_ballotMisread As String = "[Pixel Count] Ballot misread."
+Private Const s_paperJam As String = "[Scanner] Error scanning ballot: Possible paper jam. Code:"
+Private Const s_noManifestation As String = "[Pixel Count] No ballot manifestation for determined ballot Id"
 
 Private state As DICEState
 Private startTime As Date
 Private writer As OutputWriter
+Private misreads As Integer
+Private reviewed As Boolean
+Private paperJam As Boolean
+Private ballotNotRecognized As Boolean
+Private lastTimestamp As Date
 
 Public Sub class_initialize()
-    state = DICEState.Ready
+    clearState
 End Sub
 
 Public Sub setWriter(ow As OutputWriter)
     Set writer = ow
 End Sub
 
+Private Sub clearState()
+    state = DICEState.Ready
+    misreads = 0
+    reviewed = False
+    paperJam = False
+    ballotNotRecognized = False
+End Sub
+
+Private Function getDifferenceMinutes(startTime As Date, endTime As Date) As Integer
+    getDifferenceMinutes = DateDiff("s", startTime, endTime) \ 60
+End Function
+
 Private Function getTimeDifference(startTime As Date, endTime As Date) As String
     Dim mins As String
     Dim secs As String
-    mins = Format(CStr(CLng(DateDiff("n", startTime, endTime))), "00")
-    secs = Format(CStr(CLng(DateDiff("s", startTime, endTime)) Mod 60), "00")
+    Dim totalSecs As Long
+    totalSecs = CLng(DateDiff("s", startTime, endTime))
+    mins = Format(CStr(totalSecs \ 60), "00")
+    secs = Format(CStr(totalSecs Mod 60), "00")
     getTimeDifference = mins & ":" & secs
 End Function
 
@@ -67,10 +104,76 @@ Private Function get_timestamp_from_DICE_line(line As String) As Date
 End Function
 
 Private Sub writeBallotCastNormalRecord(startTimestamp As Date, endTimestamp As Date)
-    Dim lineArr(2) As String
+    Dim lineArr(5) As String
     lineArr(0) = getTimeDifference(startTimestamp, endTimestamp)
-    lineArr(1) = "Ballot cast normally"
+    lineArr(1) = endTimestamp
+    lineArr(2) = "Ballot cast normally"
+    lineArr(3) = CStr(misreads)
+    If reviewed Then
+        lineArr(4) = "Yes"
+    Else
+        lineArr(4) = "No"
+    End If
     writer.writeLine lineArr
+End Sub
+
+Private Sub writeBallotNotCastRecord(startTimestamp As Date, endTimestamp As Date)
+    Dim lineArr(5) As String
+    lineArr(0) = getTimeDifference(startTimestamp, endTimestamp)
+    lineArr(1) = endTimestamp
+    lineArr(2) = "Ballot not cast"
+    lineArr(3) = misreads
+    If reviewed Then
+        lineArr(4) = "Yes"
+    Else
+        lineArr(4) = "No"
+    End If
+    writer.writeLine lineArr
+End Sub
+
+Private Sub writePaperJamRecord(startTimestamp As Date, endTimestamp As Date)
+    Dim lineArr(5) As String
+    lineArr(0) = getTimeDifference(startTimestamp, endTimestamp)
+    lineArr(1) = endTimestamp
+    lineArr(2) = "Paper jam when accepting ballot"
+    lineArr(3) = misreads
+    lineArr(4) = "-"
+    writer.writeLine lineArr
+End Sub
+
+Private Sub writeBallotNotRecognizedRecord(startTimestamp As Date, endTimestamp As Date)
+    Dim lineArr(5) As String
+    lineArr(0) = getTimeDifference(startTimestamp, endTimestamp)
+    lineArr(1) = endTimestamp
+    lineArr(2) = "Ballot not recognized"
+    lineArr(3) = misreads
+    lineArr(4) = "-"
+    writer.writeLine lineArr
+End Sub
+
+Private Sub writeAccessibleBallotMarkedRecord(startTimestamp As Date, endTimestamp As Date)
+    Dim lineArr(5) As String
+    lineArr(0) = getTimeDifference(startTimestamp, endTimestamp)
+    lineArr(1) = endTimestamp
+    lineArr(2) = "Accessible voting : ballot marked"
+    lineArr(3) = "-"
+    ' TODO find out if accessible marking mode review is possible
+    lineArr(4) = "-"
+    writer.writeLine lineArr
+End Sub
+
+Private Sub writeRecordAccordingToState(startTimestamp As Date, endTimestamp As Date)
+    If state = BallotInserted Then
+        If paperJam Then
+            writePaperJamRecord startTimestamp, endTimestamp
+        ElseIf ballotNotRecognized Then
+            writeBallotNotRecognizedRecord startTimestamp, endTimestamp
+        Else
+            writeBallotNotCastRecord startTimestamp, endTimestamp
+        End If
+    ElseIf state = BallotCast Then
+        writeBallotCastNormalRecord startTimestamp, endTimestamp
+    End If
 End Sub
 
 Public Sub readLine(line As String)
@@ -93,12 +196,35 @@ Public Sub readLine(line As String)
     thisTime = get_timestamp_from_DICE_line(line)
     rest = Trim(Mid(line, col_pos + 1))
     
-    If rest = s_ballotInserted Then
+    If rest = s_accessibleStarted Then
+        state = AccessibleStarted
+        startTime = thisTime
+    ElseIf rest = s_accessibleMarkingCompleted Then
+        state = Ready
+        writeAccessibleBallotMarkedRecord startTime, thisTime
+    ElseIf rest = s_ballotInserted Then
+        If getDifferenceMinutes(lastTimestamp, thisTime) > 2 Then
+            ' If there's a large difference in time here, the earlier session
+            ' was probably abandoned due to something. So we clear the state.
+            clearState
+        End If
         state = BallotInserted
         startTime = thisTime
     ElseIf rest = s_ballotCast Then
-        state = Ready
-        writeBallotCastNormalRecord startTime, thisTime
+        state = BallotCast
+    ElseIf rest = s_endOfSession Then
+        writeRecordAccordingToState startTime, thisTime
+        clearState
+    ElseIf rest = s_ballotMisread Then
+        misreads = misreads + 1
+    ElseIf rest = s_invokingBallotReview Then
+        reviewed = True
+    ElseIf InStr(rest, s_paperJam) <> 0 Then
+        paperJam = True
+    ElseIf rest = s_noManifestation Then
+        ballotNotRecognized = True
     End If
+    
+    lastTimestamp = thisTime
 End Sub
 

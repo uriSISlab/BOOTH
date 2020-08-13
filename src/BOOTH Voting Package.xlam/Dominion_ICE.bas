@@ -91,7 +91,14 @@ Sub Process_DICE_Data_Single()
         writer.setOutputSheet ActiveWorkbook.ActiveSheet
         processor.setWriter writer
         
+        'Write the header
+        Dim headerArr() As String
+        headerArr = Split("Duration,Timestamp,Event,Misreads,Ballot Reviewed", ",")
+        writer.writeLine headerArr
+        
         Process_DICE_Data_From_Sheet ActiveWorkbook.Sheets(Name), processor
+        ActiveWorkbook.ActiveSheet.Range("A1:E1").Font.Bold = True
+        ActiveWorkbook.ActiveSheet.UsedRange.Columns.AutoFit
     Else
         'If the file does not contain VSAP BMD Data, the program exits
         MsgBox "Action can not be done on this WorkSheet"
@@ -107,7 +114,7 @@ Sub Process_DICE_Data_From_Sheet(sheet As Worksheet, processor As DICE_Processor
     rows = sheet.UsedRange.rows.count
     
     For i = 1 To rows
-        line = CStr(sheet.Range("A" & i).Value) & " " & CStr(sheet.Range("B" & i).Value)
+        line = CStr(sheet.Range("A" & i).Text) & " " & CStr(sheet.Range("B" & i).Text)
         processor.readLine line
     Next i
 End Sub
