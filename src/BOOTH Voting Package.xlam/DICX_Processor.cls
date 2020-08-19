@@ -7,6 +7,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
+Implements LogProcessor
+
 Private Enum DICXState
     ' The device is ready to accept a new ballot
     Ready = 0
@@ -27,13 +29,14 @@ Private Const s_ballotCast = "Ballot cast successfully"
 Private state As DICXState
 Private startTime As Date
 Private writer As OutputWriter
-
+Private fileName As String
 
 Public Sub class_initialize()
     clearState
+    fileName = ""
 End Sub
 
-Public Sub setWriter(ow As OutputWriter)
+Public Sub LogProcessor_setWriter(ow As OutputWriter)
     Set writer = ow
 End Sub
 
@@ -41,16 +44,37 @@ Private Sub clearState()
     state = DICXState.Ready
 End Sub
 
+Private Sub writeToWriter(lineArr() As String)
+    ' Write the given array to writer after possibly appending the filename
+    If Len(fileName) > 0 Then
+        writer.writeLineArr Util.appendToArray(lineArr, fileName)
+    Else
+        writer.writeLineArr lineArr
+    End If
+End Sub
 
 Private Sub writeBallotCastNormalRecord(startTimestamp As Date, endTimestamp As Date)
-    Dim lineArr(3) As String
+    Dim lineArr(2) As String
     lineArr(0) = Util.getTimeDifference(startTimestamp, endTimestamp)
     lineArr(1) = endTimestamp
     lineArr(2) = "Ballot cast normally"
-    writer.writeLine lineArr
+    writeToWriter lineArr
 End Sub
 
-Public Sub readLine(line As String)
+Public Sub LogProcessor_setFileName(fn As String)
+    fileName = fn
+End Sub
+
+Public Sub LogProcessor_writeHeader()
+    'Write the header
+    If Len(fileName) > 0 Then
+        writer.writeLine "Duration", "Timestamp", "Event", "Filename"
+    Else
+        writer.writeLine "Duration", "Timestamp", "Event"
+    End If
+End Sub
+
+Public Sub LogProcessor_readLine(line As String)
     Dim thisTime As Date
     Dim rest As String
     
@@ -82,4 +106,18 @@ Public Sub readLine(line As String)
     lastTimestamp = thisTime
 End Sub
 
+Public Function LogProcessor_isThisLog(sheet As Worksheet) As Boolean
+    Dim idRange As Range
+    Set idRange = sheet.UsedRange.Find(What:="Audit Log file is saved.", _
+                        LookIn:=xlValues, _
+                        LookAt:=xlWhole, _
+                        SearchOrder:=xlByRows, _
+                        SearchDirection:=xlNext, _
+                        MatchCase:=False)
+    LogProcessor_isThisLog = Not idRange Is Nothing
+End Function
 
+
+Public Function LogProcessor_getSeparator() As String
+    LogProcessor_getSeparator = " - "
+End Function

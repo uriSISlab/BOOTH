@@ -7,7 +7,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
-Private filename As String
+Implements LogProcessor
+
+Private fileName As String
 Private startTime As Date
 Private state As BMDState
 Private pollPassUsed As Boolean
@@ -46,17 +48,17 @@ Public Sub class_initialize()
     clearState
 End Sub
 
-Public Sub setWriter(ow As OutputWriter)
+Public Sub LogProcessor_setWriter(ow As OutputWriter)
     Set writer = ow
 End Sub
 
-Public Sub setFileName(fn As String)
-    filename = fn
+Public Sub LogProcessor_setFileName(fn As String)
+    fileName = fn
 End Sub
 
 Private Sub clearState()
     ' TODO differentiate between state machine state and i/o state
-    filename = ""
+    fileName = ""
     Set destination = Nothing
     pollPassUsed = False
     state = BMDState.INIT
@@ -66,17 +68,21 @@ Private Sub writeLineToWriter(line As String)
     Dim lineArr() As String
     lineArr = Split(line, ", ")
     Dim fullLineArr() As String
-    If Len(filename) > 0 Then
+    If Len(fileName) > 0 Then
         ReDim fullLineArr(Util.getStringArrayLength(lineArr) + 1)
-        fullLineArr(UBound(fullLineArr)) = filename
+        ' Copy contents of lineArr to fullLineArr first
+        For i = LBound(lineArr) To UBound(lineArr)
+            fullLineArr(i) = lineArr(i)
+        Next i
+        fullLineArr(UBound(fullLineArr)) = fileName
     Else
         fullLineArr = lineArr
     End If
     writer.writeLineArr fullLineArr
 End Sub
 
-Public Sub writeHeader()
-    If Len(filename) > 0 Then
+Public Sub LogProcessor_writeHeader()
+    If Len(fileName) > 0 Then
         writer.writeLine "Duration (mm:ss)", "Scan Type", "Ballot Cast Status", "Poll Pass Used", "Filename"
     Else
         writer.writeLine "Duration (mm:ss)", "Scan Type", "Ballot Cast Status", "Poll Pass Used"
@@ -124,7 +130,7 @@ End Sub
 
 Public Sub writePrintedBallotRemovedRecord(duration As String, pollPassUsed As Boolean)
     Dim outline As String
-    outline = duration & ", Ballot printed and removed, Unsuccesful"
+    outline = duration & ", Ballot printed and removed, Unsuccessful"
     If pollPassUsed Then
             outline = outline & ", Yes"
         Else
@@ -135,7 +141,7 @@ End Sub
 
 Public Sub writeVotingTimedOutLog(duration As String, pollPassUsed As Boolean)
     Dim outline As String
-    outline = duration & ", Voting session timed out, Unsuccesful"
+    outline = duration & ", Voting session timed out, Unsuccessful"
     If pollPassUsed Then
             outline = outline & ", Yes"
         Else
@@ -145,12 +151,12 @@ Public Sub writeVotingTimedOutLog(duration As String, pollPassUsed As Boolean)
 End Sub
 
 Public Sub writeBPMScanErrorLog(duration As String)
-    writeLineToWriter duration & ", BPM Scan Error, Unsuccesful, -"
+    writeLineToWriter duration & ", BPM Scan Error, Unsuccessful, -"
 End Sub
 
 Public Sub writeQuitVotingLog(duration As String, pollPassUsed As Boolean)
     Dim outline As String
-    outline = duration & ", Voter quit voting, Unsuccesful"
+    outline = duration & ", Voter quit voting, Unsuccessful"
     If pollPassUsed Then
             outline = outline & ", Yes"
         Else
@@ -161,7 +167,7 @@ End Sub
 
 Public Sub writeMachineRestartedLog(duration As String, pollPassUsed As Boolean)
     Dim outline As String
-    outline = duration & ", Voting machine restarted unexpectedly, Unsuccesful"
+    outline = duration & ", Voting machine restarted unexpectedly, Unsuccessful"
     If pollPassUsed Then
             outline = outline & ", Yes"
         Else
@@ -176,7 +182,7 @@ Private Function parseDate(dateString As String) As Date
     dateObj = dateAndTime(0) & " " & Split(dateAndTime(1), ".")(0)
     parseDate = dateObj
 End Function
-Public Sub readLine(line As String)
+Public Sub LogProcessor_readLine(line As String)
     Dim thisTime As Date
     Dim thisLog As String
     Dim elements() As String
@@ -185,7 +191,7 @@ Public Sub readLine(line As String)
     If UBound(elements) - LBound(elements) + 1 = 7 Then
         thisTime = parseDate(elements(1))
         thisLog = elements(6)
-        If Not state = BMDState.INIT And Len(startTime) > 0 Then
+        If Not state = BMDState.INIT And Not state = BMDState.UnexpectedRemovedBallot And Len(startTime) > 0 Then
             If Util.getDifferenceMinutes(startTime, thisTime) > 60 Then
                 ' A more than 60 minute difference probably indicates something suspicious.
                 ' So we reset state here.
@@ -276,3 +282,11 @@ Public Sub readLine(line As String)
         End If
     End If
 End Sub
+
+Public Function LogProcessor_isThisLog(sheet As Worksheet) As Boolean
+    LogProcessor_isThisLog = Trim(sheet.Range("B1")) = "Logger.js-Loading page-Manual Diagnostic Status"
+End Function
+
+Public Function LogProcessor_getSeparator() As String
+    LogProcessor_getSeparator = "|"
+End Function

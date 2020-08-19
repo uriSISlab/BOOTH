@@ -259,7 +259,7 @@ With ActiveWorkbook.ActiveSheet
     .Range("C1") = "Ballot Cast Status"
     .Range("D1") = "Simio Input (seconds)"
     .Range("D:D").NumberFormat = "general"
-    .Columns("A:D").AutoFit
+    .columns("A:D").AutoFit
     .Range("A1", "D1").Font.Bold = True
     .Range("A1", "C1").HorizontalAlignment = xlCenter
     'Delete any stray data
@@ -306,36 +306,36 @@ Application.ScreenUpdating = False
 For y = 1 To ActiveWorkbook.Sheets.count
 
     ActiveWorkbook.Sheets(y).Activate
+    If Right(ActiveWorkbook.ActiveSheet.name, 9) = "Processed" Then
+        GoTo ExitIf
+    End If
   
 'Tests if the worksheet selected is in the expected format and whether it is a PollPad, DS200, or a VSAP BMD file
-If Right(ActiveWorkbook.ActiveSheet.Cells(1, 1), 1) = "Z" And Mid(ActiveWorkbook.ActiveSheet.Cells(1, 1), 11, 1) = "T" Then
-    'If the worksheet is identified as VSAP_BMD data, the DS200 processing function is called
-    Call Process_VSAPBMD_Data_Single
-ElseIf ActiveWorkbook.ActiveSheet.Cells(1, 1).NumberFormat = "General" And ActiveWorkbook.ActiveSheet.Cells(1, 2).NumberFormat = "@" And ActiveWorkbook.ActiveSheet.Cells(1, 3).NumberFormat = "@" And ActiveWorkbook.ActiveSheet.Cells(1, 4).NumberFormat = "@" Then
-    'If the worksheet is identified as a DS200 data, the DS200 processing function is called
-    Call Process_DS200_Data_Single
-ElseIf InStr(ActiveWorkbook.ActiveSheet.Cells(1, 2), "Logging service initialized") <> 0 Then
-    ' If the worksheet is identified as Dominion ImageCast Evolution data, the appropriate function is called
-    Call Process_DICE_Data_Single
-ElseIf is_DICX_Log(ActiveWorkbook.ActiveSheet) Then
-    ' If the worksheet is identified as Dominion ImageCast X data, the appropriate function is called
-    Call Process_DICX_Data_Single
-Else
-
-    If ActiveWorkbook.ActiveSheet.Cells(2, 1).NumberFormat = "General" And ActiveWorkbook.ActiveSheet.Cells(2, 2).NumberFormat = "m/d/yyyy h:mm" And ActiveWorkbook.ActiveSheet.Cells(2, 3).NumberFormat = "General" Then
-        'If the worksheet is identified as PollPad data, the PollPad processing function is called
-        Call PollPadProcessing
+Dim t As LogType
+t = Util.getLogTypeForLog(ActiveWorkbook.ActiveSheet)
+If t = Util.LogType.Unknown Then
+    If ActiveWorkbook.ActiveSheet.Cells(1, 1).NumberFormat = "General" And ActiveWorkbook.ActiveSheet.Cells(1, 2).NumberFormat = "@" And ActiveWorkbook.ActiveSheet.Cells(1, 3).NumberFormat = "@" And ActiveWorkbook.ActiveSheet.Cells(1, 4).NumberFormat = "@" Then
+        'If the worksheet is identified as a DS200 data, the DS200 processing function is called
+        Call Process_DS200_Data_Single
     Else
-        'If the sheet is already processed or blank, it is skipped
-        If WorksheetFunction.CountA(ActiveWorkbook.ActiveSheet.UsedRange) = 0 Or Right(ActiveWorkbook.ActiveSheet.name, 9) = "Processed" Or ActiveWorkbook.ActiveSheet.Cells(2, 3).NumberFormat = "h:mm" Then
-            GoTo ExitIf
+        If ActiveWorkbook.ActiveSheet.Cells(2, 1).NumberFormat = "General" And ActiveWorkbook.ActiveSheet.Cells(2, 2).NumberFormat = "m/d/yyyy h:mm" And ActiveWorkbook.ActiveSheet.Cells(2, 3).NumberFormat = "General" Then
+            'If the worksheet is identified as PollPad data, the PollPad processing function is called
+            Call PollPadProcessing
         Else
-            'Indicating which file(s) has issues
-            MsgBox ("The sheet: " & ActiveWorkbook.Sheets(y).name & " does not contain compatible data.")
-            GoTo ExitIf
+        'If the sheet is already processed or blank, it is skipped
+            If WorksheetFunction.CountA(ActiveWorkbook.ActiveSheet.UsedRange) = 0 Or Right(ActiveWorkbook.ActiveSheet.name, 9) = "Processed" Or ActiveWorkbook.ActiveSheet.Cells(2, 3).NumberFormat = "h:mm" Then
+                GoTo ExitIf
+            Else
+                'Indicating which file(s) has issues
+                MsgBox ("The sheet: " & ActiveWorkbook.Sheets(y).name & " does not contain compatible data.")
+                GoTo ExitIf
+            End If
         End If
     End If
+Else
+    Dispatch.processSheetForLogType ActiveWorkbook.ActiveSheet, t
 End If
+
 
 ExitIf:
        
@@ -464,20 +464,20 @@ Sub PollPadProcessing()
 
 Application.ScreenUpdating = False
 
-ColNum = ActiveWorkbook.ActiveSheet.UsedRange.Columns.count
+ColNum = ActiveWorkbook.ActiveSheet.UsedRange.columns.count
 
 'Loops through worksheet to format data, separating date and time
 For i = 1 To ColNum
 
 If ActiveWorkbook.ActiveSheet.Cells(2, i).NumberFormat = "m/d/yyyy h:mm" Then
 With ActiveWorkbook.ActiveSheet
-    .Columns(i + 1).Insert
-    .Columns(i).Copy ActiveWorkbook.ActiveSheet.Columns(i + 1)
-    .Columns(i + 1).NumberFormat = "h:mm"
+    .columns(i + 1).Insert
+    .columns(i).Copy ActiveWorkbook.ActiveSheet.columns(i + 1)
+    .columns(i + 1).NumberFormat = "h:mm"
     .Cells(1, i + 1) = "Time"
-    .Columns(i + 1).Insert
-    .Columns(i).Copy ActiveWorkbook.ActiveSheet.Columns(i + 1)
-    .Columns(i + 1).NumberFormat = "m/d/yyyy"
+    .columns(i + 1).Insert
+    .columns(i).Copy ActiveWorkbook.ActiveSheet.columns(i + 1)
+    .columns(i + 1).NumberFormat = "m/d/yyyy"
     .Cells(1, i + 1) = "Date"
 End With
 'Breaks free of the loop if completed
@@ -497,34 +497,27 @@ End Sub
 
 Sub TestDataSet(control As IRibbonControl)
 
-
-'Tests which type of data is in the worksheet in order to call the appropriate single sheet processing function
-If Right(ActiveWorkbook.ActiveSheet.Cells(1, 1), 1) = "Z" And Mid(ActiveWorkbook.ActiveSheet.Cells(1, 1), 11, 1) = "T" Then
-    'If the worksheet is identified as VSAP_BMD data, the DS200 processing function is called
-    Call Process_VSAPBMD_Data_Single
-ElseIf ActiveWorkbook.ActiveSheet.Cells(1, 1).NumberFormat = "General" And ActiveWorkbook.ActiveSheet.Cells(1, 2).NumberFormat = "@" And ActiveWorkbook.ActiveSheet.Cells(1, 3).NumberFormat = "@" And ActiveWorkbook.ActiveSheet.Cells(1, 4).NumberFormat = "@" Then
-    Call Process_DS200_Data_Single
-ElseIf InStr(ActiveWorkbook.ActiveSheet.Cells(1, 2), "Logging service initialized") <> 0 Then
-    ' If the worksheet is identified as Dominion ImageCast Evolution data, the appropriate function is called
-    Call Process_DICE_Data_Single
-ElseIf is_DICX_Log(ActiveWorkbook.ActiveSheet) Then
-    ' If the worksheet is identified as Dominion ImageCast X data, the appropriate function is called
-    Call Process_DICX_Data_Single
-Else
-
-    If ActiveWorkbook.ActiveSheet.Cells(2, 1).NumberFormat = "General" And ActiveWorkbook.ActiveSheet.Cells(2, 2).NumberFormat = "m/d/yyyy h:mm" And ActiveWorkbook.ActiveSheet.Cells(2, 3).NumberFormat = "General" Then
-        Call PollPadProcessing
+Dim t As LogType
+t = Util.getLogTypeForLog(ActiveWorkbook.ActiveSheet)
+If t = Util.LogType.Unknown Then
+    If ActiveWorkbook.ActiveSheet.Cells(1, 1).NumberFormat = "General" And ActiveWorkbook.ActiveSheet.Cells(1, 2).NumberFormat = "@" And ActiveWorkbook.ActiveSheet.Cells(1, 3).NumberFormat = "@" And ActiveWorkbook.ActiveSheet.Cells(1, 4).NumberFormat = "@" Then
+        Call Process_DS200_Data_Single
     Else
-        'Provides error message when incompatible data is selected
-        If WorksheetFunction.CountA(ActiveWorkbook.ActiveSheet.UsedRange) = 0 Or Right(ActiveWorkbook.ActiveSheet.name, 9) = "Processed" Or ActiveWorkbook.ActiveSheet.Cells(2, 3).NumberFormat = "h:mm" Or ActiveWorkbook.ActiveSheet.Cells(2, 4).NumberFormat = "h:mm" Then
-            GoTo ExitIf
+        If ActiveWorkbook.ActiveSheet.Cells(2, 1).NumberFormat = "General" And ActiveWorkbook.ActiveSheet.Cells(2, 2).NumberFormat = "m/d/yyyy h:mm" And ActiveWorkbook.ActiveSheet.Cells(2, 3).NumberFormat = "General" Then
+            Call PollPadProcessing
         Else
-            MsgBox ("The sheet: " & ActiveWorkbook.ActiveSheet.name & " does not contain compatible data.")
-            GoTo ExitIf
+            'Provides error message when incompatible data is selected
+            If WorksheetFunction.CountA(ActiveWorkbook.ActiveSheet.UsedRange) = 0 Or Right(ActiveWorkbook.ActiveSheet.name, 9) = "Processed" Or ActiveWorkbook.ActiveSheet.Cells(2, 3).NumberFormat = "h:mm" Or ActiveWorkbook.ActiveSheet.Cells(2, 4).NumberFormat = "h:mm" Then
+                GoTo ExitIf
+            Else
+                MsgBox ("The sheet: " & ActiveWorkbook.ActiveSheet.name & " does not contain compatible data.")
+                GoTo ExitIf
+            End If
         End If
     End If
+Else
+    Dispatch.processSheetForLogType ActiveWorkbook.ActiveSheet, t
 End If
-
 ExitIf:
 
 End Sub
@@ -616,7 +609,7 @@ ActiveWorkbook.ActiveSheet.name = SecondName
 
 'Pulls precinct number and name from the data sheet to the stats sheet
 ActiveWorkbook.Sheets(FirstName).Range("F:F").Copy ActiveWorkbook.ActiveSheet.Range("BD1")
-ActiveSheet.Range("BD:BD").RemoveDuplicates Columns:=1, header:=xlYes
+ActiveSheet.Range("BD:BD").RemoveDuplicates columns:=1, header:=xlYes
 rowscount = ActiveWorkbook.ActiveSheet.Cells(rows.count, 56).End(xlUp).row
 Range("BD1").Select
     Range(Selection, Selection.End(xlDown)).Select
@@ -636,7 +629,7 @@ Range("BD1").Select
     
 ActiveWorkbook.Sheets("" & FirstName & "").Range("F:F").Copy ActiveWorkbook.Sheets("" & SecondName & "").Range("BF1")
 ActiveWorkbook.Sheets("" & FirstName & "").Range("E:E").Copy ActiveWorkbook.Sheets("" & SecondName & "").Range("BG1")
-ActiveSheet.Range("BF:BG").RemoveDuplicates Columns:=1, header:=xlYes
+ActiveSheet.Range("BF:BG").RemoveDuplicates columns:=1, header:=xlYes
   
 'Creates a table out of the precinct numbers for the dropdown menus
 ActiveSheet.ListObjects.Add(xlSrcRange, Range("$BD$1:$BD$" & rowscount), , xlYes).name _
@@ -722,7 +715,7 @@ With ActiveWorkbook.ActiveSheet
     .Range("H4") = "Percent"
     .Range("I4") = "Simio Input"
     .Range("B:B").NumberFormat = "h:mm AM/PM"
-    .Columns("A:I").AutoFit
+    .columns("A:I").AutoFit
     .Range("A3") = "=VLOOKUP(B2,BF:BG,2,FALSE)"
     .Range("F3") = "=VLOOKUP(G2,BF:BG,2,FALSE)"
     
@@ -755,7 +748,7 @@ With ActiveChart
     .Axes(xlValue, xlPrimary).AxisTitle.Characters.Text = "Count of Voters"
     .SeriesCollection.Add _
         source:=ActiveWorkbook.ActiveSheet.Range("$G$6:$G$" & t)
-    .SeriesCollection(1).Format.line.ForeColor.RGB = RGB(0, 128, 0)
+    .SeriesCollection(1).format.line.ForeColor.RGB = RGB(0, 128, 0)
     .SeriesCollection(1).MarkerForegroundColor = RGB(0, 128, 0)
     .SeriesCollection(1).MarkerBackgroundColor = RGB(0, 128, 0)
 End With
@@ -773,7 +766,7 @@ With ActiveChart
     .Axes(xlValue, xlPrimary).AxisTitle.Characters.Text = "Percent of Voters"
     .SeriesCollection.Add _
         source:=ActiveWorkbook.ActiveSheet.Range("$H$6:$H$" & t)
-    .SeriesCollection(1).Format.line.ForeColor.RGB = RGB(0, 128, 0)
+    .SeriesCollection(1).format.line.ForeColor.RGB = RGB(0, 128, 0)
     .SeriesCollection(1).MarkerForegroundColor = RGB(0, 128, 0)
     .SeriesCollection(1).MarkerBackgroundColor = RGB(0, 128, 0)
 End With
@@ -817,40 +810,40 @@ ActiveWorkbook.ActiveSheet.name = ThirdName
 ActiveWorkbook.ActiveSheet.Range("A1") = "All Precincts"
 ActiveWorkbook.ActiveSheet.Range("A1:E1").Merge
 
-P = 5
+p = 5
 
 'Calculates counts and percentages for turnout across the entire data sheet
 While Early2 <= Late
 With ActiveWorkbook.ActiveSheet
-    .Range("B" & P) = Early2
-    .Range("C" & P).Formula = "=COUNTIFS('" & FirstName & "'!C4,"">=""&'" & ThirdName & "'!RC[-1],'" & FirstName & "'!C4,""<""&'" & ThirdName & "'!R[1]C[-1])"
-    .Range("D" & P) = "=C" & P & "/C2*100"
-    .Range("E" & P) = "=C" & P & "/C2"
+    .Range("B" & p) = Early2
+    .Range("C" & p).Formula = "=COUNTIFS('" & FirstName & "'!C4,"">=""&'" & ThirdName & "'!RC[-1],'" & FirstName & "'!C4,""<""&'" & ThirdName & "'!R[1]C[-1])"
+    .Range("D" & p) = "=C" & p & "/C2*100"
+    .Range("E" & p) = "=C" & p & "/C2"
 End With
 Early2 = DateAdd("h", 1, Early2)
-P = P + 1
+p = p + 1
 Wend
 
 'Formatting and labeling
 With ActiveWorkbook.ActiveSheet
     .Range("B2") = "Total Count:"
-    .Range("C2") = "=sum(C5:C" & P - 1 & ")"
+    .Range("C2") = "=sum(C5:C" & p - 1 & ")"
     .Range("B4") = "Time"
     .Range("C4") = "Count"
     .Range("D4") = "Percent"
     .Range("E4") = "Simio Input"
     .Range("B:B").NumberFormat = "h:mm AM/PM"
-    .Columns("A").AutoFit
-    .Columns("B").AutoFit
-    .Columns("E").AutoFit
+    .columns("A").AutoFit
+    .columns("B").AutoFit
+    .columns("E").AutoFit
     .Range("A1").HorizontalAlignment = xlCenter
 End With
 
 'Creates figures to display turnout counts and percentages per hour
-ActiveWorkbook.ActiveSheet.Range("B4:C" & P - 1).Select
+ActiveWorkbook.ActiveSheet.Range("B4:C" & p - 1).Select
     ActiveSheet.Shapes.AddChart2(332, xlLineMarkers).Select
 With ActiveChart
-    .SetSourceData source:=ActiveWorkbook.ActiveSheet.Range("$B$4:$C$" & P - 1)
+    .SetSourceData source:=ActiveWorkbook.ActiveSheet.Range("$B$4:$C$" & p - 1)
     .ChartTitle.Text = "All Precincts"
     .Parent.Top = -100
     .Parent.Left = 300
@@ -858,15 +851,15 @@ With ActiveChart
     .Axes(xlCategory, xlPrimary).AxisTitle.Characters.Text = "Time"
     .Axes(xlValue, xlPrimary).HasTitle = True
     .Axes(xlValue, xlPrimary).AxisTitle.Characters.Text = "Count of Voters"
-    .SeriesCollection(1).Format.line.ForeColor.RGB = RGB(200, 0, 255)
+    .SeriesCollection(1).format.line.ForeColor.RGB = RGB(200, 0, 255)
     .SeriesCollection(1).MarkerForegroundColor = RGB(200, 0, 255)
     .SeriesCollection(1).MarkerBackgroundColor = RGB(200, 0, 255)
 End With
 
-ActiveWorkbook.ActiveSheet.Range("B4:B" & P - 1 & ",D4:D" & P - 1).Select
+ActiveWorkbook.ActiveSheet.Range("B4:B" & p - 1 & ",D4:D" & p - 1).Select
     ActiveSheet.Shapes.AddChart2(332, xlLineMarkers).Select
 With ActiveChart
-    .SetSourceData source:=ActiveWorkbook.ActiveSheet.Range("B4:B" & P - 1 & ",D4:D" & P - 1)
+    .SetSourceData source:=ActiveWorkbook.ActiveSheet.Range("B4:B" & p - 1 & ",D4:D" & p - 1)
     .ChartTitle.Text = "All Precincts"
     .Parent.Top = 215
     .Parent.Left = 300
@@ -874,7 +867,7 @@ With ActiveChart
     .Axes(xlCategory, xlPrimary).AxisTitle.Characters.Text = "Time"
     .Axes(xlValue, xlPrimary).HasTitle = True
     .Axes(xlValue, xlPrimary).AxisTitle.Characters.Text = "Percent of Voters"
-    .SeriesCollection(1).Format.line.ForeColor.RGB = RGB(200, 0, 255)
+    .SeriesCollection(1).format.line.ForeColor.RGB = RGB(200, 0, 255)
     .SeriesCollection(1).MarkerForegroundColor = RGB(200, 0, 255)
     .SeriesCollection(1).MarkerBackgroundColor = RGB(200, 0, 255)
 End With

@@ -7,6 +7,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
+Implements LogProcessor
+
 Private Enum DICEState
     ' The device is ready to accept a new ballot
     Ready = 0
@@ -44,13 +46,19 @@ Private reviewed As Boolean
 Private paperJam As Boolean
 Private ballotNotRecognized As Boolean
 Private lastTimestamp As Date
+Private fileName As String
 
 Public Sub class_initialize()
     clearState
+    fileName = ""
 End Sub
 
-Public Sub setWriter(ow As OutputWriter)
+Public Sub LogProcessor_setWriter(ow As OutputWriter)
     Set writer = ow
+End Sub
+
+Public Sub LogProcessor_setFileName(fn As String)
+    fileName = fn
 End Sub
 
 Private Sub clearState()
@@ -59,6 +67,15 @@ Private Sub clearState()
     reviewed = False
     paperJam = False
     ballotNotRecognized = False
+End Sub
+
+Private Sub writeToWriter(lineArr() As String)
+    ' Write the given array to writer after possibly appending the filename
+    If Len(fileName) > 0 Then
+        writer.writeLineArr Util.appendToArray(lineArr, fileName)
+    Else
+        writer.writeLineArr lineArr
+    End If
 End Sub
 
 Private Function getMonthOrder(month As String) As Integer
@@ -90,7 +107,7 @@ Private Function get_timestamp_from_DICE_line(line As String) As Date
 End Function
 
 Private Sub writeBallotCastNormalRecord(startTimestamp As Date, endTimestamp As Date)
-    Dim lineArr(5) As String
+    Dim lineArr(4) As String
     lineArr(0) = Util.getTimeDifference(startTimestamp, endTimestamp)
     lineArr(1) = endTimestamp
     lineArr(2) = "Ballot cast normally"
@@ -100,11 +117,11 @@ Private Sub writeBallotCastNormalRecord(startTimestamp As Date, endTimestamp As 
     Else
         lineArr(4) = "No"
     End If
-    writer.writeLine lineArr
+    writeToWriter lineArr
 End Sub
 
 Private Sub writeBallotNotCastRecord(startTimestamp As Date, endTimestamp As Date)
-    Dim lineArr(5) As String
+    Dim lineArr(4) As String
     lineArr(0) = Util.getTimeDifference(startTimestamp, endTimestamp)
     lineArr(1) = endTimestamp
     lineArr(2) = "Ballot not cast"
@@ -114,38 +131,38 @@ Private Sub writeBallotNotCastRecord(startTimestamp As Date, endTimestamp As Dat
     Else
         lineArr(4) = "No"
     End If
-    writer.writeLine lineArr
+    writeToWriter lineArr
 End Sub
 
 Private Sub writePaperJamRecord(startTimestamp As Date, endTimestamp As Date)
-    Dim lineArr(5) As String
+    Dim lineArr(4) As String
     lineArr(0) = Util.getTimeDifference(startTimestamp, endTimestamp)
     lineArr(1) = endTimestamp
     lineArr(2) = "Paper jam when accepting ballot"
     lineArr(3) = misreads
     lineArr(4) = "-"
-    writer.writeLine lineArr
+    writeToWriter lineArr
 End Sub
 
 Private Sub writeBallotNotRecognizedRecord(startTimestamp As Date, endTimestamp As Date)
-    Dim lineArr(5) As String
+    Dim lineArr(4) As String
     lineArr(0) = Util.getTimeDifference(startTimestamp, endTimestamp)
     lineArr(1) = endTimestamp
     lineArr(2) = "Ballot not recognized"
     lineArr(3) = misreads
     lineArr(4) = "-"
-    writer.writeLine lineArr
+    writeToWriter lineArr
 End Sub
 
 Private Sub writeAccessibleBallotMarkedRecord(startTimestamp As Date, endTimestamp As Date)
-    Dim lineArr(5) As String
+    Dim lineArr(4) As String
     lineArr(0) = Util.getTimeDifference(startTimestamp, endTimestamp)
     lineArr(1) = endTimestamp
     lineArr(2) = "Accessible voting : ballot marked"
     lineArr(3) = "-"
     ' TODO find out if accessible marking mode review is possible
     lineArr(4) = "-"
-    writer.writeLine lineArr
+    writeToWriter lineArr
 End Sub
 
 Private Sub writeRecordAccordingToState(startTimestamp As Date, endTimestamp As Date)
@@ -162,7 +179,18 @@ Private Sub writeRecordAccordingToState(startTimestamp As Date, endTimestamp As 
     End If
 End Sub
 
-Public Sub readLine(line As String)
+Public Sub LogProcessor_writeHeader()
+    ' Write the header
+    Dim headerArr() As String
+    If Len(fileName) > 0 Then
+        headerArr = Split("Duration,Timestamp,Event,Misreads,Ballot Reviewed,Filename", ",")
+    Else
+        headerArr = Split("Duration,Timestamp,Event,Misreads,Ballot Reviewed", ",")
+    End If
+    writer.writeLineArr headerArr
+End Sub
+
+Public Sub LogProcessor_readLine(line As String)
     Dim thisTime As Date
     Dim col_pos As Integer
     Dim rest As String
@@ -214,3 +242,10 @@ Public Sub readLine(line As String)
     lastTimestamp = thisTime
 End Sub
 
+Public Function LogProcessor_isThisLog(sheet As Worksheet) As Boolean
+    LogProcessor_isThisLog = InStr(sheet.Cells(1, 2), "Logging service initialized") <> 0
+End Function
+
+Public Function LogProcessor_getSeparator() As String
+    LogProcessor_getSeparator = " "
+End Function
