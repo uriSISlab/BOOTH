@@ -179,6 +179,8 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="VSAP_BMD.cs" />
+    <Compile Include="Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

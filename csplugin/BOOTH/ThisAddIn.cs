@@ -6,13 +6,18 @@ using System.Xml.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
 using Office = Microsoft.Office.Core;
 using Microsoft.Office.Tools.Excel;
+using Microsoft.Office.Interop.Excel;
 
 namespace BOOTH
 {
     public partial class ThisAddIn
     {
+
+        public static Application app;
+
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
+            app = this.Application;
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)

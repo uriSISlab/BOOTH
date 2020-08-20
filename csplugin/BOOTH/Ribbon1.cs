@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Microsoft.Office.Tools.Ribbon;
+using Microsoft.VisualStudio.Tools.Applications.Runtime;
 
 namespace BOOTH
 {
@@ -20,7 +22,20 @@ namespace BOOTH
 
         private void ImportButton_Click(object sender, RibbonControlEventArgs e)
         {
-            
+            switch (e.Control.Id)
+            {
+                case "ImportDS200Button":
+                    break;
+                case "ImportVSAPBMDButton":
+                    VSAP_BMD.Import_VSAPBMD_data();
+                    break;
+                case "ImportDICEButton":
+                    break;
+                case "ImportDICXButton":
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
