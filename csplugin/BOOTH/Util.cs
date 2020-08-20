@@ -19,8 +19,11 @@ namespace BOOTH
         FILE,
         SHEET
     }
-    class Util
+    public static class Util
     {
-        
+        public static string getLetterFromNumber(int number)
+        {
+            return ((char)('A' + number)).ToString();
+        }
     }
 }
