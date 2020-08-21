@@ -30,6 +30,7 @@ namespace BOOTH
                     VSAP_BMD.Import_VSAPBMD_data();
                     break;
                 case "ImportDICEButton":
+                    Dominion_ICE.Import_DICE_data();
                     break;
                 case "ImportDICXButton":
                     break;

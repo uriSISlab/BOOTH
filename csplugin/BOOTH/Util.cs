@@ -23,7 +23,7 @@ namespace BOOTH
     {
         public static string getLetterFromNumber(int number)
         {
-            return ((char)('A' + number)).ToString();
+            return ((char)('A' + number - 1)).ToString();
         }
     }
 }

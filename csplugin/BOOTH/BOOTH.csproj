@@ -179,6 +179,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Dominion_ICE.cs" />
     <Compile Include="FileWriter.cs" />
     <Compile Include="SheetWriter.cs" />
     <Compile Include="FileReader.cs" />
