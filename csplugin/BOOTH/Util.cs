@@ -56,8 +56,7 @@ namespace BOOTH
                 case LogType.DICE:
                     return new DICE_Processor();
                 case LogType.DICX:
-                    return null;
-                    //return new DICX_Processor();
+                    return new DICX_Processor();
                 default:
                     return null;
             }
