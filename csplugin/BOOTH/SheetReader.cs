@@ -35,7 +35,7 @@ namespace BOOTH
             for (int j = 2; j <= this.columns; j++)
             {
                 // Join the row with the separator
-                line = line + separator + sheet.Range[Util.getLetterFromNumber(j) + this.currentLine];
+                line = line + separator + sheet.Range[Util.GetLetterFromNumber(j) + this.currentLine].Text.ToString();
             }
             this.currentLine++;
             return line;

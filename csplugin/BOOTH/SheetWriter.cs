@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BOOTH
 {
-    class SheetWriter : IOutputWriter
+    public class SheetWriter : IOutputWriter
     {
         private readonly Worksheet sheet;
         private long rowNum;
@@ -26,7 +26,7 @@ namespace BOOTH
         public void FormatPretty()
         {
             int columns = this.sheet.UsedRange.Columns.Count;
-            this.sheet.Range["A1", Util.getLetterFromNumber(columns) + "1"].Font.Bold = true;
+            this.sheet.Range["A1", Util.GetLetterFromNumber(columns) + "1"].Font.Bold = true;
             this.sheet.UsedRange.Columns.AutoFit();
         }
 
@@ -42,7 +42,7 @@ namespace BOOTH
 
         public void WriteLineArr(string[] line)
         {
-            string rangeEnd = Util.getLetterFromNumber(line.Length) + rowNum;
+            string rangeEnd = Util.GetLetterFromNumber(line.Length) + rowNum;
             this.sheet.Range["A" + rowNum, rangeEnd].Value = line;
             rowNum++;
         }

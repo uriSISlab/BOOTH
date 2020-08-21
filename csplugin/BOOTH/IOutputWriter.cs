@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BOOTH
 {
-    interface IOutputWriter
+    public interface IOutputWriter
     {
         void WriteLineArr(string[] line);
 

@@ -179,9 +179,12 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Dispatch.cs" />
+    <Compile Include="VSAPBMD_Processor.cs" />
     <Compile Include="Dominion_ICX.cs" />
     <Compile Include="Dominion_ICE.cs" />
     <Compile Include="FileWriter.cs" />
+    <Compile Include="ILogProcessor.cs" />
     <Compile Include="SheetWriter.cs" />
     <Compile Include="FileReader.cs" />
     <Compile Include="IOutputWriter.cs" />

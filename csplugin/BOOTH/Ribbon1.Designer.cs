@@ -240,6 +240,7 @@
             this.ProcessSingleButton.ShowImage = true;
             this.ProcessSingleButton.SuperTip = "Create a new Worksheet and populate with processed data from the active Worksheet" +
     ".";
+            this.ProcessSingleButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessButton_Click);
             // 
             // ProcessAllButton
             // 
@@ -250,6 +251,7 @@
             this.ProcessAllButton.ShowImage = true;
             this.ProcessAllButton.SuperTip = "Create new Worksheets populated with processed data from every applicable Workshe" +
     "et in an open Workbook.";
+            this.ProcessAllButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessButton_Click);
             // 
             // group4
             // 

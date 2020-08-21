@@ -20,6 +20,19 @@ namespace BOOTH
 
         }
 
+        private void ProcessButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            switch (e.Control.Id)
+            {
+                case "ProcessSingleButton":
+                    Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.VSAP_BMD);
+                    break;
+
+                case "ProcessAllButton":
+                    break;
+            }
+        }
+
         private void ImportButton_Click(object sender, RibbonControlEventArgs e)
         {
             switch (e.Control.Id)

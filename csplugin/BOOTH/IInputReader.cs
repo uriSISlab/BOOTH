@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace BOOTH
 {
-    interface IInputReader
+    public interface IInputReader
     {
         void SetSkipLines(int skipCount);
         bool NoMoreLines();
