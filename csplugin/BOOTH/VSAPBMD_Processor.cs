@@ -65,18 +65,11 @@ namespace BOOTH
         private void WriteLineToWriter(string line)
         {
             string[] lineArr = line.Split(new string[] { ", " }, StringSplitOptions.None);
-            string[] fullLineArr;
             if (fileName.Length > 0)
             {
-                fullLineArr = new string[lineArr.Length + 1];
-                // Copy contents of lineArr to fullLineArr first
-                System.Array.Copy(lineArr, 0, fullLineArr, 0, lineArr.Length);
-                fullLineArr[fullLineArr.Length - 1] = fileName;
-            } else
-            {
-                fullLineArr = lineArr;
+                lineArr = Util.AppendToArray(lineArr, fileName);
             }
-            writer.WriteLineArr(fullLineArr);
+            writer.WriteLineArr(lineArr);
         }
 
         private void WriteBallotRemovedRecordNoTime()

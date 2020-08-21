@@ -25,7 +25,8 @@ namespace BOOTH
             switch (e.Control.Id)
             {
                 case "ProcessSingleButton":
-                    Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.VSAP_BMD);
+                    //Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.VSAP_BMD);
+                    Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DICE);
                     break;
 
                 case "ProcessAllButton":

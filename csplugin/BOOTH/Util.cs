@@ -54,8 +54,7 @@ namespace BOOTH
                 case LogType.VSAP_BMD:
                     return new VSAPBMD_Processor();
                 case LogType.DICE:
-                    return null;
-                    //return new DICE_Processor();
+                    return new DICE_Processor();
                 case LogType.DICX:
                     return null;
                     //return new DICX_Processor();
@@ -75,6 +74,16 @@ namespace BOOTH
             {
                 processor.ReadLine(reader.ReadLine());
             }
+        }
+
+        public static string[] AppendToArray(string[] arr, string toAppend)
+        {
+            string[] fullArr;
+            fullArr = new string[arr.Length + 1];
+            // Copy contents of arr to fullArr first
+            System.Array.Copy(arr, 0, fullArr, 0, arr.Length);
+            fullArr[fullArr.Length - 1] = toAppend;
+            return fullArr;
         }
 
     }

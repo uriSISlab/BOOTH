@@ -179,6 +179,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="DICE_Processor.cs" />
     <Compile Include="Dispatch.cs" />
     <Compile Include="VSAPBMD_Processor.cs" />
     <Compile Include="Dominion_ICX.cs" />
