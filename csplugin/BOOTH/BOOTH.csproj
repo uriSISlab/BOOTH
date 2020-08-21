@@ -179,6 +179,12 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="FileWriter.cs" />
+    <Compile Include="SheetWriter.cs" />
+    <Compile Include="FileReader.cs" />
+    <Compile Include="IOutputWriter.cs" />
+    <Compile Include="SheetReader.cs" />
+    <Compile Include="IInputReader.cs" />
     <Compile Include="VSAP_BMD.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
