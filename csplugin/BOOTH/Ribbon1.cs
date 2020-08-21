@@ -33,6 +33,7 @@ namespace BOOTH
                     Dominion_ICE.Import_DICE_data();
                     break;
                 case "ImportDICXButton":
+                    Dominion_ICX.Import_DICX_Data();
                     break;
                 default:
                     break;
