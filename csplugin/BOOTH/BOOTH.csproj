@@ -179,6 +179,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Module1.cs" />
     <Compile Include="DICX_Processor.cs" />
     <Compile Include="DICE_Processor.cs" />
     <Compile Include="Dispatch.cs" />

@@ -40,6 +40,7 @@ namespace BOOTH
             switch (e.Control.Id)
             {
                 case "ImportDS200Button":
+                    Module1.Import_DS200_data();
                     break;
                 case "ImportVSAPBMDButton":
                     VSAP_BMD.Import_VSAPBMD_data();
