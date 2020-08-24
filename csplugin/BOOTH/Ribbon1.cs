@@ -62,13 +62,13 @@ namespace BOOTH
                 case "ProcessDS200Button":
                     throw new NotImplementedException();
                 case "ProcessVSAPBMDButton":
-                    Dispatch.processEntireDirectory(LogType.VSAP_BMD);
+                    Dispatch.ProcessEntireDirectory(LogType.VSAP_BMD);
                     break;
                 case "ProcessDICEButton":
-                    Dispatch.processEntireDirectory(LogType.DICE);
+                    Dispatch.ProcessEntireDirectory(LogType.DICE);
                     break;
                 case "ProcessDICXButton":
-                    Dispatch.processEntireDirectory(LogType.DICX);
+                    Dispatch.ProcessEntireDirectory(LogType.DICX);
                     break;
                 default:
                     break;

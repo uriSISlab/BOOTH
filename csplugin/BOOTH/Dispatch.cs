@@ -1,13 +1,7 @@
 ﻿using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Excel;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Schema;
 
 namespace BOOTH
 {
@@ -34,7 +28,7 @@ namespace BOOTH
                     return;
                 }
             }
-            
+
             SheetReader reader = new SheetReader(sheet, processor.GetSeparator());
             SheetWriter writer = new SheetWriter(AddSheetForOutput(sheet));
 
@@ -43,7 +37,7 @@ namespace BOOTH
             writer.FormatPretty();
         }
 
-        public static void processEntireDirectory(LogType t)
+        public static void ProcessEntireDirectory(LogType t)
         {
             String folder;
             // Create folder picker
@@ -62,8 +56,8 @@ namespace BOOTH
             string[] files = Directory.GetFiles(folder, Util.GetFileNamePatternForLog(t));
 
             // Show progress bar
-            // TODO Port UserForm1
-            // progress 0
+            ProgressBarForm progress = new ProgressBarForm();
+            progress.InitializeAndShow(files.Length - 1);
 
             FileWriter writer = new FileWriter(outputFileName);
 
@@ -76,15 +70,12 @@ namespace BOOTH
 
                 Util.RunPipeline(reader, processor, writer, writeHeader: i == 0);
 
-                // If fileNum Mod 5 = 0 Then
-                // progress fileNum / fileCount * 100
-                // End If
+                progress.Step();
             }
 
             writer.Done();
-
-            // Stop showing progress bar
-            // Unload UserForm1
+            progress.Done();
+            System.Windows.Forms.MessageBox.Show("Processed output written to " + outputFileName);
         }
-    }
+    } 
 }

@@ -182,6 +182,12 @@
     <Compile Include="DICX_Processor.cs" />
     <Compile Include="DICE_Processor.cs" />
     <Compile Include="Dispatch.cs" />
+    <Compile Include="ProgressBarForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProgressBarForm.Designer.cs">
+      <DependentUpon>ProgressBarForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="VSAPBMD_Processor.cs" />
     <Compile Include="Dominion_ICX.cs" />
     <Compile Include="Dominion_ICE.cs" />
@@ -197,6 +203,9 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <EmbeddedResource Include="ProgressBarForm.resx">
+      <DependentUpon>ProgressBarForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
