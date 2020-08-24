@@ -54,5 +54,25 @@ namespace BOOTH
                     break;
             }
         }
+
+        private void ProcessFolderMenuButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            switch (e.Control.Id)
+            {
+                case "ProcessDS200Button":
+                    throw new NotImplementedException();
+                case "ProcessVSAPBMDButton":
+                    Dispatch.processEntireDirectory(LogType.VSAP_BMD);
+                    break;
+                case "ProcessDICEButton":
+                    Dispatch.processEntireDirectory(LogType.DICE);
+                    break;
+                case "ProcessDICXButton":
+                    Dispatch.processEntireDirectory(LogType.DICX);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

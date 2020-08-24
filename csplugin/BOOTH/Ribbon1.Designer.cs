@@ -128,24 +128,28 @@
             this.ProcessDS200Button.Label = "Process DS200 Folder";
             this.ProcessDS200Button.Name = "ProcessDS200Button";
             this.ProcessDS200Button.ShowImage = true;
+            this.ProcessDS200Button.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessFolderMenuButton_Click);
             // 
             // ProcessVSAPBMDButton
             // 
             this.ProcessVSAPBMDButton.Label = "Process VSAP BMD Folder";
             this.ProcessVSAPBMDButton.Name = "ProcessVSAPBMDButton";
             this.ProcessVSAPBMDButton.ShowImage = true;
+            this.ProcessVSAPBMDButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessFolderMenuButton_Click);
             // 
             // ProcessDICEButton
             // 
             this.ProcessDICEButton.Label = "Process Dominion IC E Folder";
             this.ProcessDICEButton.Name = "ProcessDICEButton";
             this.ProcessDICEButton.ShowImage = true;
+            this.ProcessDICEButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessFolderMenuButton_Click);
             // 
             // ProcessDICXButton
             // 
             this.ProcessDICXButton.Label = "Process Dominion IC X Folder";
             this.ProcessDICXButton.Name = "ProcessDICXButton";
             this.ProcessDICXButton.ShowImage = true;
+            this.ProcessDICXButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessFolderMenuButton_Click);
             // 
             // TimersButton
             // 

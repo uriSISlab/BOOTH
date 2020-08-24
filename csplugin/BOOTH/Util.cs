@@ -62,6 +62,21 @@ namespace BOOTH
             }
         }
 
+        public static string GetFileNamePatternForLog(LogType t)
+        {
+            switch (t)
+            {
+                case LogType.VSAP_BMD:
+                    return "BEL_*_*.log";
+                case LogType.DICE:
+                    return "*.TXT";
+                case LogType.DICX:
+                    return "ICX_AUDIT_LOG.*.log";
+                default:
+                    return "*.*";
+            }
+        }
+
         public static void RunPipeline(IInputReader reader, ILogProcessor processor, IOutputWriter writer, bool writeHeader)
         {
             processor.SetWriter(writer);
