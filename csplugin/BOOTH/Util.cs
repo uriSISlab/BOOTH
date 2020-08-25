@@ -12,6 +12,7 @@ namespace BOOTH
         VSAP_BMD,
         DICE,
         DICX,
+        DS200,
         UNKNOWN
     }
 
@@ -20,6 +21,7 @@ namespace BOOTH
         FILE,
         SHEET
     }
+
     public static class Util
     {
         public static string GetLetterFromNumber(int number)
@@ -57,6 +59,8 @@ namespace BOOTH
                     return new DICE_Processor();
                 case LogType.DICX:
                     return new DICX_Processor();
+                case LogType.DS200:
+                    return new DS200_Processor();
                 default:
                     return null;
             }
@@ -72,9 +76,16 @@ namespace BOOTH
                     return "*.TXT";
                 case LogType.DICX:
                     return "ICX_AUDIT_LOG.*.log";
+                case LogType.DS200:
+                    return "*.TXT";
                 default:
                     return "*.*";
             }
+        }
+
+        public static string Clip(string input, int length)
+        {
+            return input.Length > length ? input.Substring(0, length) : input;
         }
 
         public static void RunPipeline(IInputReader reader, ILogProcessor processor, IOutputWriter writer, bool writeHeader)
@@ -88,6 +99,7 @@ namespace BOOTH
             {
                 processor.ReadLine(reader.ReadLine());
             }
+            processor.Done();
         }
 
         public static string[] AppendToArray(string[] arr, string toAppend)
@@ -99,6 +111,5 @@ namespace BOOTH
             fullArr[fullArr.Length - 1] = toAppend;
             return fullArr;
         }
-
     }
 }

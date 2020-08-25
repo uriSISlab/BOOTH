@@ -27,9 +27,9 @@ namespace BOOTH
                 case "ProcessSingleButton":
                     //Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.VSAP_BMD);
                     //Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DICE);
-                    Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DICX);
+                    //Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DICX);
+                    Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DS200);
                     break;
-
                 case "ProcessAllButton":
                     break;
             }

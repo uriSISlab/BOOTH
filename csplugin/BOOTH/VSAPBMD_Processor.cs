@@ -324,5 +324,9 @@ namespace BOOTH
                 writer.WriteLine("Duration (mm:ss)", "Scan Type", "Ballot Cast Status", "Poll Pass Used");
             }
         }
+
+        public void Done()
+        {
+        }
     }
 }

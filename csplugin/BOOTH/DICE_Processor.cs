@@ -226,5 +226,9 @@ namespace BOOTH
             line += fileName.Length > 0 ? ",Filename" : "";
             writer.WriteLineArr(line.Split(','));
         }
+
+        public void Done()
+        {
+        }
     }
 }

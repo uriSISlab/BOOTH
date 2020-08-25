@@ -20,6 +20,8 @@ namespace BOOTH
 
         bool IsThisLog(Worksheet sheet);
 
-        string GetSeparator(); 
+        string GetSeparator();
+
+        void Done();
     }
 }

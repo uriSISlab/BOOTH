@@ -123,5 +123,9 @@ namespace BOOTH
         {
             writer.WriteLineArr(("Duration,Timestamp,Event" + (fileName.Length > 0 ? ",Filename" : "")).Split(','));
         }
+
+        public void Done()
+        {
+        }
     }
 }
