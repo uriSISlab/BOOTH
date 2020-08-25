@@ -13,6 +13,7 @@ namespace BOOTH
         DICE,
         DICX,
         DS200,
+        POLLPAD,
         UNKNOWN
     }
 

@@ -37,6 +37,7 @@
             Microsoft.Office.Tools.Ribbon.RibbonSplitButton ImportSplitButton;
             Microsoft.Office.Tools.Ribbon.RibbonSplitButton ProcessFolderButton;
             Microsoft.Office.Tools.Ribbon.RibbonSplitButton TimersButton;
+            Microsoft.Office.Tools.Ribbon.RibbonButton ImportPollPadButton;
             this.ImportDS200Button = this.Factory.CreateRibbonButton();
             this.ImportDICEButton = this.Factory.CreateRibbonButton();
             this.ImportVSAPBMDButton = this.Factory.CreateRibbonButton();
@@ -53,7 +54,6 @@
             this.ThroughputArrivalTimerButton = this.Factory.CreateRibbonButton();
             this.BoothTab = this.Factory.CreateRibbonTab();
             this.group2 = this.Factory.CreateRibbonGroup();
-            this.ImportPollPadButton = this.Factory.CreateRibbonButton();
             this.group3 = this.Factory.CreateRibbonGroup();
             this.ProcessSingleButton = this.Factory.CreateRibbonButton();
             this.ProcessAllButton = this.Factory.CreateRibbonButton();
@@ -64,6 +64,7 @@
             ImportSplitButton = this.Factory.CreateRibbonSplitButton();
             ProcessFolderButton = this.Factory.CreateRibbonSplitButton();
             TimersButton = this.Factory.CreateRibbonSplitButton();
+            ImportPollPadButton = this.Factory.CreateRibbonButton();
             this.BoothTab.SuspendLayout();
             this.group2.SuspendLayout();
             this.group3.SuspendLayout();
@@ -213,20 +214,20 @@
             // group2
             // 
             this.group2.Items.Add(ImportSplitButton);
-            this.group2.Items.Add(this.ImportPollPadButton);
+            this.group2.Items.Add(ImportPollPadButton);
             this.group2.Label = "Import Data";
             this.group2.Name = "group2";
             // 
             // ImportPollPadButton
             // 
-            this.ImportPollPadButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.ImportPollPadButton.Label = "Import PollPad File(s)";
-            this.ImportPollPadButton.Name = "ImportPollPadButton";
-            this.ImportPollPadButton.OfficeImageId = "GetExternalDataImportClassic";
-            this.ImportPollPadButton.ShowImage = true;
-            this.ImportPollPadButton.SuperTip = "Import PollPad log file(s) in *.txt* and *.csv* format. Create new Worksheet(s) a" +
+            ImportPollPadButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            ImportPollPadButton.Label = "Import PollPad File(s)";
+            ImportPollPadButton.Name = "ImportPollPadButton";
+            ImportPollPadButton.OfficeImageId = "GetExternalDataImportClassic";
+            ImportPollPadButton.ShowImage = true;
+            ImportPollPadButton.SuperTip = "Import PollPad log file(s) in *.txt* and *.csv* format. Create new Worksheet(s) a" +
     "nd populate with the selected file(s).";
-            this.ImportPollPadButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button5_Click);
+            ImportPollPadButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ImportButton_Click);
             // 
             // group3
             // 
@@ -331,7 +332,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BallotScanningTimerButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ThroughputArrivalTimerButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton CheckinTimerButton;
-        private Microsoft.Office.Tools.Ribbon.RibbonButton ImportPollPadButton;
     }
 
     partial class ThisRibbonCollection

@@ -15,11 +15,6 @@ namespace BOOTH
 
         }
 
-        private void button5_Click(object sender, RibbonControlEventArgs e)
-        {
-
-        }
-
         private void ProcessButton_Click(object sender, RibbonControlEventArgs e)
         {
             switch (e.Control.Id)
@@ -28,7 +23,8 @@ namespace BOOTH
                     //Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.VSAP_BMD);
                     //Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DICE);
                     //Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DICX);
-                    Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DS200);
+                    //Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DS200);
+                    Module1.PollPadProcessing();
                     break;
                 case "ProcessAllButton":
                     break;
@@ -50,6 +46,9 @@ namespace BOOTH
                     break;
                 case "ImportDICXButton":
                     Dominion_ICX.Import_DICX_Data();
+                    break;
+                case "ImportPollPadButton":
+                    Module1.PollpadImport();
                     break;
                 default:
                     break;
