@@ -123,7 +123,7 @@ namespace BOOTH
                 {
                     if (workbook.Sheets[c].name == fileNameOnly + " PollPad")
                     {
-                        System.Windows.Forms.MessageBox.Show(fileNameOnly + " shares the first 10 characters with a current worksheet."
+                        Util.MessageBox(fileNameOnly + " shares the first 10 characters with a current worksheet."
                             + " Please rename the file and import again.");
                         break;
                     }
@@ -198,5 +198,76 @@ namespace BOOTH
             }
             ThisAddIn.app.ScreenUpdating = true;
         }
-    }
+
+        public static void TestForStat()
+        {
+            Worksheet sheet = ThisAddIn.app.ActiveWorkbook.ActiveSheet;
+            // Identifies data type for statistical functions to be called
+            if (sheet.Cells[1, 1].Text.ToString() == "Duration (mm:ss)" && sheet.Cells[1, 2].Text.ToString() == "Scan Type")
+            {
+                DSStatTable();
+            } else if (true)
+            {
+                // TODO
+            }
+        }
+ static void DSStatTable()
+        {
+            Workbook workbook = ThisAddIn.app.ActiveWorkbook;
+            Worksheet sheet = ThisAddIn.app.ActiveWorkbook.ActiveSheet;
+            // Store name information
+            string name = sheet.Name.Substring(0, 21) + "... Stats";
+            int i = 0;
+
+            // Check if sheet name is already taken
+            for (int y = 1; y <= workbook.Sheets.Count; y++)
+            {
+                if (name == workbook.Sheets[y].Name)
+                {
+                    Util.MessageBox("Sheet name already taken, please rename the sheet.");
+                    i = 1;
+                    return;
+                }
+            }
+
+            sheet.Range["A:A"].NumberFormat = "mm:ss";
+            sheet.Range["D:D"].NumberFormat = "general";
+
+            // Determine the data range you want to pivot
+            string srcData = sheet.Name + "!" + sheet.UsedRange.Address[XlReferenceStyle.xlR1C1];
+
+            // Create a new worksheet
+            Worksheet sht = workbook.Sheets.Add();
+
+            // Where do you want Pivot Table to start?
+            string startPvt = sht.Name + "!" + sht.Range["A3"].Address[XlReferenceStyle.xlR1C1];
+
+            // Create Pivot Cache from Source Data
+            PivotCache pvtCache = workbook.PivotCaches().Create(SourceType: XlPivotTableSourceType.xlDatabase,
+                //SourceData: srcData);
+                SourceData: sheet.UsedRange);
+
+            // Create Pivot table from Pivot Cache
+            //PivotTable pvt = pvtCache.CreatePivotTable(TableDestination: startPvt, TableName: "PivotTable2");
+            PivotTable pvt = pvtCache.CreatePivotTable(TableDestination: sht.Range["A3"], TableName: "PivotTable2");
+
+            pvt.AddDataField(pvt.PivotFields("Scan Type"), "Count of Scan Type", XlConsolidationFunction.xlCount);
+            pvt.AddDataField(pvt.PivotFields("Scan Type"), "Percent of Scan Type", XlConsolidationFunction.xlCount);
+            pvt.PivotFields("Percent of Scan Type").Calculation = XlPivotFieldCalculation.xlPercentOfColumn;
+            pvt.AddDataField(pvt.PivotFields("Duration (mm:ss)"), "Average Duration of Scan Type", XlConsolidationFunction.xlAverage);
+            pvt.AddDataField(pvt.PivotFields("Duration (mm:ss)"), "Max Duration of Scan Type", XlConsolidationFunction.xlMax);
+            pvt.AddDataField(pvt.PivotFields("Duration (mm:ss)"), "Standard Deviation of Scan Type", XlConsolidationFunction.xlStDev);
+            pvt.PivotFields("Average Duration of Scan Type").NumberFormat = "mm:ss";
+            pvt.PivotFields("Max Duration of Scan Type").NumberFormat = "mm:ss";
+            pvt.PivotFields("Standard Deviation of Scan Type").NumberFormat = "mm:ss";
+
+
+            pvt.PivotFields("Scan Type").Orientation = Microsoft.Office.Interop.Excel.XlPivotFieldOrientation.xlRowField;
+
+            // Formatting and labeling
+            sht.Name = name;
+            sht.Range["A2"].Font.Bold = true;
+            sht.Range["A2"].Value = name;
+        }
+    } 
 }

@@ -23,6 +23,15 @@ namespace BOOTH
         SHEET
     }
 
+    public enum FieldType
+    {
+        INTEGER,
+        FLOATING,
+        TIMESPAN_MMSS,
+        DATETIME,
+        STRING
+    }
+
     public static class Util
     {
         public static string GetLetterFromNumber(int number)
@@ -111,6 +120,11 @@ namespace BOOTH
             System.Array.Copy(arr, 0, fullArr, 0, arr.Length);
             fullArr[fullArr.Length - 1] = toAppend;
             return fullArr;
+        }
+
+        public static void MessageBox(string message)
+        {
+            System.Windows.Forms.MessageBox.Show(message);
         }
     }
 }

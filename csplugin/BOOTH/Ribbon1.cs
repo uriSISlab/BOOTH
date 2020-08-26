@@ -23,8 +23,10 @@ namespace BOOTH
                     //Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.VSAP_BMD);
                     //Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DICE);
                     //Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DICX);
-                    //Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DS200);
-                    Module1.PollPadProcessing();
+                    Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DS200);
+                    ThisAddIn.app.ActiveWorkbook.ActiveSheet.Range["A:A"].NumberFormat = "mm:ss";
+                    ThisAddIn.app.ActiveWorkbook.ActiveSheet.Range["D:D"].NumberFormat = "general";
+                    //Module1.PollPadProcessing();
                     break;
                 case "ProcessAllButton":
                     break;
@@ -73,6 +75,11 @@ namespace BOOTH
                 default:
                     break;
             }
+        }
+
+        private void SumStatsButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            Module1.TestForStat();
         }
     }
 }

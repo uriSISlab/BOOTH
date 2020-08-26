@@ -29,12 +29,16 @@ namespace BOOTH
             return rowNum;
         }
 
+        public void SetFieldTypes(FieldType[] types)
+        {
+        }
+
         public void WriteLine(params string[] line)
         {
             this.WriteLineArr(line);
         }
 
-        public void WriteLineArr(string[] line)
+        public void WriteLineArr(string[] line, FieldType[] fieldTypes = null)
         {
             // TODO wrap item in quotes if it contains a comma so that output is proper CSV
             this.stream.WriteLine(String.Join(",", line));

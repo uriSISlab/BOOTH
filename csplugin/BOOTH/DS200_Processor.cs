@@ -34,6 +34,8 @@ namespace BOOTH
             3003341, 1004122, 1004112, 1004114, 1004328
         };
 
+        private FieldType[] fieldTypes = new FieldType[] { FieldType.TIMESPAN_MMSS, FieldType.STRING,
+            FieldType.STRING, FieldType.INTEGER};
 
         private string fileName;
         private IOutputWriter writer;
@@ -109,7 +111,7 @@ namespace BOOTH
 
         private void WriteLineArr(string[] lineArr)
         {
-            writer.WriteLineArr(this.fileName.Length > 0 ? Util.AppendToArray(lineArr, fileName) : lineArr);
+            writer.WriteLineArr(this.fileName.Length > 0 ? Util.AppendToArray(lineArr, fileName) : lineArr, fieldTypes);
         }
 
         public void Done()
