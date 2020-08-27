@@ -179,6 +179,9 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ThroughputTimerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="TimerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -206,6 +209,27 @@
     <Compile Include="CheckInTimerControl.Designer.cs">
       <DependentUpon>CheckInTimerControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="ArrivalTimerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ArrivalTimerControl.Designer.cs">
+      <DependentUpon>ArrivalTimerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BMDTimerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BMDTimerControl.Designer.cs">
+      <DependentUpon>BMDTimerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BallotScanningTimerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="VotingBoothTimerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="VotingBoothTimerControl.Designer.cs">
+      <DependentUpon>VotingBoothTimerControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="VSAPBMD_Processor.cs" />
     <Compile Include="Dominion_ICX.cs" />
     <Compile Include="Dominion_ICE.cs" />
@@ -221,6 +245,12 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <EmbeddedResource Include="ArrivalTimerControl.resx">
+      <DependentUpon>ArrivalTimerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BMDTimerControl.resx">
+      <DependentUpon>BMDTimerControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProgressBarForm.resx">
       <DependentUpon>ProgressBarForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -242,6 +272,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CheckInTimerControl.resx">
       <DependentUpon>CheckInTimerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VotingBoothTimerControl.resx">
+      <DependentUpon>VotingBoothTimerControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="BOOTH_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
@@ -271,6 +304,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\PollPad.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VotingBooth.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VotingBooth_resized.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BMDLA_scaled.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DS200_BallotBox_resized.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Vote_scaled.jpg" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -34,6 +34,7 @@
             this.commentTimerSelectCombo = new System.Windows.Forms.ComboBox();
             this.timersPanel = new System.Windows.Forms.TableLayoutPanel();
             this.saveWorksheetButton = new System.Windows.Forms.Button();
+            this.leftPanel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // commentTextBox
@@ -93,11 +94,19 @@
             this.saveWorksheetButton.UseVisualStyleBackColor = true;
             this.saveWorksheetButton.Click += new System.EventHandler(this.SaveWorksheetButton_Click);
             // 
+            // leftPanel
+            // 
+            this.leftPanel.Location = new System.Drawing.Point(12, 554);
+            this.leftPanel.Name = "leftPanel";
+            this.leftPanel.Size = new System.Drawing.Size(526, 218);
+            this.leftPanel.TabIndex = 7;
+            // 
             // TimerBaseForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1750, 784);
+            this.Controls.Add(this.leftPanel);
             this.Controls.Add(this.saveWorksheetButton);
             this.Controls.Add(this.timersPanel);
             this.Controls.Add(this.commentTimerSelectCombo);
@@ -106,7 +115,6 @@
             this.Controls.Add(this.commentTextBox);
             this.Name = "TimerBaseForm";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.TimerBase_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -120,5 +128,6 @@
         private System.Windows.Forms.ComboBox commentTimerSelectCombo;
         private System.Windows.Forms.TableLayoutPanel timersPanel;
         private System.Windows.Forms.Button saveWorksheetButton;
+        private System.Windows.Forms.Panel leftPanel;
     }
 }

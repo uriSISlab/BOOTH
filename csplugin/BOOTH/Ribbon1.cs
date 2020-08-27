@@ -85,22 +85,22 @@ namespace BOOTH
             switch (e.Control.Id)
             {
                 case "CheckinTimerButton":
-                    Timers.LaunchPanelWith(Timers.TimerType.CHECKIN);
+                    Timers.LaunchPanelWith(Timers.TimerFormType.CHECKIN);
                     break;
                 case "CheckinArrivalTimerButton":
-                    Timers.LaunchPanelWith(Timers.TimerType.CHECKIN_ARRIVAL);
+                    Timers.LaunchPanelWith(Timers.TimerFormType.CHECKIN_ARRIVAL);
                     break;
                 case "VotingBoothTimerButton":
-                    Timers.LaunchPanelWith(Timers.TimerType.VOTING_BOOTH);
+                    Timers.LaunchPanelWith(Timers.TimerFormType.VOTING_BOOTH);
                     break;
                 case "BMDTimerButton":
-                    Timers.LaunchPanelWith(Timers.TimerType.BMD);
+                    Timers.LaunchPanelWith(Timers.TimerFormType.BMD);
                     break;
                 case "BallotScanningTimerButton":
-                    Timers.LaunchPanelWith(Timers.TimerType.BALLOT_SCANNING);
+                    Timers.LaunchPanelWith(Timers.TimerFormType.BALLOT_SCANNING);
                     break;
                 case "ThroughputArrivalTimerButton":
-                    Timers.LaunchPanelWith(Timers.TimerType.THROUGHPUT_ARRIVAL);
+                    Timers.LaunchPanelWith(Timers.TimerFormType.THROUGHPUT_ARRIVAL);
                     break;
                 default:
                     throw new NotImplementedException();

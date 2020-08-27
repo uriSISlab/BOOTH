@@ -63,9 +63,49 @@ namespace BOOTH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap BMDLA_scaled {
+            get {
+                object obj = ResourceManager.GetObject("BMDLA_scaled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DS200_BallotBox_resized {
+            get {
+                object obj = ResourceManager.GetObject("DS200_BallotBox_resized", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap PollPad {
             get {
                 object obj = ResourceManager.GetObject("PollPad", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Vote_scaled {
+            get {
+                object obj = ResourceManager.GetObject("Vote_scaled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap VotingBooth_resized {
+            get {
+                object obj = ResourceManager.GetObject("VotingBooth_resized", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
