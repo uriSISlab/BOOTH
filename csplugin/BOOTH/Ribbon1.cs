@@ -20,12 +20,10 @@ namespace BOOTH
             switch (e.Control.Id)
             {
                 case "ProcessSingleButton":
-                    //Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.VSAP_BMD);
+                    Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.VSAP_BMD);
                     //Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DICE);
                     //Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DICX);
-                    Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DS200);
-                    ThisAddIn.app.ActiveWorkbook.ActiveSheet.Range["A:A"].NumberFormat = "mm:ss";
-                    ThisAddIn.app.ActiveWorkbook.ActiveSheet.Range["D:D"].NumberFormat = "general";
+                    //Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DS200);
                     //Module1.PollPadProcessing();
                     break;
                 case "ProcessAllButton":
@@ -80,6 +78,33 @@ namespace BOOTH
         private void SumStatsButton_Click(object sender, RibbonControlEventArgs e)
         {
             Module1.TestForStat();
+        }
+
+        private void TimerOpenButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            switch (e.Control.Id)
+            {
+                case "CheckinTimerButton":
+                    Timers.LaunchPanelWith(Timers.TimerType.CHECKIN);
+                    break;
+                case "CheckinArrivalTimerButton":
+                    Timers.LaunchPanelWith(Timers.TimerType.CHECKIN_ARRIVAL);
+                    break;
+                case "VotingBoothTimerButton":
+                    Timers.LaunchPanelWith(Timers.TimerType.VOTING_BOOTH);
+                    break;
+                case "BMDTimerButton":
+                    Timers.LaunchPanelWith(Timers.TimerType.BMD);
+                    break;
+                case "BallotScanningTimerButton":
+                    Timers.LaunchPanelWith(Timers.TimerType.BALLOT_SCANNING);
+                    break;
+                case "ThroughputArrivalTimerButton":
+                    Timers.LaunchPanelWith(Timers.TimerType.THROUGHPUT_ARRIVAL);
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
         }
     }
 }

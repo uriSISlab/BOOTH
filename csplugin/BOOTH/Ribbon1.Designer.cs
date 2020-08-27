@@ -38,29 +38,29 @@
             Microsoft.Office.Tools.Ribbon.RibbonButton ImportPollPadButton;
             Microsoft.Office.Tools.Ribbon.RibbonSplitButton ProcessFolderButton;
             Microsoft.Office.Tools.Ribbon.RibbonSplitButton TimersButton;
-            this.BoothTab = this.Factory.CreateRibbonTab();
-            this.group2 = this.Factory.CreateRibbonGroup();
-            this.group3 = this.Factory.CreateRibbonGroup();
-            this.group4 = this.Factory.CreateRibbonGroup();
-            this.group5 = this.Factory.CreateRibbonGroup();
-            this.group6 = this.Factory.CreateRibbonGroup();
             this.ImportDS200Button = this.Factory.CreateRibbonButton();
             this.ImportDICEButton = this.Factory.CreateRibbonButton();
             this.ImportVSAPBMDButton = this.Factory.CreateRibbonButton();
             this.ImportDICXButton = this.Factory.CreateRibbonButton();
-            this.ProcessSingleButton = this.Factory.CreateRibbonButton();
-            this.ProcessAllButton = this.Factory.CreateRibbonButton();
             this.ProcessDS200Button = this.Factory.CreateRibbonButton();
             this.ProcessVSAPBMDButton = this.Factory.CreateRibbonButton();
             this.ProcessDICEButton = this.Factory.CreateRibbonButton();
             this.ProcessDICXButton = this.Factory.CreateRibbonButton();
-            this.CreateSumStatsButton = this.Factory.CreateRibbonButton();
             this.CheckinTimerButton = this.Factory.CreateRibbonButton();
             this.CheckinArrivalTimerButton = this.Factory.CreateRibbonButton();
             this.VotingBoothTimerButton = this.Factory.CreateRibbonButton();
             this.BMDTimerButton = this.Factory.CreateRibbonButton();
             this.BallotScanningTimerButton = this.Factory.CreateRibbonButton();
             this.ThroughputArrivalTimerButton = this.Factory.CreateRibbonButton();
+            this.BoothTab = this.Factory.CreateRibbonTab();
+            this.group2 = this.Factory.CreateRibbonGroup();
+            this.group3 = this.Factory.CreateRibbonGroup();
+            this.ProcessSingleButton = this.Factory.CreateRibbonButton();
+            this.ProcessAllButton = this.Factory.CreateRibbonButton();
+            this.group4 = this.Factory.CreateRibbonGroup();
+            this.group5 = this.Factory.CreateRibbonGroup();
+            this.CreateSumStatsButton = this.Factory.CreateRibbonButton();
+            this.group6 = this.Factory.CreateRibbonGroup();
             ImportSplitButton = this.Factory.CreateRibbonSplitButton();
             ImportPollPadButton = this.Factory.CreateRibbonButton();
             ProcessFolderButton = this.Factory.CreateRibbonSplitButton();
@@ -72,48 +72,6 @@
             this.group5.SuspendLayout();
             this.group6.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // BoothTab
-            // 
-            this.BoothTab.Groups.Add(this.group2);
-            this.BoothTab.Groups.Add(this.group3);
-            this.BoothTab.Groups.Add(this.group4);
-            this.BoothTab.Groups.Add(this.group5);
-            this.BoothTab.Groups.Add(this.group6);
-            this.BoothTab.Label = "BOOTH";
-            this.BoothTab.Name = "BoothTab";
-            // 
-            // group2
-            // 
-            this.group2.Items.Add(ImportSplitButton);
-            this.group2.Items.Add(ImportPollPadButton);
-            this.group2.Label = "Import Data";
-            this.group2.Name = "group2";
-            // 
-            // group3
-            // 
-            this.group3.Items.Add(this.ProcessSingleButton);
-            this.group3.Items.Add(this.ProcessAllButton);
-            this.group3.Label = "Process Data";
-            this.group3.Name = "group3";
-            // 
-            // group4
-            // 
-            this.group4.Items.Add(ProcessFolderButton);
-            this.group4.Label = "Process Entire Folder";
-            this.group4.Name = "group4";
-            // 
-            // group5
-            // 
-            this.group5.Items.Add(this.CreateSumStatsButton);
-            this.group5.Label = "Analysis";
-            this.group5.Name = "group5";
-            // 
-            // group6
-            // 
-            this.group6.Items.Add(TimersButton);
-            this.group6.Label = "Voting Timers";
-            this.group6.Name = "group6";
             // 
             // ImportSplitButton
             // 
@@ -165,28 +123,6 @@
     "nd populate with the selected file(s).";
             ImportPollPadButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ImportButton_Click);
             // 
-            // ProcessSingleButton
-            // 
-            this.ProcessSingleButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.ProcessSingleButton.Label = "Single Data Sheet";
-            this.ProcessSingleButton.Name = "ProcessSingleButton";
-            this.ProcessSingleButton.OfficeImageId = "QueryCrosstab";
-            this.ProcessSingleButton.ShowImage = true;
-            this.ProcessSingleButton.SuperTip = "Create a new Worksheet and populate with processed data from the active Worksheet" +
-    ".";
-            this.ProcessSingleButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessButton_Click);
-            // 
-            // ProcessAllButton
-            // 
-            this.ProcessAllButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.ProcessAllButton.Label = "All Open Data Sheets";
-            this.ProcessAllButton.Name = "ProcessAllButton";
-            this.ProcessAllButton.OfficeImageId = "QuerySelectQueryType";
-            this.ProcessAllButton.ShowImage = true;
-            this.ProcessAllButton.SuperTip = "Create new Worksheets populated with processed data from every applicable Workshe" +
-    "et in an open Workbook.";
-            this.ProcessAllButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessButton_Click);
-            // 
             // ProcessFolderButton
             // 
             ProcessFolderButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -227,17 +163,6 @@
             this.ProcessDICXButton.ShowImage = true;
             this.ProcessDICXButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessFolderMenuButton_Click);
             // 
-            // CreateSumStatsButton
-            // 
-            this.CreateSumStatsButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.CreateSumStatsButton.Label = "Create Summary Statistics";
-            this.CreateSumStatsButton.Name = "CreateSumStatsButton";
-            this.CreateSumStatsButton.OfficeImageId = "WhatIfAnalysisMenu";
-            this.CreateSumStatsButton.ShowImage = true;
-            this.CreateSumStatsButton.SuperTip = "Generates summary statistics for the open worksheet. Autodetects the type of data" +
-    " inserted. Can only be used on already processed sheets.";
-            this.CreateSumStatsButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SumStatsButton_Click);
-            // 
             // TimersButton
             // 
             TimersButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -256,36 +181,117 @@
             this.CheckinTimerButton.Label = "Check-In Timer";
             this.CheckinTimerButton.Name = "CheckinTimerButton";
             this.CheckinTimerButton.ShowImage = true;
+            this.CheckinTimerButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.TimerOpenButton_Click);
             // 
             // CheckinArrivalTimerButton
             // 
             this.CheckinArrivalTimerButton.Label = "Check-In Arrival Timer";
             this.CheckinArrivalTimerButton.Name = "CheckinArrivalTimerButton";
             this.CheckinArrivalTimerButton.ShowImage = true;
+            this.CheckinArrivalTimerButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.TimerOpenButton_Click);
             // 
             // VotingBoothTimerButton
             // 
             this.VotingBoothTimerButton.Label = "Voting Booth Timer";
             this.VotingBoothTimerButton.Name = "VotingBoothTimerButton";
             this.VotingBoothTimerButton.ShowImage = true;
+            this.VotingBoothTimerButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.TimerOpenButton_Click);
             // 
             // BMDTimerButton
             // 
             this.BMDTimerButton.Label = "BMD Timer";
             this.BMDTimerButton.Name = "BMDTimerButton";
             this.BMDTimerButton.ShowImage = true;
+            this.BMDTimerButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.TimerOpenButton_Click);
             // 
             // BallotScanningTimerButton
             // 
             this.BallotScanningTimerButton.Label = "Ballot Scanning Timer";
             this.BallotScanningTimerButton.Name = "BallotScanningTimerButton";
             this.BallotScanningTimerButton.ShowImage = true;
+            this.BallotScanningTimerButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.TimerOpenButton_Click);
             // 
             // ThroughputArrivalTimerButton
             // 
             this.ThroughputArrivalTimerButton.Label = "Throughput Arrival Timer";
             this.ThroughputArrivalTimerButton.Name = "ThroughputArrivalTimerButton";
             this.ThroughputArrivalTimerButton.ShowImage = true;
+            this.ThroughputArrivalTimerButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.TimerOpenButton_Click);
+            // 
+            // BoothTab
+            // 
+            this.BoothTab.Groups.Add(this.group2);
+            this.BoothTab.Groups.Add(this.group3);
+            this.BoothTab.Groups.Add(this.group4);
+            this.BoothTab.Groups.Add(this.group5);
+            this.BoothTab.Groups.Add(this.group6);
+            this.BoothTab.Label = "BOOTH";
+            this.BoothTab.Name = "BoothTab";
+            // 
+            // group2
+            // 
+            this.group2.Items.Add(ImportSplitButton);
+            this.group2.Items.Add(ImportPollPadButton);
+            this.group2.Label = "Import Data";
+            this.group2.Name = "group2";
+            // 
+            // group3
+            // 
+            this.group3.Items.Add(this.ProcessSingleButton);
+            this.group3.Items.Add(this.ProcessAllButton);
+            this.group3.Label = "Process Data";
+            this.group3.Name = "group3";
+            // 
+            // ProcessSingleButton
+            // 
+            this.ProcessSingleButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.ProcessSingleButton.Label = "Single Data Sheet";
+            this.ProcessSingleButton.Name = "ProcessSingleButton";
+            this.ProcessSingleButton.OfficeImageId = "QueryCrosstab";
+            this.ProcessSingleButton.ShowImage = true;
+            this.ProcessSingleButton.SuperTip = "Create a new Worksheet and populate with processed data from the active Worksheet" +
+    ".";
+            this.ProcessSingleButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessButton_Click);
+            // 
+            // ProcessAllButton
+            // 
+            this.ProcessAllButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.ProcessAllButton.Label = "All Open Data Sheets";
+            this.ProcessAllButton.Name = "ProcessAllButton";
+            this.ProcessAllButton.OfficeImageId = "QuerySelectQueryType";
+            this.ProcessAllButton.ShowImage = true;
+            this.ProcessAllButton.SuperTip = "Create new Worksheets populated with processed data from every applicable Workshe" +
+    "et in an open Workbook.";
+            this.ProcessAllButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessButton_Click);
+            // 
+            // group4
+            // 
+            this.group4.Items.Add(ProcessFolderButton);
+            this.group4.Label = "Process Entire Folder";
+            this.group4.Name = "group4";
+            // 
+            // group5
+            // 
+            this.group5.Items.Add(this.CreateSumStatsButton);
+            this.group5.Label = "Analysis";
+            this.group5.Name = "group5";
+            // 
+            // CreateSumStatsButton
+            // 
+            this.CreateSumStatsButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.CreateSumStatsButton.Label = "Create Summary Statistics";
+            this.CreateSumStatsButton.Name = "CreateSumStatsButton";
+            this.CreateSumStatsButton.OfficeImageId = "WhatIfAnalysisMenu";
+            this.CreateSumStatsButton.ShowImage = true;
+            this.CreateSumStatsButton.SuperTip = "Generates summary statistics for the open worksheet. Autodetects the type of data" +
+    " inserted. Can only be used on already processed sheets.";
+            this.CreateSumStatsButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SumStatsButton_Click);
+            // 
+            // group6
+            // 
+            this.group6.Items.Add(TimersButton);
+            this.group6.Label = "Voting Timers";
+            this.group6.Name = "group6";
             // 
             // Ribbon1
             // 

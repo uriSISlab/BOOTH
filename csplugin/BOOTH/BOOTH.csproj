@@ -43,7 +43,7 @@
     <SupportUrl />
     <FriendlyName>BOOTH</FriendlyName>
     <OfficeApplicationDescription />
-    <LoadBehavior>3</LoadBehavior>
+    <LoadBehavior>16</LoadBehavior>
   </PropertyGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -179,6 +179,16 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="TimerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Timers.cs" />
+    <Compile Include="TimerBaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimerBaseForm.Designer.cs">
+      <DependentUpon>TimerBaseForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Module1.cs" />
     <Compile Include="DS200_Processor.cs" />
     <Compile Include="DICX_Processor.cs" />
@@ -189,6 +199,12 @@
     </Compile>
     <Compile Include="ProgressBarForm.Designer.cs">
       <DependentUpon>ProgressBarForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CheckInTimerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CheckInTimerControl.Designer.cs">
+      <DependentUpon>CheckInTimerControl.cs</DependentUpon>
     </Compile>
     <Compile Include="VSAPBMD_Processor.cs" />
     <Compile Include="Dominion_ICX.cs" />
@@ -216,9 +232,16 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Ribbon1.resx">
       <DependentUpon>Ribbon1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimerBaseForm.resx">
+      <DependentUpon>TimerBaseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CheckInTimerControl.resx">
+      <DependentUpon>CheckInTimerControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="BOOTH_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
@@ -245,6 +268,9 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PollPad.jpg" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

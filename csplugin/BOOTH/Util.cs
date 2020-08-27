@@ -34,9 +34,15 @@ namespace BOOTH
 
     public static class Util
     {
-        public static string GetLetterFromNumber(int number)
+        public static string GetColumnLetterFromNumber(long number)
         {
-            return ((char)('A' + number - 1)).ToString();
+            return GetColumnLetterFromNumberZeroBased(number - 1);
+        }
+
+        public static string GetColumnLetterFromNumberZeroBased(long number)
+        {
+            string lastLetter = ((char)('A' + (number % 26))).ToString();
+            return (number >= 26) ? (GetColumnLetterFromNumber(number / 26) + lastLetter) : lastLetter;
         }
 
         public static int GetDifferenceMinutes(DateTime startTime, DateTime endTime)

@@ -13,7 +13,6 @@ namespace BOOTH
     {
         public static void Import_DS200_data()
         {
-            
             FileDialog fileDialog = ThisAddIn.app.FileDialog[MsoFileDialogType.msoFileDialogFilePicker];
             Workbook workbook = ThisAddIn.app.ActiveWorkbook;
 
@@ -206,18 +205,25 @@ namespace BOOTH
             if (sheet.Cells[1, 1].Text.ToString() == "Duration (mm:ss)" && sheet.Cells[1, 2].Text.ToString() == "Scan Type")
             {
                 DSStatTable();
-            } else if (true)
+            } else if (sheet.Cells[2, 1].NumberFormat.ToString().ToLower() == "general" &&
+                sheet.Cells[2, 2].NumberFormat.ToString().ToLower() == "m/d/yyyy h:mm" && 
+                sheet.Cells[2, 3].NumberFormat.ToString().ToLower() == "m/d/yyyy" && 
+                sheet.Cells[2, 4].NumberFormat.ToString().ToLower() == "h:mm")
             {
-                // TODO
+                // PivotTablePollPad(); 
+            } else
+            {
+                // Provides error message when incompatible data is selected
+                Util.MessageBox("The sheet: " + sheet.Name + " does not contain compatible data.");
             }
         }
- static void DSStatTable()
+
+        static void DSStatTable()
         {
             Workbook workbook = ThisAddIn.app.ActiveWorkbook;
             Worksheet sheet = ThisAddIn.app.ActiveWorkbook.ActiveSheet;
             // Store name information
             string name = sheet.Name.Substring(0, 21) + "... Stats";
-            int i = 0;
 
             // Check if sheet name is already taken
             for (int y = 1; y <= workbook.Sheets.Count; y++)
@@ -225,7 +231,6 @@ namespace BOOTH
                 if (name == workbook.Sheets[y].Name)
                 {
                     Util.MessageBox("Sheet name already taken, please rename the sheet.");
-                    i = 1;
                     return;
                 }
             }
@@ -233,14 +238,8 @@ namespace BOOTH
             sheet.Range["A:A"].NumberFormat = "mm:ss";
             sheet.Range["D:D"].NumberFormat = "general";
 
-            // Determine the data range you want to pivot
-            string srcData = sheet.Name + "!" + sheet.UsedRange.Address[XlReferenceStyle.xlR1C1];
-
             // Create a new worksheet
             Worksheet sht = workbook.Sheets.Add();
-
-            // Where do you want Pivot Table to start?
-            string startPvt = sht.Name + "!" + sht.Range["A3"].Address[XlReferenceStyle.xlR1C1];
 
             // Create Pivot Cache from Source Data
             PivotCache pvtCache = workbook.PivotCaches().Create(SourceType: XlPivotTableSourceType.xlDatabase,
@@ -268,6 +267,50 @@ namespace BOOTH
             sht.Name = name;
             sht.Range["A2"].Font.Bold = true;
             sht.Range["A2"].Value = name;
+        }
+
+        public static void PivotTablePollPad()
+        {
+            ThisAddIn.app.ScreenUpdating = false;
+            Workbook activeWorkbook = ThisAddIn.app.ActiveWorkbook;
+            Worksheet activeSheet = ThisAddIn.app.ActiveWorkbook.ActiveSheet;
+
+            // Storing shortened file names
+            string firstName = activeSheet.Name;
+            string secondName = firstName.Substring(0, 10) + " PrecinctTurnout";
+            string thirdName = firstName.Substring(0, 10) + " TotalTurnout";
+            long rawRows = activeSheet.Cells[activeSheet.Rows.Count, 1].End(XlDirection.xlUp).Row;
+
+            int i = 0;
+            bool skip = false;
+
+            // Tests to see if sheet name is already taken
+            for (int y = 1; y <= activeWorkbook.Sheets.Count; y++)
+            {
+                Util.MessageBox("Sheet name already taken for precinct turnout, please rename the sheet.");
+                i = 1;
+                skip = true;
+            }
+
+            if (!skip)
+            {
+                // Filters the PollPad data by time in ascending order
+                activeSheet.AutoFilterMode = false;
+
+                activeSheet.Range["C1"].Select();
+                ThisAddIn.app.Selection.AutoFilter();
+                activeSheet.AutoFilter.Sort.SortFields.Clear();
+                activeSheet.AutoFilter.Sort.SortFields.Add(Key: activeSheet.Range["D:D"],
+                    SortOn: XlSortOn.xlSortOnValues, Order: XlSortOrder.xlAscending,
+                    DataOption: XlSortDataOption.xlSortNormal);
+                activeSheet.AutoFilter.Sort.Header = XlYesNoGuess.xlGuess;
+                activeSheet.AutoFilter.Sort.MatchCase = false;
+                activeSheet.AutoFilter.Sort.Orientation = XlSortOrientation.xlSortRows;
+                activeSheet.AutoFilter.Sort.SortMethod = XlSortMethod.xlPinYin;
+                activeSheet.AutoFilter.Sort.Apply();
+
+                // Sets the starting point of the dayan hour before the first observation
+            }
         }
     } 
 }
