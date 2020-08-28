@@ -16,11 +16,15 @@ namespace BOOTH
         private bool neverStarted;
         private DateTime startStamp;
         private bool helped;
+        private Color previousColor;
 
         public BMDTimerControl(SheetWriter writer, int number) : base(writer, number)
         {
             InitializeComponent();
             this.headingLabel.Text = "BMD " + number;
+            this.headingLabel.AutoSize = false;
+            this.headingLabel.TextAlign = ContentAlignment.TopCenter;
+            this.headingLabel.Dock = DockStyle.Fill;
             this.writer.WriteLineArrWithoutLineBreak(new string[] {
                 "BMD " + number + " start",
                 "BMD " + number + " end",
@@ -73,6 +77,8 @@ namespace BOOTH
             this.startStamp = now;
             this.neverStarted = false;
             this.undoLastButton.Enabled = true;
+            this.previousColor = this.BackColor;
+            this.BackColor = Color.LightGreen;
         }
 
         private void StopButton_Click(object sender, EventArgs e)
@@ -83,6 +89,7 @@ namespace BOOTH
             this.writer.WriteLineArrWithoutLineBreak(new string[] { null, now.ToString(), duration, this.helped ? "Helped" : "" },
                 new FieldType[] { FieldType.STRING, FieldType.DATETIME, FieldType.TIMESPAN_MMSS, FieldType.STRING });
             this.writer.Return();
+            this.BackColor = this.previousColor;
             Reset();
         }
 

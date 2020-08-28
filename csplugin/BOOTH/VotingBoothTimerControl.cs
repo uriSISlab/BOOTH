@@ -14,12 +14,13 @@ namespace BOOTH
     {
         private bool neverStarted;
         private DateTime startStamp;
+        private Color previousColor;
 
         public VotingBoothTimerControl() : base(null, 0)
         {
             // NOTE: This constructor is here because the UI designer needs the base class
             // of a UI element to be non-abstract and to have a no-argument constructor.
-            // (BallotScanningTimerControl inherits from it)
+            // (BallotScanningTimerControl and ThroughputTimerControl inherit from it)
             // This constructor should not be used in practice.
         }
 
@@ -27,6 +28,9 @@ namespace BOOTH
         {
             InitializeComponent();
             this.headingLabel.Text = "Vooting Booth " + number;
+            this.headingLabel.AutoSize = false;
+            this.headingLabel.TextAlign = ContentAlignment.TopCenter;
+            this.headingLabel.Dock = DockStyle.Fill;
             this.writer.WriteLineArrWithoutLineBreak(new string[] {
                 "Voting Booth " + number + " start",
                 "Voting Booth " + number + " end",
@@ -87,6 +91,8 @@ namespace BOOTH
             this.startStamp = now;
             this.neverStarted = false;
             this.undoLastButton.Enabled = true;
+            this.previousColor = this.BackColor;
+            this.BackColor = Color.LightGreen;
         }
 
         private void StopButton_Click(object sender, EventArgs e)
@@ -97,6 +103,7 @@ namespace BOOTH
             this.writer.WriteLineArrWithoutLineBreak(new string[] { null, now.ToString(), duration },
                 new FieldType[] { FieldType.STRING, FieldType.DATETIME, FieldType.TIMESPAN_MMSS });
             this.writer.Return();
+            this.BackColor = this.previousColor;
             Reset();
         }
 

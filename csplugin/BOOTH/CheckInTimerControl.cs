@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Security.Policy;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
+using Microsoft.VisualStudio.Tools.Applications.Runtime;
 
 namespace BOOTH
 {
@@ -19,11 +20,15 @@ namespace BOOTH
         private DateTime startStamp;
         private string checkInType;
         private bool neverStarted;
+        private Color previousColor;
 
         public CheckInTimerControl(SheetWriter writer, int number) : base(writer, number)
         {
             InitializeComponent();
-            ((Label)this.Controls["heading"]).Text = "Check in " + number;
+            this.heading.Text = "Check in " + number;
+            this.heading.AutoSize = false;
+            this.heading.TextAlign = ContentAlignment.TopCenter;
+            this.heading.Dock = DockStyle.Fill;
             writer.WriteLineArrWithoutLineBreak(new string[] {
                 "Checkin " + number + " start",
                 "Checkin " + number + " end",
@@ -79,6 +84,8 @@ namespace BOOTH
             this.startStamp = now;
             this.checkInType = "Normal";
             this.neverStarted = false;
+            this.previousColor = this.BackColor;
+            this.BackColor = Color.LightGreen;
         }
 
         private void StopButton_Click(object sender, EventArgs e)
@@ -88,6 +95,7 @@ namespace BOOTH
             writer.WriteLineArrWithoutLineBreak(new string[] { null, now.ToString(), duration, this.checkInType },
                 new FieldType[] { FieldType.STRING, FieldType.DATETIME, FieldType.TIMESPAN_MMSS });
             writer.Return();
+            this.BackColor = this.previousColor;
             Reset();
         }
 
