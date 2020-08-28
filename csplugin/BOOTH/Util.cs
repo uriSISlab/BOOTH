@@ -132,5 +132,18 @@ namespace BOOTH
         {
             System.Windows.Forms.MessageBox.Show(message);
         }
+
+        public static Worksheet tryAddingSheetWithName(string name)
+        {
+            try
+            {
+                Worksheet sheet = ThisAddIn.app.ActiveWorkbook.Sheets.Add();
+                sheet.Name = name;
+                return sheet;
+            } catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }

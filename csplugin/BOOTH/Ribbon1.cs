@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
 using Microsoft.VisualStudio.Tools.Applications.Runtime;
 
@@ -83,25 +84,40 @@ namespace BOOTH
         private void TimerOpenButton_Click(object sender, RibbonControlEventArgs e)
         {
             TimerBaseForm form;
+            string name = ((Microsoft.Office.Tools.Ribbon.RibbonButton)sender).Label;
+            Worksheet sheet = Util.tryAddingSheetWithName(name);
+            for (int i = 2; i < 50 && sheet == null; i++)
+            {
+                // Try adding sheets with successively increasing suffixes in case the first name we tried
+                // was already taken.
+                sheet = Util.tryAddingSheetWithName(name + " " + i);
+            }
+            if (sheet == null)
+            {
+                // If sheet is still null after 50 tries to create it, something is seriously wrong. Bail out.
+                Util.MessageBox("A worksheet could not be created for the timers.");
+                return;
+            } 
+
             switch (e.Control.Id)
             {
                 case "CheckinTimerButton":
-                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.CHECKIN);
+                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.CHECKIN, sheet);
                     break;
                 case "CheckinArrivalTimerButton":
-                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.CHECKIN_ARRIVAL);
+                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.CHECKIN_ARRIVAL, sheet);
                     break;
                 case "VotingBoothTimerButton":
-                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.VOTING_BOOTH);
+                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.VOTING_BOOTH, sheet);
                     break;
                 case "BMDTimerButton":
-                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.BMD);
+                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.BMD, sheet);
                     break;
                 case "BallotScanningTimerButton":
-                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.BALLOT_SCANNING);
+                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.BALLOT_SCANNING, sheet);
                     break;
                 case "ThroughputArrivalTimerButton":
-                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.THROUGHPUT_ARRIVAL);
+                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.THROUGHPUT_ARRIVAL, sheet);
                     break;
                 default:
                     throw new NotImplementedException();

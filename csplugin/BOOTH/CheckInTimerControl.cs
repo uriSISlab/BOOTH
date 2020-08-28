@@ -125,6 +125,14 @@ namespace BOOTH
 
         private void UndoLastButton_Click(object sender, EventArgs e)
         {
+            if (neverStarted)
+            {
+                return;
+            }
+            if (this.writer.GetRowNum() == 1)
+            {
+                return;
+            }
             writer.Return();
             writer.WriteLineArrWithoutLineBreak(new string[] {"", "", "", "", ""});
             writer.PreviousLine();

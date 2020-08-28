@@ -24,7 +24,6 @@ namespace BOOTH
         }
 
         private readonly List<TimerControl> timers;
-        private Worksheet sheet;
 
         public TimerBaseForm()
         {
@@ -33,28 +32,28 @@ namespace BOOTH
             this.storeCommentButton.Enabled = false;
         }
 
-        public static TimerBaseForm CreateForType(TimerFormType timerFormType)
+        public static TimerBaseForm CreateForType(TimerFormType timerFormType, Worksheet sheet)
         {
             TimerBaseForm timerBase = new TimerBaseForm();
             switch (timerFormType)
             {
                 case TimerFormType.CHECKIN:
-                    timerBase.SetupCheckinTimersForm(ThisAddIn.app.ActiveWorkbook.ActiveSheet);
+                    timerBase.SetupCheckinTimersForm(sheet);
                     break;
                 case TimerFormType.CHECKIN_ARRIVAL:
-                    timerBase.SetupCheckinArrivalTimersForm(ThisAddIn.app.ActiveWorkbook.ActiveSheet);
+                    timerBase.SetupCheckinArrivalTimersForm(sheet);
                     break;
                 case TimerFormType.VOTING_BOOTH:
-                    timerBase.SetupVotingBoothTimersForm(ThisAddIn.app.ActiveWorkbook.ActiveSheet);
+                    timerBase.SetupVotingBoothTimersForm(sheet);
                     break;
                 case TimerFormType.BMD:
-                    timerBase.SetupBMDTimersForm(ThisAddIn.app.ActiveWorkbook.ActiveSheet);
+                    timerBase.SetupBMDTimersForm(sheet);
                     break;
                 case TimerFormType.BALLOT_SCANNING:
-                    timerBase.SetupBallotScanningTimersForm(ThisAddIn.app.ActiveWorkbook.ActiveSheet);
+                    timerBase.SetupBallotScanningTimersForm(sheet);
                     break;
                 case TimerFormType.THROUGHPUT_ARRIVAL:
-                    timerBase.SetupThroughputArrivalTimersForm(ThisAddIn.app.ActiveWorkbook.ActiveSheet);
+                    timerBase.SetupThroughputArrivalTimersForm(sheet);
                     break;
             }
             return timerBase;
