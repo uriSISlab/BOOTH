@@ -124,5 +124,24 @@ namespace BOOTH
             }
             form.Show();
         }
+
+        private void CustomTimersButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            string name = "Custom timers";
+            Worksheet sheet = Util.tryAddingSheetWithName(name);
+            for (int i = 2; i < 50 && sheet == null; i++)
+            {
+                // Try adding sheets with successively increasing suffixes in case the first name we tried
+                // was already taken.
+                sheet = Util.tryAddingSheetWithName(name + " " + i);
+            }
+            if (sheet == null)
+            {
+                // If sheet is still null after 50 tries to create it, something is seriously wrong. Bail out.
+                Util.MessageBox("A worksheet could not be created for the timers.");
+                return;
+            }
+            (new CustomTimersCreationForm(sheet)).Show();
+        }
     }
 }

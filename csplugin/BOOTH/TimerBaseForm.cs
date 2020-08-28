@@ -59,6 +59,17 @@ namespace BOOTH
             return timerBase;
         }
 
+        public static TimerBaseForm CreateWithTimerTypes(TimerControl.TimerType[] timerTypes, bool includeArrival, Worksheet sheet)
+        {
+            TimerBaseForm baseForm = new TimerBaseForm();
+            if (includeArrival)
+            {
+                baseForm.PopulateArrivalTimer(sheet);
+            }
+            baseForm.PopulateTimersTablePanel(timerTypes, sheet, 0, includeArrival ? 3 : 0);
+            return baseForm;
+        }
+
         private void RegisterTimer(TimerControl timerControl)
         {
             this.timers.Add(timerControl);
@@ -67,10 +78,7 @@ namespace BOOTH
 
         private void SetupCheckinArrivalTimersForm(Worksheet sheet)
         {
-            SheetWriter writer = new SheetWriter(sheet, 0, 0);
-            ArrivalTimerControl arrivalTimer = new ArrivalTimerControl(writer);
-            this.leftPanel.Controls.Add(arrivalTimer);
-            this.RegisterTimer(arrivalTimer);
+            PopulateArrivalTimer(sheet);
             SetupCheckinTimersForm(sheet, 0, 3);
         }
 
@@ -104,13 +112,18 @@ namespace BOOTH
 
         private void SetupThroughputArrivalTimersForm(Worksheet sheet)
         {
+            PopulateArrivalTimer(sheet);
+            TimerControl.TimerType timerType = TimerControl.TimerType.THROUGHPUT;
+            TimerControl.TimerType[] timerTypes = new TimerControl.TimerType[] { timerType, timerType, timerType, timerType, timerType };
+            PopulateTimersTablePanel(timerTypes, sheet, 0, 3);
+        }
+
+        private void PopulateArrivalTimer(Worksheet sheet)
+        {
             SheetWriter writer = new SheetWriter(sheet, 0, 0);
             ArrivalTimerControl arrivalTimer = new ArrivalTimerControl(writer);
             this.leftPanel.Controls.Add(arrivalTimer);
             this.RegisterTimer(arrivalTimer);
-            TimerControl.TimerType timerType = TimerControl.TimerType.THROUGHPUT;
-            TimerControl.TimerType[] timerTypes = new TimerControl.TimerType[] { timerType, timerType, timerType, timerType, timerType };
-            PopulateTimersTablePanel(timerTypes, sheet, 0, 3);
         }
 
         private void PopulateTimersTablePanel(TimerControl.TimerType[] timerTypes, Worksheet sheet, int rowOffset = 0, int columnOffset = 0)
@@ -120,7 +133,7 @@ namespace BOOTH
             this.timersPanel.ColumnStyles.Clear();
             for (int i = 0; i < timerTypes.Length; i++)
             {
-                int columnCount = TimerControl.GetColumnCountForTimerType(timerTypes[i]);
+                int columnCount = i > 0 ? TimerControl.GetColumnCountForTimerType(timerTypes[i - 1]) : 0;
                 SheetWriter writer = new SheetWriter(sheet, rowOffset + 0, columnOffset + i * columnCount);
                 TimerControl control = TimerControl.GetTimerControl(timerTypes[i], writer, i + 1);
                 this.timersPanel.Controls.Add(control, i, 0);

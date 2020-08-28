@@ -19,6 +19,33 @@ namespace BOOTH
             THROUGHPUT,
         };
 
+        public static TimerType[] GetMainPanelTimerTypes()
+        {
+            return new TimerType[] { TimerType.CHECKIN, TimerType.VOTING_BOOTH, TimerType.BMD,
+                TimerType.BALLOT_SCANNING, TimerType.THROUGHPUT };
+        }
+
+        public static string GetNiceNameForTimerType(TimerType timerType)
+        {
+            switch (timerType)
+            {
+                case TimerType.CHECKIN:
+                    return "Check in";
+                case TimerType.ARRIVAL:
+                    return "Arrival";
+                case TimerType.VOTING_BOOTH:
+                    return "Voting Booth";
+                case TimerType.BALLOT_SCANNING:
+                    return "Ballot Scanning";
+                case TimerType.THROUGHPUT:
+                    return "Throughput";
+                case TimerType.BMD:
+                    return "BMD";
+                default:
+                    return "Unknown";
+            }
+        }
+
         public static int GetColumnCountForTimerType(TimerType timerType)
         {
             switch (timerType)

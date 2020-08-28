@@ -35,6 +35,7 @@ namespace BOOTH
             this.writer.FormatPretty();
             this.clearButton.Click += (s, e) => { this.textbox.Text = ""; };
             this.stopButton.Enabled = false;
+            this.helpButton.Enabled = false;
             this.neverStarted = true;
             this.helped = false;
         }
@@ -63,7 +64,7 @@ namespace BOOTH
             this.startButton.Enabled = true;
             this.stopButton.Enabled = false;
             this.helped = false;
-            this.helpButton.Enabled = true;
+            this.helpButton.Enabled = false;
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -77,6 +78,7 @@ namespace BOOTH
             this.startStamp = now;
             this.neverStarted = false;
             this.undoLastButton.Enabled = true;
+            this.helpButton.Enabled = true;
             this.previousColor = this.BackColor;
             this.BackColor = Color.LightGreen;
         }

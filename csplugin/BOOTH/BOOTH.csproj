@@ -179,6 +179,12 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="CustomTimersCreationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomTimersCreationForm.Designer.cs">
+      <DependentUpon>CustomTimersCreationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ThroughputTimerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -250,6 +256,9 @@
     <EmbeddedResource Include="BMDTimerControl.resx">
       <DependentUpon>BMDTimerControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CustomTimersCreationForm.resx">
+      <DependentUpon>CustomTimersCreationForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProgressBarForm.resx">
       <DependentUpon>ProgressBarForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -318,6 +327,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Vote_scaled.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\UpIcon.ico" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -52,6 +52,7 @@
             this.BMDTimerButton = this.Factory.CreateRibbonButton();
             this.BallotScanningTimerButton = this.Factory.CreateRibbonButton();
             this.ThroughputArrivalTimerButton = this.Factory.CreateRibbonButton();
+            this.customTimersButton = this.Factory.CreateRibbonButton();
             this.BoothTab = this.Factory.CreateRibbonTab();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.group3 = this.Factory.CreateRibbonGroup();
@@ -172,6 +173,7 @@
             TimersButton.Items.Add(this.BMDTimerButton);
             TimersButton.Items.Add(this.BallotScanningTimerButton);
             TimersButton.Items.Add(this.ThroughputArrivalTimerButton);
+            TimersButton.Items.Add(this.customTimersButton);
             TimersButton.Label = "Timers";
             TimersButton.Name = "TimersButton";
             TimersButton.OfficeImageId = "StartTimer";
@@ -217,6 +219,13 @@
             this.ThroughputArrivalTimerButton.Name = "ThroughputArrivalTimerButton";
             this.ThroughputArrivalTimerButton.ShowImage = true;
             this.ThroughputArrivalTimerButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.TimerOpenButton_Click);
+            // 
+            // customTimersButton
+            // 
+            this.customTimersButton.Label = "Custom Timers";
+            this.customTimersButton.Name = "customTimersButton";
+            this.customTimersButton.ShowImage = true;
+            this.customTimersButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CustomTimersButton_Click);
             // 
             // BoothTab
             // 
@@ -339,6 +348,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BallotScanningTimerButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ThroughputArrivalTimerButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton CheckinTimerButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton customTimersButton;
     }
 
     partial class ThisRibbonCollection
