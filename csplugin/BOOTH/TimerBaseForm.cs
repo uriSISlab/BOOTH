@@ -13,6 +13,16 @@ namespace BOOTH
 {
     public partial class TimerBaseForm : Form
     {
+        public enum TimerFormType
+        {
+            CHECKIN,
+            CHECKIN_ARRIVAL,
+            VOTING_BOOTH,
+            BMD,
+            BALLOT_SCANNING,
+            THROUGHPUT_ARRIVAL
+        }
+
         private readonly List<TimerControl> timers;
         private Worksheet sheet;
 
@@ -23,27 +33,27 @@ namespace BOOTH
             this.storeCommentButton.Enabled = false;
         }
 
-        public static TimerBaseForm CreateForType(Timers.TimerFormType timerFormType)
+        public static TimerBaseForm CreateForType(TimerFormType timerFormType)
         {
             TimerBaseForm timerBase = new TimerBaseForm();
             switch (timerFormType)
             {
-                case Timers.TimerFormType.CHECKIN:
+                case TimerFormType.CHECKIN:
                     timerBase.SetupCheckinTimersForm(ThisAddIn.app.ActiveWorkbook.ActiveSheet);
                     break;
-                case Timers.TimerFormType.CHECKIN_ARRIVAL:
+                case TimerFormType.CHECKIN_ARRIVAL:
                     timerBase.SetupCheckinArrivalTimersForm(ThisAddIn.app.ActiveWorkbook.ActiveSheet);
                     break;
-                case Timers.TimerFormType.VOTING_BOOTH:
+                case TimerFormType.VOTING_BOOTH:
                     timerBase.SetupVotingBoothTimersForm(ThisAddIn.app.ActiveWorkbook.ActiveSheet);
                     break;
-                case Timers.TimerFormType.BMD:
+                case TimerFormType.BMD:
                     timerBase.SetupBMDTimersForm(ThisAddIn.app.ActiveWorkbook.ActiveSheet);
                     break;
-                case Timers.TimerFormType.BALLOT_SCANNING:
+                case TimerFormType.BALLOT_SCANNING:
                     timerBase.SetupBallotScanningTimersForm(ThisAddIn.app.ActiveWorkbook.ActiveSheet);
                     break;
-                case Timers.TimerFormType.THROUGHPUT_ARRIVAL:
+                case TimerFormType.THROUGHPUT_ARRIVAL:
                     timerBase.SetupThroughputArrivalTimersForm(ThisAddIn.app.ActiveWorkbook.ActiveSheet);
                     break;
             }
@@ -67,29 +77,29 @@ namespace BOOTH
 
         private void SetupCheckinTimersForm(Worksheet sheet, int rowOffset = 0, int columnOffset = 0)
         {
-            Timers.TimerType timerType = Timers.TimerType.CHECKIN;
-            Timers.TimerType[] timerTypes = new Timers.TimerType[] { timerType, timerType, timerType, timerType, timerType, timerType };
+            TimerControl.TimerType timerType = TimerControl.TimerType.CHECKIN;
+            TimerControl.TimerType[] timerTypes = new TimerControl.TimerType[] { timerType, timerType, timerType, timerType, timerType, timerType };
             PopulateTimersTablePanel(timerTypes, sheet, rowOffset, columnOffset);
         }
 
         private void SetupVotingBoothTimersForm(Worksheet sheet, int rowOffset = 0, int columnOffset = 0)
         {
-            Timers.TimerType timerType = Timers.TimerType.VOTING_BOOTH;
-            Timers.TimerType[] timerTypes = new Timers.TimerType[] { timerType, timerType, timerType, timerType, timerType, timerType };
+            TimerControl.TimerType timerType = TimerControl.TimerType.VOTING_BOOTH;
+            TimerControl.TimerType[] timerTypes = new TimerControl.TimerType[] { timerType, timerType, timerType, timerType, timerType, timerType };
             PopulateTimersTablePanel(timerTypes, sheet, rowOffset, columnOffset);
         }
 
         private void SetupBMDTimersForm(Worksheet sheet, int rowOffset = 0, int columnOffset = 0)
         {
-            Timers.TimerType timerType = Timers.TimerType.BMD;
-            Timers.TimerType[] timerTypes = new Timers.TimerType[] { timerType, timerType, timerType, timerType, timerType, timerType };
+            TimerControl.TimerType timerType = TimerControl.TimerType.BMD;
+            TimerControl.TimerType[] timerTypes = new TimerControl.TimerType[] { timerType, timerType, timerType, timerType, timerType, timerType };
             PopulateTimersTablePanel(timerTypes, sheet, rowOffset, columnOffset);
         }
 
         private void SetupBallotScanningTimersForm(Worksheet sheet, int rowOffset = 0, int columnOffset = 0)
         {
-            Timers.TimerType timerType = Timers.TimerType.BALLOT_SCANNING;
-            Timers.TimerType[] timerTypes = new Timers.TimerType[] { timerType, timerType, timerType, timerType, timerType, timerType };
+            TimerControl.TimerType timerType = TimerControl.TimerType.BALLOT_SCANNING;
+            TimerControl.TimerType[] timerTypes = new TimerControl.TimerType[] { timerType, timerType, timerType, timerType, timerType, timerType };
             PopulateTimersTablePanel(timerTypes, sheet, rowOffset, columnOffset);
         }
 
@@ -99,21 +109,21 @@ namespace BOOTH
             ArrivalTimerControl arrivalTimer = new ArrivalTimerControl(writer);
             this.leftPanel.Controls.Add(arrivalTimer);
             this.RegisterTimer(arrivalTimer);
-            Timers.TimerType timerType = Timers.TimerType.THROUGHPUT;
-            Timers.TimerType[] timerTypes = new Timers.TimerType[] { timerType, timerType, timerType, timerType, timerType };
+            TimerControl.TimerType timerType = TimerControl.TimerType.THROUGHPUT;
+            TimerControl.TimerType[] timerTypes = new TimerControl.TimerType[] { timerType, timerType, timerType, timerType, timerType };
             PopulateTimersTablePanel(timerTypes, sheet, 0, 3);
         }
 
-        private void PopulateTimersTablePanel(Timers.TimerType[] timerTypes, Worksheet sheet, int rowOffset = 0, int columnOffset = 0)
+        private void PopulateTimersTablePanel(TimerControl.TimerType[] timerTypes, Worksheet sheet, int rowOffset = 0, int columnOffset = 0)
         {
             this.timersPanel.ColumnCount = timerTypes.Length;
             this.timersPanel.RowCount = 1;
             this.timersPanel.ColumnStyles.Clear();
             for (int i = 0; i < timerTypes.Length; i++)
             {
-                int columnCount = Timers.GetColumnCountForTimerType(timerTypes[i]);
+                int columnCount = TimerControl.GetColumnCountForTimerType(timerTypes[i]);
                 SheetWriter writer = new SheetWriter(sheet, rowOffset + 0, columnOffset + i * columnCount);
-                TimerControl control = Timers.GetTimerControl(timerTypes[i], writer, i + 1);
+                TimerControl control = TimerControl.GetTimerControl(timerTypes[i], writer, i + 1);
                 this.timersPanel.Controls.Add(control, i, 0);
                 this.timersPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f / timerTypes.Length));
                 this.RegisterTimer(control);

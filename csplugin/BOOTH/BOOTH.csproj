@@ -185,7 +185,6 @@
     <Compile Include="TimerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Timers.cs" />
     <Compile Include="TimerBaseForm.cs">
       <SubType>Form</SubType>
     </Compile>

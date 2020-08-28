@@ -82,29 +82,31 @@ namespace BOOTH
 
         private void TimerOpenButton_Click(object sender, RibbonControlEventArgs e)
         {
+            TimerBaseForm form;
             switch (e.Control.Id)
             {
                 case "CheckinTimerButton":
-                    Timers.LaunchPanelWith(Timers.TimerFormType.CHECKIN);
+                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.CHECKIN);
                     break;
                 case "CheckinArrivalTimerButton":
-                    Timers.LaunchPanelWith(Timers.TimerFormType.CHECKIN_ARRIVAL);
+                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.CHECKIN_ARRIVAL);
                     break;
                 case "VotingBoothTimerButton":
-                    Timers.LaunchPanelWith(Timers.TimerFormType.VOTING_BOOTH);
+                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.VOTING_BOOTH);
                     break;
                 case "BMDTimerButton":
-                    Timers.LaunchPanelWith(Timers.TimerFormType.BMD);
+                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.BMD);
                     break;
                 case "BallotScanningTimerButton":
-                    Timers.LaunchPanelWith(Timers.TimerFormType.BALLOT_SCANNING);
+                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.BALLOT_SCANNING);
                     break;
                 case "ThroughputArrivalTimerButton":
-                    Timers.LaunchPanelWith(Timers.TimerFormType.THROUGHPUT_ARRIVAL);
+                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.THROUGHPUT_ARRIVAL);
                     break;
                 default:
                     throw new NotImplementedException();
             }
+            form.Show();
         }
     }
 }
