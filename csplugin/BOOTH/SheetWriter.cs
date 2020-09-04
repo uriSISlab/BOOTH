@@ -49,7 +49,7 @@ namespace BOOTH
             string left = Util.GetColumnLetterFromNumber(1 + this.startColumnOffset);
             string right = Util.GetColumnLetterFromNumber(this.columns + this.startColumnOffset);
             this.sheet.Range[left + "1", right + "1"].Font.Bold = true;
-            this.sheet.Range[left + "1", right + "1"].Columns.AutoFit();
+            this.sheet.Range[left + "1", right + this.rowNum].Columns.AutoFit();
         }
 
         public long GetRowNum()
@@ -97,6 +97,7 @@ namespace BOOTH
                 string cellAddr = Util.GetColumnLetterFromNumber(c + this.columnNum + this.startColumnOffset) + (rowNum + this.startRowOffset);
                 if (fieldTypes == null || fieldTypes.Length - 1 < c)
                 {
+                    this.sheet.Range[cellAddr].NumberFormat = "@";
                     this.sheet.Range[cellAddr].Value = line[c];
                     continue;
                 }
@@ -118,6 +119,7 @@ namespace BOOTH
                         break;
                     case FieldType.STRING:
                     default:
+                        this.sheet.Range[cellAddr].NumberFormat = "@";
                         this.sheet.Range[cellAddr].Value = line[c];
                         break;
                 }

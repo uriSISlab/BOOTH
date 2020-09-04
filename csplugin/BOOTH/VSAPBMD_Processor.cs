@@ -69,7 +69,12 @@ namespace BOOTH
             {
                 lineArr = Util.AppendToArray(lineArr, fileName);
             }
-            writer.WriteLineArr(lineArr);
+            FieldType[] fieldTypes = null;
+            if (lineArr[0] != "-")
+            {
+                fieldTypes = new FieldType[] { FieldType.TIMESPAN_MMSS }; 
+            }
+            writer.WriteLineArr(lineArr, fieldTypes);
         }
 
         private void WriteBallotRemovedRecordNoTime()
@@ -156,8 +161,7 @@ namespace BOOTH
 
         public bool IsThisLog(Worksheet sheet)
         {
-            // TODO: BUG: This text is not in 'B1' after recent changes to importing
-            return sheet.Range["B1"].Text.ToString().Trim() == "Logger.js-Loading page-Manual Diagnostic Status";
+            return sheet.Range["D1"].Text.ToString().Trim() == "Logger.js-Loading page-Manual Diagnostic Status";
         }
 
         public void ReadLine(string line)
@@ -301,7 +305,6 @@ namespace BOOTH
                         break;
                 }
             }
-
         }
 
         public void SetFileName(string fileName)

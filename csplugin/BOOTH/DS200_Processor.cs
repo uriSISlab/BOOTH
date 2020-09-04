@@ -118,8 +118,9 @@ namespace BOOTH
         {
             for (int i = 1; i < lines.Count; i++)
             {
-                if (GetCode(lines[i]) == votingStartedCode && GetCode(lines[i + 1]) != blankBallotCode &&
-                    GetCode(lines[i + 1]) != overvotedBallotCode)
+                if ((i + 1) < lines.Count && GetCode(lines[i]) == votingStartedCode
+                    && GetCode(lines[i + 1]) != blankBallotCode
+                    && GetCode(lines[i + 1]) != overvotedBallotCode)
                 {
                     string[] outputArr = new string[4];
                     outputArr[0] = getDuration(lines[i + 1], lines[i]).ToString(@"mm\:ss");
@@ -135,7 +136,8 @@ namespace BOOTH
                     }
                     i++;
                     WriteLineArr(outputArr);
-                } else if (GetCode(lines[i]) == votingStartedCode && GetCode(lines[i + 2]) == votingCompleteCode)
+                } else if ((i + 2) < lines.Count && GetCode(lines[i]) == votingStartedCode
+                    && GetCode(lines[i + 2]) == votingCompleteCode)
                 {
                     string[] outputArr = new string[4];
                     outputArr[0] = getDuration(lines[i + 2], lines[i]).ToString(@"mm\:ss");
@@ -144,8 +146,8 @@ namespace BOOTH
                     outputArr[1] = GetElements(lines[i + 1])[6];
                     i += 2;
                     WriteLineArr(outputArr);
-                } else if (GetCode(lines[i]) == ballotJamCode && GetCode(lines[i - 1]) != votingStartedCode
-                    && GetCode(lines[i + 1]) == jamClearedCode)
+                } else if ((i + 1) < lines.Count && GetCode(lines[i]) == ballotJamCode
+                    && GetCode(lines[i - 1]) != votingStartedCode && GetCode(lines[i + 1]) == jamClearedCode)
                 {
                     string[] outputArr = new string[4];
                     outputArr[0] = getDuration(lines[i + 1], lines[i]).ToString(@"mm\:ss");
@@ -154,7 +156,8 @@ namespace BOOTH
                     outputArr[1] = GetElements(lines[i])[6];
                     i++;
                     WriteLineArr(outputArr);
-                } else if (GetCode(lines[i]) == shutDownCode && GetCode(lines[i - 1]) == unknownCode && GetCode(lines[i + 1]) == votingModeCode)
+                } else if ((i + 1) < lines.Count && GetCode(lines[i]) == shutDownCode
+                    && GetCode(lines[i - 1]) == unknownCode && GetCode(lines[i + 1]) == votingModeCode)
                 {
                     string[] outputArr = new string[4];
                     outputArr[0] = getDuration(lines[i + 2], lines[i]).ToString(@"mm\:ss");

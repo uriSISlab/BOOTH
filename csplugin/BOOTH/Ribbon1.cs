@@ -21,13 +21,34 @@ namespace BOOTH
             switch (e.Control.Id)
             {
                 case "ProcessSingleButton":
-                    Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.VSAP_BMD);
-                    //Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DICE);
-                    //Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DICX);
-                    //Dispatch.ProcessSheetForLogType(ThisAddIn.app.ActiveWorkbook.ActiveSheet, LogType.DS200);
-                    //Module1.PollPadProcessing();
+                    Worksheet sheet = ThisAddIn.app.ActiveWorkbook.ActiveSheet;
+                    ILogProcessor processor = Util.GetCorrectProcessorForImportedSheet(sheet);
+                    if (processor != null)
+                    {
+                        Dispatch.ProcessSheetWithProcessor(sheet, processor);
+                    } else
+                    {
+                        Util.MessageBox("Active worksheet not recognized as a valid log.");
+                    }
                     break;
                 case "ProcessAllButton":
+                    List<string> sheetNames = new List<string>();
+                    int processed = 0;
+                    foreach (Worksheet sh in ThisAddIn.app.ActiveWorkbook.Sheets)
+                    {
+                        sheetNames.Add(sh.Name);
+                    }
+                    foreach (string sheetname in sheetNames)
+                    {
+                        Worksheet sheet_ = ThisAddIn.app.ActiveWorkbook.Sheets[sheetname];
+                        ILogProcessor processor_ = Util.GetCorrectProcessorForImportedSheet(sheet_);
+                        if (processor_ != null)
+                        {
+                            Dispatch.ProcessSheetWithProcessor(sheet_, processor_);
+                            processed++;
+                        }
+                    }
+                    Util.MessageBox(processed + " sheet(s) processed.");
                     break;
             }
         }
@@ -85,12 +106,12 @@ namespace BOOTH
         {
             TimerBaseForm form;
             string name = ((Microsoft.Office.Tools.Ribbon.RibbonButton)sender).Label;
-            Worksheet sheet = Util.tryAddingSheetWithName(name);
+            Worksheet sheet = Util.TryAddingSheetWithName(name);
             for (int i = 2; i < 50 && sheet == null; i++)
             {
                 // Try adding sheets with successively increasing suffixes in case the first name we tried
                 // was already taken.
-                sheet = Util.tryAddingSheetWithName(name + " " + i);
+                sheet = Util.TryAddingSheetWithName(name + " " + i);
             }
             if (sheet == null)
             {
@@ -128,12 +149,12 @@ namespace BOOTH
         private void CustomTimersButton_Click(object sender, RibbonControlEventArgs e)
         {
             string name = "Custom timers";
-            Worksheet sheet = Util.tryAddingSheetWithName(name);
+            Worksheet sheet = Util.TryAddingSheetWithName(name);
             for (int i = 2; i < 50 && sheet == null; i++)
             {
                 // Try adding sheets with successively increasing suffixes in case the first name we tried
                 // was already taken.
-                sheet = Util.tryAddingSheetWithName(name + " " + i);
+                sheet = Util.TryAddingSheetWithName(name + " " + i);
             }
             if (sheet == null)
             {

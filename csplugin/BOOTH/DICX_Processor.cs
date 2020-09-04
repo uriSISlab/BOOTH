@@ -48,8 +48,11 @@ namespace BOOTH
         
         private void WriteToWriter(string[] lineArr)
         {
+            FieldType[] fieldTypes = new FieldType[] { FieldType.TIMESPAN_MMSS,
+                FieldType.DATETIME, FieldType.STRING, FieldType.STRING };
             // Write the given array to writer after possibly appending the filename
-            writer.WriteLineArr(this.fileName.Length > 0 ? Util.AppendToArray(lineArr, fileName) : lineArr);
+            writer.WriteLineArr(this.fileName.Length > 0 ? Util.AppendToArray(lineArr, fileName) : lineArr,
+                fieldTypes);
         }
 
         private void WriteBallotCastNormalRecord(DateTime startTimestamp, DateTime endTimestamp)
@@ -88,7 +91,7 @@ namespace BOOTH
 
             // Timestamp is in the first 19 characters
             DateTime thisTime = DateTime.ParseExact(line.Substring(0, 19), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-            string rest = line.Substring(23).Trim(); // Next three characters are " - "
+            string rest = line.Substring(22).Trim(); // Next three characters are " - "
 
             switch (rest)
             {

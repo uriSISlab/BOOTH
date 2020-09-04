@@ -14,11 +14,9 @@ namespace BOOTH
             return ThisAddIn.app.ActiveWorkbook.ActiveSheet;
         }
 
-        public static void ProcessSheetForLogType(Worksheet sheet, LogType t)
+        public static void ProcessSheetWithProcessor(Worksheet sheet, ILogProcessor processor)
         {
-
             Sheets sheets = ThisAddIn.app.ActiveWorkbook.Sheets;
-            ILogProcessor processor = Util.CreateProcessor(t);
 
             // Check if the data chosen was already processed
             for (int n = 1; n <= sheets.Count; n++)
@@ -29,12 +27,24 @@ namespace BOOTH
                 }
             }
 
+            // Disable UI updates
+            ThisAddIn.app.ScreenUpdating = false;
+
             SheetReader reader = new SheetReader(sheet, processor.GetSeparator());
             SheetWriter writer = new SheetWriter(AddSheetForOutput(sheet));
 
             Util.RunPipeline(reader, processor, writer, true);
 
             writer.FormatPretty();
+
+            // Re-enable UI updates
+            ThisAddIn.app.ScreenUpdating = true;
+        }
+
+        public static void ProcessSheetForLogType(Worksheet sheet, LogType t)
+        {
+            ILogProcessor processor = Util.CreateProcessor(t);
+            ProcessSheetWithProcessor(sheet, processor);
         }
 
         public static void ProcessEntireDirectory(LogType t)

@@ -60,7 +60,7 @@ namespace BOOTH
                 if (lineStr.Length < 23) continue;
                 string[] lineArr = new string[2];
                 lineArr[0] = lineStr.Substring(0, 19);  // Timestamp is in the first 19 characters
-                lineArr[1] = lineStr.Substring(21);     // Next three characters are " - ", so the rest of the line starts from 23.
+                lineArr[1] = lineStr.Substring(22);     // Next three characters are " - ", so the rest of the line starts from 22.
                 writer.WriteLineArr(lineArr);
             }
             inputStream.Close();

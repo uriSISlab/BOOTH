@@ -99,6 +99,20 @@ namespace BOOTH
             }
         }
 
+        public static ILogProcessor GetCorrectProcessorForImportedSheet(Worksheet sheet)
+        {
+            // Go through our log processors and return the correct one for this sheet 
+            foreach (LogType logType in Enum.GetValues(typeof(LogType)))
+            {
+                ILogProcessor processor = CreateProcessor(logType);
+                if (processor != null && processor.IsThisLog(sheet))
+                {
+                    return processor;
+                }
+            }
+            return null;
+        }
+
         public static string Clip(string input, int length)
         {
             return input.Length > length ? input.Substring(0, length) : input;
@@ -133,7 +147,7 @@ namespace BOOTH
             System.Windows.Forms.MessageBox.Show(message);
         }
 
-        public static Worksheet tryAddingSheetWithName(string name)
+        public static Worksheet TryAddingSheetWithName(string name)
         {
             try
             {

@@ -68,12 +68,9 @@ namespace BOOTH
         private void WriteToWriter(string[] lineArr)
         {
             // Write the given array to writer after possibly appending the filename
-            writer.WriteLineArr(this.fileName.Length > 0 ? Util.AppendToArray(lineArr, this.fileName) : lineArr);
-        }
-
-        private int GetMonthOrder(string month)
-        {
-            return DateTimeFormatInfo.CurrentInfo.MonthNames.ToList().IndexOf(month) + 1;
+            FieldType[] fieldTypes = new FieldType[] { FieldType.TIMESPAN_MMSS, FieldType.DATETIME, FieldType.STRING,
+                FieldType.STRING, FieldType.STRING, FieldType.STRING };
+            writer.WriteLineArr(this.fileName.Length > 0 ? Util.AppendToArray(lineArr, this.fileName) : lineArr, fieldTypes);
         }
 
         private DateTime GetTimestampFromDICELine(string line)
