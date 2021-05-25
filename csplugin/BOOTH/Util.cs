@@ -151,6 +151,10 @@ namespace BOOTH
         {
             try
             {
+                if (ThisAddIn.app.ActiveWorkbook == null)
+                {
+                    ThisAddIn.app.Workbooks.Add();
+                }
                 Worksheet sheet = ThisAddIn.app.ActiveWorkbook.Sheets.Add();
                 sheet.Name = name;
                 return sheet;
