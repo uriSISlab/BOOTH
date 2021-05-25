@@ -43,6 +43,14 @@ namespace BOOTH
             this.stopButton.Click += StopButton_Click;
             this.stopButton.Enabled = false;
             this.neverStarted = true;
+
+            // Set keyboard shortcuts
+            string[] shortcuts = TimerControl.GetShortCutsForStartAndStop(number);
+            if (shortcuts[0] != null && shortcuts[1] != null)
+            {
+                this.startButton.Text = this.startButton.Text + " (&" + shortcuts[0] + ")";
+                this.stopButton.Text = this.stopButton.Text + " (&" + shortcuts[1] + ")";
+            }
         }
 
         protected PictureBox GetPicture()

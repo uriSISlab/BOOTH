@@ -84,6 +84,29 @@ namespace BOOTH
             }
         }
 
+        protected static string[] GetShortCutsForStartAndStop(int number)
+        {
+            string startShortcut, stopShortcut;
+            if (number < 5)
+            {
+                startShortcut = Convert.ToString(number * 2 - 1);
+                stopShortcut = Convert.ToString(number * 2);
+            } else if (number == 5)
+            {
+                startShortcut = Convert.ToString(9);
+                stopShortcut = Convert.ToString(0);
+            } else if (number == 6)
+            {
+                startShortcut = "-";
+                stopShortcut = "=";
+            } else
+            {
+                startShortcut = null;
+                stopShortcut = null;
+            }
+            return new string[] { startShortcut, stopShortcut };
+        }
+
         protected SheetWriter writer;
         protected int number; 
 
