@@ -137,7 +137,10 @@ namespace BOOTH
                 SheetWriter writer = new SheetWriter(sheet, rowOffset + 0, columnOffset + i * columnCount);
                 TimerControl control = TimerControl.GetTimerControl(timerTypes[i], writer, i + 1);
                 this.timersPanel.Controls.Add(control, i, 0);
-                this.timersPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f / timerTypes.Length));
+                if (timerTypes.Length <= 6)
+                {
+                    this.timersPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f / timerTypes.Length));
+                }
                 this.RegisterTimer(control);
             }
         }
