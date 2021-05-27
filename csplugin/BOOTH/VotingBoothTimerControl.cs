@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Resources;
 
 namespace BOOTH
 {
@@ -130,6 +131,16 @@ namespace BOOTH
                 this.neverStarted = true;
                 this.undoLastButton.Enabled = false;
             }
+        }
+
+        private void helpbutton_Click(object sender, EventArgs e)
+        {
+            HelpForm helpForm = new HelpForm();
+            helpForm.AddHelpRow(Properties.Resources.votingBoothStartName, Properties.Resources.votingBoothStartDescription);
+            helpForm.AddHelpRow(Properties.Resources.votingBoothStopName, Properties.Resources.votingBoothStopDescription);
+            helpForm.AddHelpRow(Properties.Resources.undoName, Properties.Resources.undoDescription);
+            helpForm.AddHelpRow(Properties.Resources.clearName, Properties.Resources.clearDescription);
+            helpForm.Show();
         }
     }
 }

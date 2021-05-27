@@ -71,6 +71,24 @@ namespace BOOTH.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Press Clr to clear the note above the Start button..
+        /// </summary>
+        internal static string clearDescription {
+            get {
+                return ResourceManager.GetString("clearDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        internal static string clearName {
+            get {
+                return ResourceManager.GetString("clearName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap DS200_BallotBox_resized {
@@ -91,6 +109,24 @@ namespace BOOTH.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (On click) Press Undo Last to remove the last recorded observation or the current observation in progress..
+        /// </summary>
+        internal static string undoDescription {
+            get {
+                return ResourceManager.GetString("undoDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Undo.
+        /// </summary>
+        internal static string undoName {
+            get {
+                return ResourceManager.GetString("undoName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Vote_scaled {
@@ -107,6 +143,42 @@ namespace BOOTH.Properties {
             get {
                 object obj = ResourceManager.GetObject("VotingBooth_resized", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Click or press the Alt/Command key and the number in parenthesis) Press Start when the voter has approached the privacy booth..
+        /// </summary>
+        internal static string votingBoothStartDescription {
+            get {
+                return ResourceManager.GetString("votingBoothStartDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        internal static string votingBoothStartName {
+            get {
+                return ResourceManager.GetString("votingBoothStartName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Click or press the Alt/Command key and the number in parenthesis) Press Stop when the voter begins walking away from the privacy booth..
+        /// </summary>
+        internal static string votingBoothStopDescription {
+            get {
+                return ResourceManager.GetString("votingBoothStopDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        internal static string votingBoothStopName {
+            get {
+                return ResourceManager.GetString("votingBoothStopName", resourceCulture);
             }
         }
     }

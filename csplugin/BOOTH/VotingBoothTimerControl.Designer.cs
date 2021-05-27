@@ -35,6 +35,7 @@
             this.stopButton = new System.Windows.Forms.Button();
             this.undoLastButton = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.helpButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,7 +53,7 @@
             // textbox
             // 
             this.textbox.Location = new System.Drawing.Point(9, 189);
-            this.textbox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textbox.Margin = new System.Windows.Forms.Padding(2);
             this.textbox.Name = "textbox";
             this.textbox.Size = new System.Drawing.Size(118, 20);
             this.textbox.TabIndex = 2;
@@ -60,7 +61,7 @@
             // clearButton
             // 
             this.clearButton.Location = new System.Drawing.Point(130, 189);
-            this.clearButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.clearButton.Margin = new System.Windows.Forms.Padding(2);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(50, 20);
             this.clearButton.TabIndex = 3;
@@ -70,7 +71,7 @@
             // startButton
             // 
             this.startButton.Location = new System.Drawing.Point(9, 213);
-            this.startButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.startButton.Margin = new System.Windows.Forms.Padding(2);
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(79, 27);
             this.startButton.TabIndex = 4;
@@ -80,7 +81,7 @@
             // stopButton
             // 
             this.stopButton.Location = new System.Drawing.Point(93, 213);
-            this.stopButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.stopButton.Margin = new System.Windows.Forms.Padding(2);
             this.stopButton.Name = "stopButton";
             this.stopButton.Size = new System.Drawing.Size(87, 27);
             this.stopButton.TabIndex = 5;
@@ -90,7 +91,7 @@
             // undoLastButton
             // 
             this.undoLastButton.Location = new System.Drawing.Point(36, 248);
-            this.undoLastButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.undoLastButton.Margin = new System.Windows.Forms.Padding(2);
             this.undoLastButton.Name = "undoLastButton";
             this.undoLastButton.Size = new System.Drawing.Size(107, 23);
             this.undoLastButton.TabIndex = 6;
@@ -102,16 +103,27 @@
             // 
             this.pictureBox1.Image = global::BOOTH.Properties.Resources.VotingBooth_resized;
             this.pictureBox1.Location = new System.Drawing.Point(26, 23);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(134, 162);
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             // 
+            // helpButton
+            // 
+            this.helpButton.Location = new System.Drawing.Point(154, 250);
+            this.helpButton.Name = "helpButton";
+            this.helpButton.Size = new System.Drawing.Size(25, 20);
+            this.helpButton.TabIndex = 7;
+            this.helpButton.Text = "?";
+            this.helpButton.UseVisualStyleBackColor = true;
+            this.helpButton.Click += new System.EventHandler(this.helpbutton_Click);
+            // 
             // VotingBoothTimerControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.helpButton);
             this.Controls.Add(this.undoLastButton);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.startButton);
@@ -119,7 +131,7 @@
             this.Controls.Add(this.textbox);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.headingLabel);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "VotingBoothTimerControl";
             this.Size = new System.Drawing.Size(188, 292);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -137,5 +149,6 @@
         private System.Windows.Forms.Button startButton;
         private System.Windows.Forms.Button stopButton;
         private System.Windows.Forms.Button undoLastButton;
+        private System.Windows.Forms.Button helpButton;
     }
 }

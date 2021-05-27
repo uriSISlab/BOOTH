@@ -133,5 +133,10 @@ namespace BOOTH
         {
             throw new NotImplementedException();
         }
+
+        public virtual string[] GetHelpTextItems()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
