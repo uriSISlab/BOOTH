@@ -118,27 +118,27 @@ namespace BOOTH
                 // If sheet is still null after 50 tries to create it, something is seriously wrong. Bail out.
                 Util.MessageBox("A worksheet could not be created for the timers.");
                 return;
-            } 
+            }
 
             switch (e.Control.Id)
             {
                 case "CheckinTimerButton":
-                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.CHECKIN, sheet);
+                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.CHECKIN, sheet, name);
                     break;
                 case "CheckinArrivalTimerButton":
-                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.CHECKIN_ARRIVAL, sheet);
+                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.CHECKIN_ARRIVAL, sheet, name);
                     break;
                 case "VotingBoothTimerButton":
-                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.VOTING_BOOTH, sheet);
+                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.VOTING_BOOTH, sheet, name);
                     break;
                 case "BMDTimerButton":
-                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.BMD, sheet);
+                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.BMD, sheet, name);
                     break;
                 case "BallotScanningTimerButton":
-                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.BALLOT_SCANNING, sheet);
+                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.BALLOT_SCANNING, sheet, name);
                     break;
                 case "ThroughputArrivalTimerButton":
-                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.THROUGHPUT_ARRIVAL, sheet);
+                    form = TimerBaseForm.CreateForType(TimerBaseForm.TimerFormType.THROUGHPUT_ARRIVAL, sheet, name);
                     break;
                 default:
                     throw new NotImplementedException();

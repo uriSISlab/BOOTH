@@ -125,5 +125,21 @@ namespace BOOTH
             this.helped = true;
             this.helpButton.Enabled = false;
         }
+
+        protected override string[][] GetHelpTextItems()
+        {
+            return new string[][] {
+                new string[] { Properties.Resources.bmdStartName, Properties.Resources.bmdStartDescription },
+                new string[] { Properties.Resources.bmdStopName, Properties.Resources.bmdStopDescription },
+                new string[] { Properties.Resources.bmdHelpName, Properties.Resources.bmdHelpDescription },
+                new string[] { Properties.Resources.undoName, Properties.Resources.undoDescription },
+                new string[] { Properties.Resources.clearName, Properties.Resources.clearDescription },
+            };
+        }
+
+        private void ShowHelpButton_Click(object sender, EventArgs e)
+        {
+            this.OpenHelpForm();
+        }
     }
 }

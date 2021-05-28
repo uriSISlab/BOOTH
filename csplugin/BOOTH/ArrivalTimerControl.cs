@@ -58,7 +58,7 @@ namespace BOOTH
             this.arrivalCountLabel.Text = totalArrivals.ToString();
         }
 
- 
+
         private void ArrivalButton_Click(object sender, EventArgs e)
         {
             DateTime now = DateTime.Now;
@@ -95,6 +95,19 @@ namespace BOOTH
                     this.undoLastButton.Enabled = false;
                 }
             }
+        }
+
+        private void HelpButton_Click(object sender, EventArgs e)
+        {
+            this.OpenHelpForm();
+        }
+
+        protected override string[][] GetHelpTextItems()
+        {
+            return new string[][] {
+                new string[] { Properties.Resources.arrivalName, Properties.Resources.arrivalDescription },
+                new string[] { Properties.Resources.vbmArrivalName, Properties.Resources.vbmArrivalDescription },
+            };
         }
     }
 }

@@ -106,7 +106,8 @@ namespace BOOTH
             this.timersListBox.Items.CopyTo(niceNames, 0);
             TimerControl.TimerType[] toCreateTypes =  niceNames.Select(
                 name => this.allTypes[Array.IndexOf(this.allNiceNames, name)]).ToArray();
-            TimerBaseForm.CreateWithTimerTypes(toCreateTypes, this.arrivalTimerCheckbox.Checked, this.worksheet).Show();
+            TimerBaseForm.CreateWithTimerTypes(toCreateTypes, this.arrivalTimerCheckbox.Checked, this.worksheet,
+                Properties.Resources.customTimersTitle).Show();
             this.created = true;
             this.Dispose();
         }
@@ -119,4 +120,4 @@ namespace BOOTH
             }
         }
     }
-} 
+}

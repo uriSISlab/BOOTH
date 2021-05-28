@@ -61,12 +61,120 @@ namespace BOOTH.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (Click or press the Alt/Command key and the number in parenthesis) Press Arrival to time stamp the arrival of a voter into the polling location..
+        /// </summary>
+        internal static string arrivalDescription {
+            get {
+                return ResourceManager.GetString("arrivalDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Arrival.
+        /// </summary>
+        internal static string arrivalName {
+            get {
+                return ResourceManager.GetString("arrivalName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Press Help to label the current observation when a voter requires assistance when using the BMD..
+        /// </summary>
+        internal static string bmdHelpDescription {
+            get {
+                return ResourceManager.GetString("bmdHelpDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help.
+        /// </summary>
+        internal static string bmdHelpName {
+            get {
+                return ResourceManager.GetString("bmdHelpName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap BMDLA_scaled {
             get {
                 object obj = ResourceManager.GetObject("BMDLA_scaled", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Click or press the Alt/Command key and the number in parenthesis) Press Start when the voter has approached a ballot printing station or BMD..
+        /// </summary>
+        internal static string bmdStartDescription {
+            get {
+                return ResourceManager.GetString("bmdStartDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        internal static string bmdStartName {
+            get {
+                return ResourceManager.GetString("bmdStartName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Click or press the Alt/Command key and the number in parenthesis) Press Stop when the voter begins walking away from the ballot printing station or BMD..
+        /// </summary>
+        internal static string bmdStopDescription {
+            get {
+                return ResourceManager.GetString("bmdStopDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        internal static string bmdStopName {
+            get {
+                return ResourceManager.GetString("bmdStopName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Click or press the Alt/Command key and the number in parenthesis) Press Start when the voter has approached the check-in station..
+        /// </summary>
+        internal static string checkinStartDescription {
+            get {
+                return ResourceManager.GetString("checkinStartDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        internal static string checkinStartName {
+            get {
+                return ResourceManager.GetString("checkinStartName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Click or press the Alt/Command key and the number in parenthesis) Press Stop when the voter recieves the ballot and begins walking away from the check-in station..
+        /// </summary>
+        internal static string checkinStopDescription {
+            get {
+                return ResourceManager.GetString("checkinStopDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        internal static string checkinStopName {
+            get {
+                return ResourceManager.GetString("checkinStopName", resourceCulture);
             }
         }
         
@@ -89,6 +197,15 @@ namespace BOOTH.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Custom Timers.
+        /// </summary>
+        internal static string customTimersTitle {
+            get {
+                return ResourceManager.GetString("customTimersTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap DS200_BallotBox_resized {
@@ -99,12 +216,138 @@ namespace BOOTH.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This button labels the current observation as the end of the provisional ballot process..
+        /// </summary>
+        internal static string endProvDescription {
+            get {
+                return ResourceManager.GetString("endProvDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End Prov.
+        /// </summary>
+        internal static string endProvName {
+            get {
+                return ResourceManager.GetString("endProvName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        internal static string helpDescriptionHeader {
+            get {
+                return ResourceManager.GetString("helpDescriptionHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Button.
+        /// </summary>
+        internal static string helpItemHeader {
+            get {
+                return ResourceManager.GetString("helpItemHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap PollPad {
             get {
                 object obj = ResourceManager.GetObject("PollPad", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Click or press the Alt/Command key and the number in parenthesis) Press Start when the voter has approached the ballot scanner..
+        /// </summary>
+        internal static string scannerStartDescription {
+            get {
+                return ResourceManager.GetString("scannerStartDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        internal static string scannerStartName {
+            get {
+                return ResourceManager.GetString("scannerStartName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Click or press the Alt/Command key and the number in parenthesis) Press Stop when the voter recieves the ballot and begins walking away from the ballot scanner..
+        /// </summary>
+        internal static string scannerStopDescription {
+            get {
+                return ResourceManager.GetString("scannerStopDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        internal static string scannerStopName {
+            get {
+                return ResourceManager.GetString("scannerStopName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This button labels the current observation as the start of the provisional ballot process..
+        /// </summary>
+        internal static string startProvDescription {
+            get {
+                return ResourceManager.GetString("startProvDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Prov.
+        /// </summary>
+        internal static string startProvName {
+            get {
+                return ResourceManager.GetString("startProvName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Click or press the Alt/Command key and the number in parenthesis) Press Start when the voter has entered the polling location..
+        /// </summary>
+        internal static string throughputStartDescription {
+            get {
+                return ResourceManager.GetString("throughputStartDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        internal static string throughputStartName {
+            get {
+                return ResourceManager.GetString("throughputStartName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Click or press the Alt/Command key and the number in parenthesis) Press Stop when the voter has exited the poling location..
+        /// </summary>
+        internal static string throughputStopDescription {
+            get {
+                return ResourceManager.GetString("throughputStopDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        internal static string throughputStopName {
+            get {
+                return ResourceManager.GetString("throughputStopName", resourceCulture);
             }
         }
         
@@ -123,6 +366,42 @@ namespace BOOTH.Properties {
         internal static string undoName {
             get {
                 return ResourceManager.GetString("undoName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Press VBM Arrival to timestamp and label the event of a Vote by Mail drop off..
+        /// </summary>
+        internal static string vbmArrivalDescription {
+            get {
+                return ResourceManager.GetString("vbmArrivalDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VBM Arrival.
+        /// </summary>
+        internal static string vbmArrivalName {
+            get {
+                return ResourceManager.GetString("vbmArrivalName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This button labels the current observation as a Vote by Mail ballot drop off or surrendering..
+        /// </summary>
+        internal static string vbmDescription {
+            get {
+                return ResourceManager.GetString("vbmDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VBM.
+        /// </summary>
+        internal static string vbmName {
+            get {
+                return ResourceManager.GetString("vbmName", resourceCulture);
             }
         }
         

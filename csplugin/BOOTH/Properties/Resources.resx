@@ -157,4 +157,97 @@
   <data name="votingBoothStopName" xml:space="preserve">
     <value>Stop</value>
   </data>
+  <data name="helpDescriptionHeader" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="helpItemHeader" xml:space="preserve">
+    <value>Button</value>
+  </data>
+  <data name="arrivalDescription" xml:space="preserve">
+    <value>(Click or press the Alt/Command key and the number in parenthesis) Press Arrival to time stamp the arrival of a voter into the polling location.</value>
+  </data>
+  <data name="arrivalName" xml:space="preserve">
+    <value>Arrival</value>
+  </data>
+  <data name="bmdHelpDescription" xml:space="preserve">
+    <value>Press Help to label the current observation when a voter requires assistance when using the BMD.</value>
+  </data>
+  <data name="bmdHelpName" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="bmdStartDescription" xml:space="preserve">
+    <value>(Click or press the Alt/Command key and the number in parenthesis) Press Start when the voter has approached a ballot printing station or BMD.</value>
+  </data>
+  <data name="bmdStartName" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="bmdStopDescription" xml:space="preserve">
+    <value>(Click or press the Alt/Command key and the number in parenthesis) Press Stop when the voter begins walking away from the ballot printing station or BMD.</value>
+  </data>
+  <data name="bmdStopName" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="checkinStartDescription" xml:space="preserve">
+    <value>(Click or press the Alt/Command key and the number in parenthesis) Press Start when the voter has approached the check-in station.</value>
+  </data>
+  <data name="checkinStartName" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="checkinStopDescription" xml:space="preserve">
+    <value>(Click or press the Alt/Command key and the number in parenthesis) Press Stop when the voter recieves the ballot and begins walking away from the check-in station.</value>
+  </data>
+  <data name="checkinStopName" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="customTimersTitle" xml:space="preserve">
+    <value>Custom Timers</value>
+  </data>
+  <data name="endProvDescription" xml:space="preserve">
+    <value>This button labels the current observation as the end of the provisional ballot process.</value>
+  </data>
+  <data name="endProvName" xml:space="preserve">
+    <value>End Prov</value>
+  </data>
+  <data name="scannerStartDescription" xml:space="preserve">
+    <value>(Click or press the Alt/Command key and the number in parenthesis) Press Start when the voter has approached the ballot scanner.</value>
+  </data>
+  <data name="scannerStartName" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="scannerStopDescription" xml:space="preserve">
+    <value>(Click or press the Alt/Command key and the number in parenthesis) Press Stop when the voter recieves the ballot and begins walking away from the ballot scanner.</value>
+  </data>
+  <data name="scannerStopName" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="startProvDescription" xml:space="preserve">
+    <value>This button labels the current observation as the start of the provisional ballot process.</value>
+  </data>
+  <data name="startProvName" xml:space="preserve">
+    <value>Start Prov</value>
+  </data>
+  <data name="throughputStartDescription" xml:space="preserve">
+    <value>(Click or press the Alt/Command key and the number in parenthesis) Press Start when the voter has entered the polling location.</value>
+  </data>
+  <data name="throughputStartName" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="throughputStopDescription" xml:space="preserve">
+    <value>(Click or press the Alt/Command key and the number in parenthesis) Press Stop when the voter has exited the poling location.</value>
+  </data>
+  <data name="throughputStopName" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="vbmArrivalDescription" xml:space="preserve">
+    <value>Press VBM Arrival to timestamp and label the event of a Vote by Mail drop off.</value>
+  </data>
+  <data name="vbmArrivalName" xml:space="preserve">
+    <value>VBM Arrival</value>
+  </data>
+  <data name="vbmDescription" xml:space="preserve">
+    <value>This button labels the current observation as a Vote by Mail ballot drop off or surrendering.</value>
+  </data>
+  <data name="vbmName" xml:space="preserve">
+    <value>VBM</value>
+  </data>
 </root>

@@ -32,9 +32,9 @@ namespace BOOTH
             this.storeCommentButton.Enabled = false;
         }
 
-        public static TimerBaseForm CreateForType(TimerFormType timerFormType, Worksheet sheet)
+        public static TimerBaseForm CreateForType(TimerFormType timerFormType, Worksheet sheet, string title)
         {
-            TimerBaseForm timerBase = new TimerBaseForm();
+            TimerBaseForm timerBase = new TimerBaseForm { Text = title };
             switch (timerFormType)
             {
                 case TimerFormType.CHECKIN:
@@ -59,9 +59,10 @@ namespace BOOTH
             return timerBase;
         }
 
-        public static TimerBaseForm CreateWithTimerTypes(TimerControl.TimerType[] timerTypes, bool includeArrival, Worksheet sheet)
+        public static TimerBaseForm CreateWithTimerTypes(TimerControl.TimerType[] timerTypes,
+            bool includeArrival, Worksheet sheet, string title)
         {
-            TimerBaseForm baseForm = new TimerBaseForm();
+            TimerBaseForm baseForm = new TimerBaseForm { Text = title };
             if (includeArrival)
             {
                 baseForm.PopulateArrivalTimer(sheet);

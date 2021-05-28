@@ -145,5 +145,23 @@ namespace BOOTH
             writer.WriteLineArrWithoutLineBreak(new string[] {"", "", "", "", ""});
             writer.PreviousLine();
         }
+
+        protected override string[][] GetHelpTextItems()
+        {
+            return new string[][] {
+                new string[] { Properties.Resources.checkinStartName, Properties.Resources.checkinStartDescription },
+                new string[] { Properties.Resources.checkinStopName, Properties.Resources.checkinStopDescription },
+                new string[] { Properties.Resources.startProvName, Properties.Resources.startProvDescription },
+                new string[] { Properties.Resources.endProvName, Properties.Resources.endProvDescription },
+                new string[] { Properties.Resources.vbmName, Properties.Resources.vbmDescription },
+                new string[] { Properties.Resources.undoName, Properties.Resources.undoDescription },
+                new string[] { Properties.Resources.clearName, Properties.Resources.clearDescription },
+            };
+        }
+
+        private void HelpButton_Click(object sender, EventArgs e)
+        {
+            this.OpenHelpForm();
+        }
     }
 }

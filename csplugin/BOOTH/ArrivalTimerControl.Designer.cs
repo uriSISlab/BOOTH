@@ -2,12 +2,12 @@
 {
     partial class ArrivalTimerControl
     {
-        /// <summary> 
+        /// <summary>
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
+        /// <summary>
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -22,8 +22,8 @@
 
         #region Component Designer generated code
 
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
+        /// <summary>
+        /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
@@ -32,43 +32,44 @@
             this.vbmArrivalButton = new System.Windows.Forms.Button();
             this.undoLastButton = new System.Windows.Forms.Button();
             this.arrivalCountLabel = new System.Windows.Forms.Label();
+            this.HelpButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
+            //
             // arrivalButton
-            // 
+            //
             this.arrivalButton.Location = new System.Drawing.Point(13, 12);
-            this.arrivalButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.arrivalButton.Margin = new System.Windows.Forms.Padding(2);
             this.arrivalButton.Name = "arrivalButton";
             this.arrivalButton.Size = new System.Drawing.Size(71, 29);
             this.arrivalButton.TabIndex = 0;
             this.arrivalButton.Text = "&Arrival";
             this.arrivalButton.UseVisualStyleBackColor = true;
             this.arrivalButton.Click += new System.EventHandler(this.ArrivalButton_Click);
-            // 
+            //
             // vbmArrivalButton
-            // 
+            //
             this.vbmArrivalButton.Location = new System.Drawing.Point(13, 45);
-            this.vbmArrivalButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.vbmArrivalButton.Margin = new System.Windows.Forms.Padding(2);
             this.vbmArrivalButton.Name = "vbmArrivalButton";
             this.vbmArrivalButton.Size = new System.Drawing.Size(71, 30);
             this.vbmArrivalButton.TabIndex = 1;
             this.vbmArrivalButton.Text = "&VBM Arrival";
             this.vbmArrivalButton.UseVisualStyleBackColor = true;
             this.vbmArrivalButton.Click += new System.EventHandler(this.VbmArrivalButton_Click);
-            // 
+            //
             // undoLastButton
-            // 
-            this.undoLastButton.Location = new System.Drawing.Point(13, 94);
-            this.undoLastButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            //
+            this.undoLastButton.Location = new System.Drawing.Point(13, 92);
+            this.undoLastButton.Margin = new System.Windows.Forms.Padding(2);
             this.undoLastButton.Name = "undoLastButton";
-            this.undoLastButton.Size = new System.Drawing.Size(71, 20);
+            this.undoLastButton.Size = new System.Drawing.Size(71, 22);
             this.undoLastButton.TabIndex = 2;
             this.undoLastButton.Text = "Undo Last";
             this.undoLastButton.UseVisualStyleBackColor = true;
             this.undoLastButton.Click += new System.EventHandler(this.UndoLastButton_Click);
-            // 
+            //
             // arrivalCountLabel
-            // 
+            //
             this.arrivalCountLabel.AutoSize = true;
             this.arrivalCountLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.arrivalCountLabel.Location = new System.Drawing.Point(103, 29);
@@ -77,16 +78,27 @@
             this.arrivalCountLabel.Size = new System.Drawing.Size(24, 26);
             this.arrivalCountLabel.TabIndex = 3;
             this.arrivalCountLabel.Text = "0";
-            // 
+            //
+            // HelpButton
+            //
+            this.HelpButton.Location = new System.Drawing.Point(108, 92);
+            this.HelpButton.Name = "HelpButton";
+            this.HelpButton.Size = new System.Drawing.Size(19, 22);
+            this.HelpButton.TabIndex = 4;
+            this.HelpButton.Text = "?";
+            this.HelpButton.UseVisualStyleBackColor = true;
+            this.HelpButton.Click += new System.EventHandler(this.HelpButton_Click);
+            //
             // ArrivalTimerControl
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.HelpButton);
             this.Controls.Add(this.arrivalCountLabel);
             this.Controls.Add(this.undoLastButton);
             this.Controls.Add(this.vbmArrivalButton);
             this.Controls.Add(this.arrivalButton);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ArrivalTimerControl";
             this.Size = new System.Drawing.Size(150, 121);
             this.ResumeLayout(false);
@@ -100,5 +112,6 @@
         private System.Windows.Forms.Button vbmArrivalButton;
         private System.Windows.Forms.Button undoLastButton;
         private System.Windows.Forms.Label arrivalCountLabel;
+        private System.Windows.Forms.Button HelpButton;
     }
 }

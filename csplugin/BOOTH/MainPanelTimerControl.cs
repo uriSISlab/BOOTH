@@ -23,17 +23,6 @@ namespace BOOTH
 
         public MainPanelTimerControl(SheetWriter writer, int number) : base(writer, number)
         {
-        } 
-
-        public override string[] GetHelpTextItems()
-        {
-            return new string[]
-            {
-                "Start: (Click or press the Alt/Command key and the number in parenthesis) " +
-                "Press Start when the voter has approached the check-in station.",
-
-                
-            };
         }
     }
 }

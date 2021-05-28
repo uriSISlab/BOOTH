@@ -57,7 +57,7 @@ namespace BOOTH
         protected PictureBox GetPicture()
         {
             return this.pictureBox1;
-        } 
+        }
 
         protected Label GetHeadingLabel()
         {
@@ -93,7 +93,7 @@ namespace BOOTH
         {
             DateTime now = DateTime.Now;
             this.writer.LineBreak();
-            this.writer.WriteLineArrWithoutLineBreak(new string[] { now.ToString() },  new FieldType[] { FieldType.DATETIME });
+            this.writer.WriteLineArrWithoutLineBreak(new string[] { now.ToString() }, new FieldType[] { FieldType.DATETIME });
             this.writer.Return();
             this.startButton.Enabled = false;
             this.stopButton.Enabled = true;
@@ -123,7 +123,7 @@ namespace BOOTH
                 return;
             }
             this.writer.Return();
-            this.writer.WriteLineArrWithoutLineBreak(new string[] {"", "", "", ""});
+            this.writer.WriteLineArrWithoutLineBreak(new string[] { "", "", "", "" });
             this.writer.PreviousLine();
             this.Reset();
             if (this.writer.GetRowNum() == 1)
@@ -133,14 +133,19 @@ namespace BOOTH
             }
         }
 
-        private void helpbutton_Click(object sender, EventArgs e)
+        private void Helpbutton_Click(object sender, EventArgs e)
         {
-            HelpForm helpForm = new HelpForm();
-            helpForm.AddHelpRow(Properties.Resources.votingBoothStartName, Properties.Resources.votingBoothStartDescription);
-            helpForm.AddHelpRow(Properties.Resources.votingBoothStopName, Properties.Resources.votingBoothStopDescription);
-            helpForm.AddHelpRow(Properties.Resources.undoName, Properties.Resources.undoDescription);
-            helpForm.AddHelpRow(Properties.Resources.clearName, Properties.Resources.clearDescription);
-            helpForm.Show();
+            this.OpenHelpForm();
+        }
+
+        protected override string[][] GetHelpTextItems()
+        {
+            return new string[][] {
+                new string[] { Properties.Resources.votingBoothStartName, Properties.Resources.votingBoothStartDescription },
+                new string[] { Properties.Resources.votingBoothStopName, Properties.Resources.votingBoothStopDescription },
+                new string[] { Properties.Resources.undoName, Properties.Resources.undoDescription },
+                new string[] { Properties.Resources.clearName, Properties.Resources.clearDescription },
+            };
         }
     }
 }

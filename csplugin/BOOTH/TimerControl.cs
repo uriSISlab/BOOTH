@@ -108,7 +108,7 @@ namespace BOOTH
         }
 
         protected SheetWriter writer;
-        protected int number; 
+        protected int number;
 
         public TimerControl()
         {
@@ -134,9 +134,20 @@ namespace BOOTH
             throw new NotImplementedException();
         }
 
-        public virtual string[] GetHelpTextItems()
+        protected virtual string[][] GetHelpTextItems()
         {
             throw new NotImplementedException();
+        }
+
+        protected void OpenHelpForm()
+        {
+            HelpForm helpForm = new HelpForm();
+            string[][] helpTextItems = this.GetHelpTextItems();
+            foreach (string[] item in helpTextItems)
+            {
+                helpForm.AddHelpRow(item[0], item[1]);
+            }
+            helpForm.Show();
         }
     }
 }

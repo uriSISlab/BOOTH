@@ -33,15 +33,18 @@
             // 
             // helpTablePanel
             // 
+            this.helpTablePanel.AutoSize = true;
+            this.helpTablePanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.helpTablePanel.ColumnCount = 2;
             this.helpTablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.helpTablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.helpTablePanel.Location = new System.Drawing.Point(7, 8);
+            this.helpTablePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.helpTablePanel.Location = new System.Drawing.Point(0, 0);
             this.helpTablePanel.Name = "helpTablePanel";
             this.helpTablePanel.RowCount = 1;
             this.helpTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.helpTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.helpTablePanel.Size = new System.Drawing.Size(785, 429);
+            this.helpTablePanel.Size = new System.Drawing.Size(800, 450);
             this.helpTablePanel.TabIndex = 0;
             // 
             // HelpForm
@@ -53,6 +56,7 @@
             this.Name = "HelpForm";
             this.Text = "Help";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
