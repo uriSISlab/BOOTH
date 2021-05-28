@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CsvHelper;
 
 namespace BOOTH
 {
@@ -11,11 +12,13 @@ namespace BOOTH
     {
 
         private readonly StreamWriter stream;
+        private readonly CsvWriter csv;
         private long rowNum;
 
         public FileWriter(string filePath)
         {
             this.stream = new StreamWriter(filePath);
+            this.csv = new CsvWriter(this.stream, System.Globalization.CultureInfo.InvariantCulture);
             this.rowNum = 1;
         }
 
@@ -40,8 +43,11 @@ namespace BOOTH
 
         public void WriteLineArr(string[] line, FieldType[] fieldTypes = null)
         {
-            // TODO wrap item in quotes if it contains a comma so that output is proper CSV
-            this.stream.WriteLine(String.Join(",", line));
+            foreach (string field in line)
+            {
+                csv.WriteField(field);
+            }
+            csv.NextRecord();
             rowNum++;
         }
     }

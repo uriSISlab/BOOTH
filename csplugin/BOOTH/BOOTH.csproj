@@ -123,9 +123,34 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="CsvHelper, Version=27.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsvHelper.27.1.0\lib\net47\CsvHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -179,37 +204,37 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="HelpForm.cs">
+    <Compile Include="Timers\HelpForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="HelpForm.Designer.cs">
+    <Compile Include="Timers\HelpForm.Designer.cs">
       <DependentUpon>HelpForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainPanelTimerControl.cs">
+    <Compile Include="Timers\TimerControls\MainPanelTimerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomTimersCreationForm.cs">
+    <Compile Include="Timers\CustomTimersCreationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CustomTimersCreationForm.Designer.cs">
+    <Compile Include="Timers\CustomTimersCreationForm.Designer.cs">
       <DependentUpon>CustomTimersCreationForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ThroughputTimerControl.cs">
+    <Compile Include="Timers\TimerControls\ThroughputTimerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="TimerControl.cs">
+    <Compile Include="Timers\TimerControls\TimerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="TimerBaseForm.cs">
+    <Compile Include="Timers\TimerBaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TimerBaseForm.Designer.cs">
+    <Compile Include="Timers\TimerBaseForm.Designer.cs">
       <DependentUpon>TimerBaseForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Module1.cs" />
-    <Compile Include="DS200_Processor.cs" />
-    <Compile Include="DICX_Processor.cs" />
-    <Compile Include="DICE_Processor.cs" />
+    <Compile Include="LogProcessors\DS200\DS200_Processor.cs" />
+    <Compile Include="LogProcessors\Dominion_ICX\DICX_Processor.cs" />
+    <Compile Include="LogProcessors\Dominion_ICE\DICE_Processor.cs" />
     <Compile Include="Dispatch.cs" />
     <Compile Include="ProgressBarForm.cs">
       <SubType>Form</SubType>
@@ -217,58 +242,58 @@
     <Compile Include="ProgressBarForm.Designer.cs">
       <DependentUpon>ProgressBarForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CheckInTimerControl.cs">
+    <Compile Include="Timers\TimerControls\CheckInTimerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CheckInTimerControl.Designer.cs">
+    <Compile Include="Timers\TimerControls\CheckInTimerControl.Designer.cs">
       <DependentUpon>CheckInTimerControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ArrivalTimerControl.cs">
+    <Compile Include="Timers\TimerControls\ArrivalTimerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ArrivalTimerControl.Designer.cs">
+    <Compile Include="Timers\TimerControls\ArrivalTimerControl.Designer.cs">
       <DependentUpon>ArrivalTimerControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="BMDTimerControl.cs">
+    <Compile Include="Timers\TimerControls\BMDTimerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="BMDTimerControl.Designer.cs">
+    <Compile Include="Timers\TimerControls\BMDTimerControl.Designer.cs">
       <DependentUpon>BMDTimerControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="BallotScanningTimerControl.cs">
+    <Compile Include="Timers\TimerControls\BallotScanningTimerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="VotingBoothTimerControl.cs">
+    <Compile Include="Timers\TimerControls\VotingBoothTimerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="VotingBoothTimerControl.Designer.cs">
+    <Compile Include="Timers\TimerControls\VotingBoothTimerControl.Designer.cs">
       <DependentUpon>VotingBoothTimerControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="VSAPBMD_Processor.cs" />
-    <Compile Include="Dominion_ICX.cs" />
-    <Compile Include="Dominion_ICE.cs" />
-    <Compile Include="FileWriter.cs" />
-    <Compile Include="ILogProcessor.cs" />
-    <Compile Include="SheetWriter.cs" />
-    <Compile Include="FileReader.cs" />
-    <Compile Include="IOutputWriter.cs" />
-    <Compile Include="SheetReader.cs" />
-    <Compile Include="IInputReader.cs" />
-    <Compile Include="VSAP_BMD.cs" />
+    <Compile Include="LogProcessors\VSAP_BMD\VSAPBMD_Processor.cs" />
+    <Compile Include="LogProcessors\Dominion_ICX\Dominion_ICX.cs" />
+    <Compile Include="LogProcessors\Dominion_ICE\Dominion_ICE.cs" />
+    <Compile Include="ReadWrite\FileWriter.cs" />
+    <Compile Include="LogProcessors\ILogProcessor.cs" />
+    <Compile Include="ReadWrite\SheetWriter.cs" />
+    <Compile Include="ReadWrite\FileReader.cs" />
+    <Compile Include="ReadWrite\IOutputWriter.cs" />
+    <Compile Include="ReadWrite\SheetReader.cs" />
+    <Compile Include="ReadWrite\IInputReader.cs" />
+    <Compile Include="LogProcessors\VSAP_BMD\VSAP_BMD.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <EmbeddedResource Include="ArrivalTimerControl.resx">
+    <EmbeddedResource Include="Timers\TimerControls\ArrivalTimerControl.resx">
       <DependentUpon>ArrivalTimerControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="BMDTimerControl.resx">
+    <EmbeddedResource Include="Timers\TimerControls\BMDTimerControl.resx">
       <DependentUpon>BMDTimerControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomTimersCreationForm.resx">
+    <EmbeddedResource Include="Timers\CustomTimersCreationForm.resx">
       <DependentUpon>CustomTimersCreationForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HelpForm.resx">
+    <EmbeddedResource Include="Timers\HelpForm.resx">
       <DependentUpon>HelpForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressBarForm.resx">
@@ -287,17 +312,18 @@
     <EmbeddedResource Include="Ribbon1.resx">
       <DependentUpon>Ribbon1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TimerBaseForm.resx">
+    <EmbeddedResource Include="Timers\TimerBaseForm.resx">
       <DependentUpon>TimerBaseForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CheckInTimerControl.resx">
+    <EmbeddedResource Include="Timers\TimerControls\CheckInTimerControl.resx">
       <DependentUpon>CheckInTimerControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="VotingBoothTimerControl.resx">
+    <EmbeddedResource Include="Timers\TimerControls\VotingBoothTimerControl.resx">
       <DependentUpon>VotingBoothTimerControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="BOOTH_TemporaryKey.pfx" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

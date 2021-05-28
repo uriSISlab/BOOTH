@@ -65,6 +65,13 @@ namespace BOOTH
             string outputFileName = Path.Combine(folder, "processed_all.csv");
             string[] files = Directory.GetFiles(folder, Util.GetFileNamePatternForLog(t));
 
+            // Quit if no files found
+            if (files.Length == 0)
+            {
+                System.Windows.Forms.MessageBox.Show("No compatible files found in the selected directory.");
+                return;
+            }
+
             // Show progress bar
             ProgressBarForm progress = new ProgressBarForm();
             progress.InitializeAndShow(files.Length - 1);
@@ -87,5 +94,5 @@ namespace BOOTH
             progress.Done();
             System.Windows.Forms.MessageBox.Show("Processed output written to " + outputFileName);
         }
-    } 
+    }
 }
