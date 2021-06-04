@@ -61,13 +61,13 @@ namespace BOOTH
                     Module1.Import_DS200_data();
                     break;
                 case "ImportVSAPBMDButton":
-                    VSAP_BMD.Import_VSAPBMD_data();
+                    (new VSAPBMDImporter()).ImportIntoCurrentSheet();
                     break;
                 case "ImportDICEButton":
-                    Dominion_ICE.Import_DICE_data();
+                    (new DICE_Importer()).ImportIntoCurrentSheet();
                     break;
                 case "ImportDICXButton":
-                    Dominion_ICX.Import_DICX_Data();
+                    (new DICX_Importer()).ImportIntoCurrentSheet();
                     break;
                 case "ImportPollPadButton":
                     Module1.PollpadImport();
