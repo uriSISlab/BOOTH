@@ -2,6 +2,7 @@
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.IO;
+using BOOTH.LogProcessors;
 
 namespace BOOTH
 {
@@ -30,12 +31,18 @@ namespace BOOTH
             // Disable UI updates
             ThisAddIn.app.ScreenUpdating = false;
 
+
+            Worksheet outputSheet = AddSheetForOutput(sheet);
             SheetReader reader = new SheetReader(sheet, processor.GetSeparator());
-            SheetWriter writer = new SheetWriter(AddSheetForOutput(sheet));
+            SheetWriter writer = new SheetWriter(outputSheet);
 
             Util.RunPipeline(reader, processor, writer, true);
 
             writer.FormatPretty();
+
+            // Tag the sheet with a machine type mark so we don't have to dig into the cell
+            // data to identify machine type when trying to generate summary statistics
+            outputSheet.CustomProperties.Add(Util.MACHINE_TYPE_MARK_NAME, processor.GetUniqueTag());
 
             // Re-enable UI updates
             ThisAddIn.app.ScreenUpdating = true;

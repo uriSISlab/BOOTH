@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BOOTH
+namespace BOOTH.LogProcessors.DS200
 {
     class DS200_Processor : ILogProcessor
     {
@@ -167,6 +167,11 @@ namespace BOOTH
                     WriteLineArr(outputArr);
                 }
             }
+        }
+
+        public string GetUniqueTag()
+        {
+            return "DS200";
         }
     }
 }

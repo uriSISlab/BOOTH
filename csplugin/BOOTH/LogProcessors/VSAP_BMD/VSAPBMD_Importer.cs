@@ -3,11 +3,11 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Excel;
 using System.IO;
 
-namespace BOOTH
+namespace BOOTH.LogProcessors.VSAP_BMD
 {
-    class VSAPBMDImporter : LogImporter
+    class VSAPBMD_Importer : LogImporter
     {
-        public VSAPBMDImporter() : base(new string[][] { new string[] {"Log files", "*.log"}})
+        public VSAPBMD_Importer() : base(new string[][] { new string[] {"Log files", "*.log"}})
         {
         }
 

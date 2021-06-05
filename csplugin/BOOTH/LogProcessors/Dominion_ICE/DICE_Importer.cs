@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BOOTH
+namespace BOOTH.LogProcessors.Dominion_ICE
 {
     // Log processing for Dominion ImageCast Evolution Ballot Scanning and Marking Device
     class DICE_Importer : LogProcessors.LogImporter

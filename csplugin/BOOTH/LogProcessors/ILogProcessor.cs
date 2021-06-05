@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Interop.Excel;
+﻿using BOOTH.LogProcessors;
+using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BOOTH
+namespace BOOTH.LogProcessors
 {
     public interface ILogProcessor
     {
@@ -23,5 +24,7 @@ namespace BOOTH
         string GetSeparator();
 
         void Done();
+
+        string GetUniqueTag();
     }
 }

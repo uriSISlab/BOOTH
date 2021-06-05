@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.VisualStyles;
 
-namespace BOOTH
+namespace BOOTH.LogProcessors.Dominion_ICX
 {
     class DICX_Processor : ILogProcessor
     {
@@ -129,6 +129,11 @@ namespace BOOTH
 
         public void Done()
         {
+        }
+
+        public string GetUniqueTag()
+        {
+            return "DICX";
         }
     }
 }

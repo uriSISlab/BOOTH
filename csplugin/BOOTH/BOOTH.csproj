@@ -204,7 +204,9 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="LogProcessors\ILogSummarizer.cs" />
     <Compile Include="LogProcessors\LogImporter.cs" />
+    <Compile Include="LogProcessors\VSAP_BMD\VSAPBMD_Summarizer.cs" />
     <Compile Include="Timers\HelpForm.cs">
       <SubType>Form</SubType>
     </Compile>

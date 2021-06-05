@@ -1,9 +1,6 @@
-﻿using Microsoft.Office.Interop.Excel;
+﻿using BOOTH.LogProcessors;
+using Microsoft.Office.Interop.Excel;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BOOTH
 {
@@ -34,6 +31,9 @@ namespace BOOTH
 
     public static class Util
     {
+
+        public static readonly string MACHINE_TYPE_MARK_NAME = "MachineType";
+
         public static string GetColumnLetterFromNumber(long number)
         {
             return GetColumnLetterFromNumberZeroBased(number - 1);
@@ -70,16 +70,25 @@ namespace BOOTH
             switch (t)
             {
                 case LogType.VSAP_BMD:
-                    return new VSAPBMD_Processor();
+                    return new LogProcessors.VSAP_BMD.VSAPBMD_Processor();
                 case LogType.DICE:
-                    return new DICE_Processor();
+                    return new LogProcessors.Dominion_ICE.DICE_Processor();
                 case LogType.DICX:
-                    return new DICX_Processor();
+                    return new LogProcessors.Dominion_ICX.DICX_Processor();
                 case LogType.DS200:
-                    return new DS200_Processor();
+                    return new LogProcessors.DS200.DS200_Processor();
                 default:
                     return null;
             }
+        }
+
+        public static ILogSummarizer CreateSummarizer(string machineTypeTag)
+        {
+            if (machineTypeTag == LogProcessors.VSAP_BMD.VSAPBMD_Summarizer.MACHINE_TYPE_TAG)
+            {
+                    return new LogProcessors.VSAP_BMD.VSAPBMD_Summarizer();
+            }
+            return null;
         }
 
         public static string GetFileNamePatternForLog(LogType t)
@@ -108,6 +117,18 @@ namespace BOOTH
                 if (processor != null && processor.IsThisLog(sheet))
                 {
                     return processor;
+                }
+            }
+            return null;
+        }
+
+        public static ILogSummarizer GetCorrectSummarizerForProcessedSheet(Worksheet sheet)
+        {
+            System.Diagnostics.Debug.WriteLine("Count when reading is " + sheet.CustomProperties.Count);
+            foreach (CustomProperty prop in sheet.CustomProperties) {
+                if (prop.Name == Util.MACHINE_TYPE_MARK_NAME)
+                {
+                    return CreateSummarizer(prop.Value);
                 }
             }
             return null;

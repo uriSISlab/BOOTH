@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BOOTH
+namespace BOOTH.LogProcessors.Dominion_ICX
 {
     // Log processing for Dominion ImageCast X Ballot Scanning and Marking device
     class DICX_Importer: LogImporter

@@ -1,4 +1,6 @@
-﻿using Microsoft.Office.Core;
+﻿using BOOTH.LogProcessors;
+using BOOTH.LogProcessors.VSAP_BMD;
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
-namespace BOOTH
+namespace BOOTH.LogProcessors.VSAP_BMD
 {
     class VSAPBMD_Processor : ILogProcessor
     {
@@ -330,6 +332,11 @@ namespace BOOTH
 
         public void Done()
         {
+        }
+
+        public string GetUniqueTag()
+        {
+            return VSAPBMD_Summarizer.MACHINE_TYPE_TAG;
         }
     }
 }

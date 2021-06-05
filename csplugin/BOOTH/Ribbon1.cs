@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
 using Microsoft.VisualStudio.Tools.Applications.Runtime;
+using BOOTH.LogProcessors;
 
 namespace BOOTH
 {
@@ -61,13 +62,13 @@ namespace BOOTH
                     Module1.Import_DS200_data();
                     break;
                 case "ImportVSAPBMDButton":
-                    (new VSAPBMDImporter()).ImportIntoCurrentSheet();
+                    (new LogProcessors.VSAP_BMD.VSAPBMD_Importer()).ImportIntoCurrentSheet();
                     break;
                 case "ImportDICEButton":
-                    (new DICE_Importer()).ImportIntoCurrentSheet();
+                    (new LogProcessors.Dominion_ICE.DICE_Importer()).ImportIntoCurrentSheet();
                     break;
                 case "ImportDICXButton":
-                    (new DICX_Importer()).ImportIntoCurrentSheet();
+                    (new LogProcessors.Dominion_ICX.DICX_Importer()).ImportIntoCurrentSheet();
                     break;
                 case "ImportPollPadButton":
                     Module1.PollpadImport();
@@ -99,7 +100,15 @@ namespace BOOTH
 
         private void SumStatsButton_Click(object sender, RibbonControlEventArgs e)
         {
-            Module1.TestForStat();
+            Worksheet sheet = ThisAddIn.app.ActiveWorkbook.ActiveSheet;
+            ILogSummarizer summarizer = Util.GetCorrectSummarizerForProcessedSheet(sheet);
+            if (summarizer == null)
+            {
+                Util.MessageBox("Could not create a summary for the current sheet.");
+                return;
+            }
+            summarizer.CreateSummaryFrom(sheet);
+            // Module1.TestForStat();
         }
 
         private void TimerOpenButton_Click(object sender, RibbonControlEventArgs e)

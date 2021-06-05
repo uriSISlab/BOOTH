@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BOOTH
+namespace BOOTH.LogProcessors.Dominion_ICE
 {
     public class DICE_Processor : ILogProcessor
     {
@@ -226,6 +226,11 @@ namespace BOOTH
 
         public void Done()
         {
+        }
+
+        public string GetUniqueTag()
+        {
+            return "DICE";
         }
     }
 }
