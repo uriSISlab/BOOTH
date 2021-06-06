@@ -90,7 +90,7 @@ namespace BOOTH.LogProcessors.DS200
             }
             return elements;
         }
-        
+
         private DateTime GetTimestamp(string line)
         {
             string[] elements = GetElements(line);
