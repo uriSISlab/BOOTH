@@ -86,7 +86,10 @@ namespace BOOTH
         {
             if (machineTypeTag == LogProcessors.VSAP_BMD.VSAPBMD_Summarizer.MACHINE_TYPE_TAG)
             {
-                    return new LogProcessors.VSAP_BMD.VSAPBMD_Summarizer();
+                return new LogProcessors.VSAP_BMD.VSAPBMD_Summarizer();
+            } else if (machineTypeTag == LogProcessors.DS200.DS200_Summarizer.MACHINE_TYPE_TAG)
+            {
+                return new LogProcessors.DS200.DS200_Summarizer();
             }
             return null;
         }
@@ -110,7 +113,7 @@ namespace BOOTH
 
         public static ILogProcessor GetCorrectProcessorForImportedSheet(Worksheet sheet)
         {
-            // Go through our log processors and return the correct one for this sheet 
+            // Go through our log processors and return the correct one for this sheet
             foreach (LogType logType in Enum.GetValues(typeof(LogType)))
             {
                 ILogProcessor processor = CreateProcessor(logType);

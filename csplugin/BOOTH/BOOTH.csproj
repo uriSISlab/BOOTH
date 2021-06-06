@@ -204,6 +204,8 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="LogProcessors\DS200\DS200_Importer.cs" />
+    <Compile Include="LogProcessors\DS200\DS200_Summarizer.cs" />
     <Compile Include="LogProcessors\ILogSummarizer.cs" />
     <Compile Include="LogProcessors\LogImporter.cs" />
     <Compile Include="LogProcessors\VSAP_BMD\VSAPBMD_Summarizer.cs" />

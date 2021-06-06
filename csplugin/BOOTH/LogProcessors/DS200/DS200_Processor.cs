@@ -171,7 +171,7 @@ namespace BOOTH.LogProcessors.DS200
 
         public string GetUniqueTag()
         {
-            return "DS200";
+            return DS200_Summarizer.MACHINE_TYPE_TAG;
         }
     }
 }

@@ -59,7 +59,7 @@ namespace BOOTH
             switch (e.Control.Id)
             {
                 case "ImportDS200Button":
-                    Module1.Import_DS200_data();
+                    (new LogProcessors.DS200.DS200_Importer()).ImportIntoCurrentSheet();
                     break;
                 case "ImportVSAPBMDButton":
                     (new LogProcessors.VSAP_BMD.VSAPBMD_Importer()).ImportIntoCurrentSheet();
