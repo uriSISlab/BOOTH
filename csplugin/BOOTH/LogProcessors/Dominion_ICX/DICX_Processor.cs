@@ -11,7 +11,7 @@ namespace BOOTH.LogProcessors.Dominion_ICX
 {
     class DICX_Processor : ILogProcessor
     {
-        
+
         private enum DICXState
         {
             // The device is ready to accept a new ballot
@@ -45,7 +45,7 @@ namespace BOOTH.LogProcessors.Dominion_ICX
             this.state = DICXState.Ready;
             this.fileName = "";
         }
-        
+
         private void WriteToWriter(string[] lineArr)
         {
             FieldType[] fieldTypes = new FieldType[] { FieldType.TIMESPAN_MMSS,
@@ -124,7 +124,7 @@ namespace BOOTH.LogProcessors.Dominion_ICX
 
         public void WriteHeader()
         {
-            writer.WriteLineArr(("Duration,Timestamp,Event" + (fileName.Length > 0 ? ",Filename" : "")).Split(','));
+            writer.WriteLineArr(("Duration (mm:ss),Timestamp,Event" + (fileName.Length > 0 ? ",Filename" : "")).Split(','));
         }
 
         public void Done()
@@ -133,7 +133,7 @@ namespace BOOTH.LogProcessors.Dominion_ICX
 
         public string GetUniqueTag()
         {
-            return "DICX";
+            return DICX_Summarizer.MACHINE_TYPE_TAG;
         }
     }
 }

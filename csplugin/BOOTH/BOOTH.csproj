@@ -205,6 +205,7 @@
   -->
   <ItemGroup>
     <Compile Include="LogProcessors\Dominion_ICE\DICE_Summarizer.cs" />
+    <Compile Include="LogProcessors\Dominion_ICX\DICX_Summarizer.cs" />
     <Compile Include="LogProcessors\DS200\DS200_Importer.cs" />
     <Compile Include="LogProcessors\DS200\DS200_Summarizer.cs" />
     <Compile Include="LogProcessors\ILogSummarizer.cs" />
