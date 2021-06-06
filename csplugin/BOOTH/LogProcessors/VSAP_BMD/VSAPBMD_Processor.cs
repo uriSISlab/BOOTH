@@ -28,7 +28,7 @@ namespace BOOTH.LogProcessors.VSAP_BMD
         private const string errorScanningBPMLog = "Error scanning BPM - BPM not present";
         private const string quitVotingLog = "Returning ballot - quit voting";
         private const string startLog = "screen diagnostics Successful";
-            
+
         // Enum to represent states of the VSAP BMD
         enum BMDState
         {
@@ -74,7 +74,7 @@ namespace BOOTH.LogProcessors.VSAP_BMD
             FieldType[] fieldTypes = null;
             if (lineArr[0] != "-")
             {
-                fieldTypes = new FieldType[] { FieldType.TIMESPAN_MMSS }; 
+                fieldTypes = new FieldType[] { FieldType.TIMESPAN_MMSS };
             }
             writer.WriteLineArr(lineArr, fieldTypes);
         }
@@ -171,7 +171,7 @@ namespace BOOTH.LogProcessors.VSAP_BMD
             DateTime thisTime;
             string thisLog;
             string[] elements = line.Split('|');
-            
+
             if (elements.Length == 7)
             {
                 thisTime = this.ParseDate(elements[1]);

@@ -204,6 +204,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="LogProcessors\Dominion_ICE\DICE_Summarizer.cs" />
     <Compile Include="LogProcessors\DS200\DS200_Importer.cs" />
     <Compile Include="LogProcessors\DS200\DS200_Summarizer.cs" />
     <Compile Include="LogProcessors\ILogSummarizer.cs" />

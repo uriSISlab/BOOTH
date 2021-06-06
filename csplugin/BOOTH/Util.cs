@@ -90,6 +90,9 @@ namespace BOOTH
             } else if (machineTypeTag == LogProcessors.DS200.DS200_Summarizer.MACHINE_TYPE_TAG)
             {
                 return new LogProcessors.DS200.DS200_Summarizer();
+            } else if (machineTypeTag == LogProcessors.Dominion_ICE.DICE_Summarizer.MACHINE_TYPE_TAG)
+            {
+                return new LogProcessors.Dominion_ICE.DICE_Summarizer();
             }
             return null;
         }

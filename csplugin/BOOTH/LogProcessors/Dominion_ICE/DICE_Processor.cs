@@ -219,7 +219,7 @@ namespace BOOTH.LogProcessors.Dominion_ICE
         public void WriteHeader()
         {
             // Write the header
-            string line = "Duration,Timestamp,Event,Misreads,Ballot Reviewed";
+            string line = "Duration (mm:ss),Timestamp,Event,Misreads,Ballot Reviewed";
             line += fileName.Length > 0 ? ",Filename" : "";
             writer.WriteLineArr(line.Split(','));
         }
@@ -230,7 +230,7 @@ namespace BOOTH.LogProcessors.Dominion_ICE
 
         public string GetUniqueTag()
         {
-            return "DICE";
+            return DICE_Summarizer.MACHINE_TYPE_TAG;
         }
     }
 }
