@@ -84,7 +84,7 @@ jobs:
 
     # Install dependencies
     - name: Install package dependencies
-      run: dotnet restore
+      run: msbuild -p:RestorePackagesConfig=true -t:restore
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
