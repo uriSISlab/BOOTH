@@ -2,6 +2,7 @@
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace BOOTH.LogProcessors
 {
     public abstract class LogImporter
     {
-        private string[][] fileTypeFilters;
+        private readonly string[][] fileTypeFilters;
 
         public LogImporter(string[][] fileTypeFilters) {
             this.fileTypeFilters = fileTypeFilters;
@@ -38,19 +39,15 @@ namespace BOOTH.LogProcessors
             // Loop to process multiple files consecutively
             for (int j = 1; j <= fileDialog.SelectedItems.Count; j++)
             {
-                // Add an additional sheet and activate it to populate it with Dominion ICE data
-                workbook.Sheets.Add(After: workbook.ActiveSheet);
-
-                // Pulling file path for a specific file
+                // Pull file path for the specific file
                 string filePath = fileDialog.SelectedItems.Item(j);
 
-                this.ImportFileToSheet(filePath, workbook.ActiveSheet);
+                // Add an additional sheet and activate it
+                string sheetName = Path.GetFileNameWithoutExtension(filePath);
+                Worksheet addedSheet = Util.AddSheet(sheetName, workbook.ActiveSheet);
 
-                // Rename the Worksheet to the file name of the selected data file
-                // TODO: check if name is already taken
-                string[] parts = filePath.Split('\\');
-                workbook.ActiveSheet.Name = parts[parts.Length - 1];
-                workbook.ActiveSheet.Columns.AutoFit();
+                this.ImportFileToSheet(filePath, addedSheet);
+                addedSheet.Columns.AutoFit();
             }
 
 

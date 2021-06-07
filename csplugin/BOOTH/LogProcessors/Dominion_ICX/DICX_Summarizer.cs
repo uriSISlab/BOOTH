@@ -8,13 +8,23 @@ using System.Threading.Tasks;
 
 namespace BOOTH.LogProcessors.Dominion_ICX
 {
-    class DICX_Summarizer : ILogSummarizer
+    class DICX_Summarizer : LogSummarizer
     {
         public static readonly string MACHINE_TYPE_TAG = "DICX";
 
-        public void CreateSummaryFrom(Worksheet sheet)
+        protected override string GetDurationFieldColumn()
         {
-            (new DICE_Summarizer()).CreateSummaryFrom(sheet);
+            return "A";
+        }
+
+        protected override string GetDurationFieldName()
+        {
+            return "Duration (mm:ss)";
+        }
+
+        protected override string GetEventTypeFieldName()
+        {
+            return "Event";
         }
     }
 }

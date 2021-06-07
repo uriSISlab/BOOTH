@@ -82,7 +82,7 @@ namespace BOOTH
             }
         }
 
-        public static ILogSummarizer CreateSummarizer(string machineTypeTag)
+        public static LogSummarizer CreateSummarizer(string machineTypeTag)
         {
             if (machineTypeTag == LogProcessors.VSAP_BMD.VSAPBMD_Summarizer.MACHINE_TYPE_TAG)
             {
@@ -131,7 +131,7 @@ namespace BOOTH
             return null;
         }
 
-        public static ILogSummarizer GetCorrectSummarizerForProcessedSheet(Worksheet sheet)
+        public static LogSummarizer GetCorrectSummarizerForProcessedSheet(Worksheet sheet)
         {
             System.Diagnostics.Debug.WriteLine("Count when reading is " + sheet.CustomProperties.Count);
             foreach (CustomProperty prop in sheet.CustomProperties) {
@@ -177,21 +177,42 @@ namespace BOOTH
             System.Windows.Forms.MessageBox.Show(message);
         }
 
-        public static Worksheet TryAddingSheetWithName(string name)
+        public static Worksheet TryAddingSheetWithName(string name, Worksheet after = null)
         {
+            // TODO check if there is an empty sheet with the name and
+            // if so, return that sheet.
             try
             {
                 if (ThisAddIn.app.ActiveWorkbook == null)
                 {
                     ThisAddIn.app.Workbooks.Add();
                 }
-                Worksheet sheet = ThisAddIn.app.ActiveWorkbook.Sheets.Add();
+                Worksheet sheet;
+                if (after != null) {
+                    sheet = ThisAddIn.app.ActiveWorkbook.Sheets.Add(After: after);
+                } else
+                {
+                    sheet = ThisAddIn.app.ActiveWorkbook.Sheets.Add();
+                }
                 sheet.Name = name;
                 return sheet;
             } catch (Exception)
             {
                 return null;
             }
+        }
+
+        // This method takes into account the fact that the requested/suggested name
+        // of the worksheet might have already been taken and tries to append a numeric
+        // suffix to the name in that case.
+        public static Worksheet AddSheet(string suggestedName, Worksheet after = null)
+        {
+            Worksheet sheet = Util.TryAddingSheetWithName(suggestedName);
+            for (int i = 1; sheet == null && i < 100; i++)
+            {
+                sheet = Util.TryAddingSheetWithName(Util.Clip(suggestedName, 28) + " " + i, after);
+            }
+            return sheet;
         }
     }
 }

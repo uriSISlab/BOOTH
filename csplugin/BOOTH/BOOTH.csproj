@@ -208,7 +208,7 @@
     <Compile Include="LogProcessors\Dominion_ICX\DICX_Summarizer.cs" />
     <Compile Include="LogProcessors\DS200\DS200_Importer.cs" />
     <Compile Include="LogProcessors\DS200\DS200_Summarizer.cs" />
-    <Compile Include="LogProcessors\ILogSummarizer.cs" />
+    <Compile Include="LogProcessors\LogSummarizer.cs" />
     <Compile Include="LogProcessors\LogImporter.cs" />
     <Compile Include="LogProcessors\VSAP_BMD\VSAPBMD_Summarizer.cs" />
     <Compile Include="Timers\HelpForm.cs">

@@ -101,7 +101,7 @@ namespace BOOTH
         private void SumStatsButton_Click(object sender, RibbonControlEventArgs e)
         {
             Worksheet sheet = ThisAddIn.app.ActiveWorkbook.ActiveSheet;
-            ILogSummarizer summarizer = Util.GetCorrectSummarizerForProcessedSheet(sheet);
+            LogSummarizer summarizer = Util.GetCorrectSummarizerForProcessedSheet(sheet);
             if (summarizer == null)
             {
                 Util.MessageBox("Could not create a summary for the current sheet.");
