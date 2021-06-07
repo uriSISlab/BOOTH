@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Office.Interop.Excel;
 
 namespace BOOTH
 {
@@ -79,7 +72,7 @@ namespace BOOTH
         {
             DateTime now = DateTime.Now;
             this.writer.LineBreak();
-            this.writer.WriteLineArrWithoutLineBreak(new string[] { now.ToString() },  new FieldType[] { FieldType.DATETIME });
+            this.writer.WriteLineArrWithoutLineBreak(new string[] { now.ToString() }, new FieldType[] { FieldType.DATETIME });
             this.writer.Return();
             this.startButton.Enabled = false;
             this.stopButton.Enabled = true;
@@ -110,7 +103,7 @@ namespace BOOTH
                 return;
             }
             this.writer.Return();
-            this.writer.WriteLineArrWithoutLineBreak(new string[] {"", "", "", "", ""});
+            this.writer.WriteLineArrWithoutLineBreak(new string[] { "", "", "", "", "" });
             this.writer.PreviousLine();
             this.Reset();
             if (this.writer.GetRowNum() == 1)

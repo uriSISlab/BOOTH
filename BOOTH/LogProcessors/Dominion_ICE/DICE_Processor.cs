@@ -1,13 +1,6 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace BOOTH.LogProcessors.Dominion_ICE
 {
@@ -25,7 +18,8 @@ namespace BOOTH.LogProcessors.Dominion_ICE
         private const string s_paperJam = "[Scanner] Error scanning ballot: Possible paper jam. Code:";
         private const string s_noManifestation = "[Pixel Count] No ballot manifestation for determined ballot Id";
 
-        private enum DICEState {
+        private enum DICEState
+        {
             // The string device is ready to accept a new ballot
             Ready,
             // A ballot has just been inserted into the device for scanning
@@ -116,10 +110,12 @@ namespace BOOTH.LogProcessors.Dominion_ICE
                     if (this.paperJam)
                     {
                         this.WritePaperJamRecord(startTimestamp, endTimestamp);
-                    } else if (this.ballotNotRecognized)
+                    }
+                    else if (this.ballotNotRecognized)
                     {
                         this.WriteBallotNotRecognizedRecord(startTimestamp, endTimestamp);
-                    } else
+                    }
+                    else
                     {
                         this.WriteBallotNotCastRecord(startTimestamp, endTimestamp);
                     }

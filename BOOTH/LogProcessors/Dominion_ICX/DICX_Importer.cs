@@ -1,18 +1,10 @@
-﻿using BOOTH.LogProcessors;
-using Microsoft.Office.Core;
-using Microsoft.Office.Interop.Excel;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.Office.Interop.Excel;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BOOTH.LogProcessors.Dominion_ICX
 {
     // Log processing for Dominion ImageCast X Ballot Scanning and Marking device
-    class DICX_Importer: LogImporter
+    class DICX_Importer : LogImporter
     {
         public DICX_Importer() : base(new string[][] { new string[] { "Log files", "*.log" } })
         {

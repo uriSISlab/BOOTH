@@ -87,13 +87,16 @@ namespace BOOTH
             if (machineTypeTag == LogProcessors.VSAP_BMD.VSAPBMD_Summarizer.MACHINE_TYPE_TAG)
             {
                 return new LogProcessors.VSAP_BMD.VSAPBMD_Summarizer();
-            } else if (machineTypeTag == LogProcessors.DS200.DS200_Summarizer.MACHINE_TYPE_TAG)
+            }
+            else if (machineTypeTag == LogProcessors.DS200.DS200_Summarizer.MACHINE_TYPE_TAG)
             {
                 return new LogProcessors.DS200.DS200_Summarizer();
-            } else if (machineTypeTag == LogProcessors.Dominion_ICE.DICE_Summarizer.MACHINE_TYPE_TAG)
+            }
+            else if (machineTypeTag == LogProcessors.Dominion_ICE.DICE_Summarizer.MACHINE_TYPE_TAG)
             {
                 return new LogProcessors.Dominion_ICE.DICE_Summarizer();
-            } else if (machineTypeTag == LogProcessors.Dominion_ICX.DICX_Summarizer.MACHINE_TYPE_TAG)
+            }
+            else if (machineTypeTag == LogProcessors.Dominion_ICX.DICX_Summarizer.MACHINE_TYPE_TAG)
             {
                 return new LogProcessors.Dominion_ICX.DICX_Summarizer();
             }
@@ -134,7 +137,8 @@ namespace BOOTH
         public static LogSummarizer GetCorrectSummarizerForProcessedSheet(Worksheet sheet)
         {
             System.Diagnostics.Debug.WriteLine("Count when reading is " + sheet.CustomProperties.Count);
-            foreach (CustomProperty prop in sheet.CustomProperties) {
+            foreach (CustomProperty prop in sheet.CustomProperties)
+            {
                 if (prop.Name == Util.MACHINE_TYPE_MARK_NAME)
                 {
                     return CreateSummarizer(prop.Value);
@@ -188,15 +192,18 @@ namespace BOOTH
                     ThisAddIn.app.Workbooks.Add();
                 }
                 Worksheet sheet;
-                if (after != null) {
+                if (after != null)
+                {
                     sheet = ThisAddIn.app.ActiveWorkbook.Sheets.Add(After: after);
-                } else
+                }
+                else
                 {
                     sheet = ThisAddIn.app.ActiveWorkbook.Sheets.Add();
                 }
                 sheet.Name = name;
                 return sheet;
-            } catch (Exception)
+            }
+            catch (Exception)
             {
                 return null;
             }

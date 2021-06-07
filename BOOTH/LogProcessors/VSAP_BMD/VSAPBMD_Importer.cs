@@ -1,13 +1,11 @@
-﻿using BOOTH.LogProcessors;
-using Microsoft.Office.Core;
-using Microsoft.Office.Interop.Excel;
+﻿using Microsoft.Office.Interop.Excel;
 using System.IO;
 
 namespace BOOTH.LogProcessors.VSAP_BMD
 {
     class VSAPBMD_Importer : LogImporter
     {
-        public VSAPBMD_Importer() : base(new string[][] { new string[] {"Log files", "*.log"}})
+        public VSAPBMD_Importer() : base(new string[][] { new string[] { "Log files", "*.log" } })
         {
         }
 

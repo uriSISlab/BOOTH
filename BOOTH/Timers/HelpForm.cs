@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace BOOTH
@@ -24,12 +17,14 @@ namespace BOOTH
             this.helpTablePanel.GrowStyle = TableLayoutPanelGrowStyle.AddRows;
             this.AutoSize = true;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            Label itemHeader = new Label {
+            Label itemHeader = new Label
+            {
                 Text = Properties.Resources.helpItemHeader,
                 Font = new Font(Label.DefaultFont, FontStyle.Bold),
                 TextAlign = ContentAlignment.MiddleRight,
             };
-            Label descriptionHeader = new Label {
+            Label descriptionHeader = new Label
+            {
                 Text = Properties.Resources.helpDescriptionHeader,
                 Font = new Font(Label.DefaultFont, FontStyle.Bold),
                 TextAlign = ContentAlignment.MiddleLeft,
@@ -58,7 +53,8 @@ namespace BOOTH
 
             // Auto-size the rows
             this.helpTablePanel.RowStyles.Clear();
-            for (int i = 0; i < this.helpTablePanel.RowCount; i++) {
+            for (int i = 0; i < this.helpTablePanel.RowCount; i++)
+            {
                 this.helpTablePanel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             }
 

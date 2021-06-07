@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BOOTH
@@ -91,15 +87,18 @@ namespace BOOTH
             {
                 startShortcut = Convert.ToString(number * 2 - 1);
                 stopShortcut = Convert.ToString(number * 2);
-            } else if (number == 5)
+            }
+            else if (number == 5)
             {
                 startShortcut = Convert.ToString(9);
                 stopShortcut = Convert.ToString(0);
-            } else if (number == 6)
+            }
+            else if (number == 6)
             {
                 startShortcut = "-";
                 stopShortcut = "=";
-            } else
+            }
+            else
             {
                 startShortcut = null;
                 stopShortcut = null;

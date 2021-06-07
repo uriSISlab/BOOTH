@@ -1,12 +1,6 @@
-﻿using Microsoft.Office.Core;
-using Microsoft.Office.Interop.Excel;
-using Microsoft.Office.Tools;
+﻿using Microsoft.Office.Interop.Excel;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BOOTH
 {
@@ -38,7 +32,7 @@ namespace BOOTH
             this.startRowOffset = startRowOffset;
             this.startColumnOffset = startColumnOffset;
         }
-        
+
         public void Done()
         {
             FormatPretty();
@@ -123,14 +117,14 @@ namespace BOOTH
                         this.sheet.Range[cellAddr].Value = line[c];
                         break;
                 }
-            }  
+            }
             this.columnNum += line.Length;
         }
 
         public void WriteLineArr(string[] line, FieldType[] fieldTypes = null)
         {
             this.WriteLineArrWithoutLineBreak(line, fieldTypes);
-            this.LineBreak(); 
+            this.LineBreak();
         }
     }
 }

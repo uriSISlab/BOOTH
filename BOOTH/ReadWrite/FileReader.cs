@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace BOOTH
 {
@@ -27,8 +22,9 @@ namespace BOOTH
         {
             if (endReached)
             {
-                return true;                
-            } else
+                return true;
+            }
+            else
             {
                 if (this.reader.EndOfStream)
                 {

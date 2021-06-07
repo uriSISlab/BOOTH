@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BOOTH
@@ -36,7 +29,8 @@ namespace BOOTH
             if (this.IsHandleCreated)
             {
                 BeginInvoke(initializer);
-            } else
+            }
+            else
             {
                 HandleCreated += (s, e) => BeginInvoke(initializer);
             }
@@ -53,7 +47,8 @@ namespace BOOTH
             if (this.IsHandleCreated)
             {
                 BeginInvoke(stepAction);
-            } else
+            }
+            else
             {
                 HandleCreated += (s, e) => BeginInvoke(stepAction);
             }
@@ -69,7 +64,8 @@ namespace BOOTH
             if (this.IsHandleCreated)
             {
                 BeginInvoke(doneAction);
-            } else
+            }
+            else
             {
                 HandleCreated += (s, e) => BeginInvoke(doneAction);
             }

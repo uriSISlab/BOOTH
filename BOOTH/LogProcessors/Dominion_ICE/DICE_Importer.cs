@@ -1,20 +1,12 @@
-﻿using Microsoft.Office.Core;
-using Microsoft.Office.Interop.Excel;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using Microsoft.Office.Interop.Excel;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BOOTH.LogProcessors.Dominion_ICE
 {
     // Log processing for Dominion ImageCast Evolution Ballot Scanning and Marking Device
     class DICE_Importer : LogProcessors.LogImporter
     {
-        public DICE_Importer() : base(new string[][] { new string[] { "Text files", "*.txt" }})
+        public DICE_Importer() : base(new string[][] { new string[] { "Text files", "*.txt" } })
         {
         }
 

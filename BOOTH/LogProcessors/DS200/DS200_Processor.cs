@@ -1,28 +1,23 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace BOOTH.LogProcessors.DS200
 {
     class DS200_Processor : ILogProcessor
     {
 
-        private const int votingStartedCode =   1004115;
-        private const int blankBallotCode =     1004113;
+        private const int votingStartedCode = 1004115;
+        private const int blankBallotCode = 1004113;
         private const int overvotedBallotCode = 1004111;
-        private const int votingCompleteCode =  1004022;
-        private const int ballotJamCode =       3013004;
-        private const int jamClearedCode =      1004328;
-        private const int shutDownCode =        1004016;
-        private const int unknownCode =         1004163;
-        private const int votingModeCode =      1004056;
+        private const int votingCompleteCode = 1004022;
+        private const int ballotJamCode = 3013004;
+        private const int jamClearedCode = 1004328;
+        private const int shutDownCode = 1004016;
+        private const int unknownCode = 1004163;
+        private const int votingModeCode = 1004056;
 
         private int[] recognizedCodes = new int[]
         {
@@ -128,15 +123,17 @@ namespace BOOTH.LogProcessors.DS200
                     {
                         outputArr[2] = "Unsuccessful";
                         outputArr[1] = GetElements(lines[i + 1])[6];
-                    } else
+                    }
+                    else
                     {
                         outputArr[2] = "Successful";
                         outputArr[1] = "No Error";
                     }
                     i++;
                     WriteLineArr(outputArr);
-                } else if ((i + 2) < lines.Count && GetCode(lines[i]) == votingStartedCode
-                    && GetCode(lines[i + 2]) == votingCompleteCode)
+                }
+                else if ((i + 2) < lines.Count && GetCode(lines[i]) == votingStartedCode
+                  && GetCode(lines[i + 2]) == votingCompleteCode)
                 {
                     string[] outputArr = new string[4];
                     outputArr[0] = getDuration(lines[i + 2], lines[i]).ToString(@"mm\:ss");
@@ -145,8 +142,9 @@ namespace BOOTH.LogProcessors.DS200
                     outputArr[1] = GetElements(lines[i + 1])[6];
                     i += 2;
                     WriteLineArr(outputArr);
-                } else if ((i + 1) < lines.Count && GetCode(lines[i]) == ballotJamCode
-                    && GetCode(lines[i - 1]) != votingStartedCode && GetCode(lines[i + 1]) == jamClearedCode)
+                }
+                else if ((i + 1) < lines.Count && GetCode(lines[i]) == ballotJamCode
+                  && GetCode(lines[i - 1]) != votingStartedCode && GetCode(lines[i + 1]) == jamClearedCode)
                 {
                     string[] outputArr = new string[4];
                     outputArr[0] = getDuration(lines[i + 1], lines[i]).ToString(@"mm\:ss");
@@ -155,8 +153,9 @@ namespace BOOTH.LogProcessors.DS200
                     outputArr[1] = GetElements(lines[i])[6];
                     i++;
                     WriteLineArr(outputArr);
-                } else if ((i + 1) < lines.Count && GetCode(lines[i]) == shutDownCode
-                    && GetCode(lines[i - 1]) == unknownCode && GetCode(lines[i + 1]) == votingModeCode)
+                }
+                else if ((i + 1) < lines.Count && GetCode(lines[i]) == shutDownCode
+                  && GetCode(lines[i - 1]) == unknownCode && GetCode(lines[i + 1]) == votingModeCode)
                 {
                     string[] outputArr = new string[4];
                     outputArr[0] = getDuration(lines[i + 2], lines[i]).ToString(@"mm\:ss");

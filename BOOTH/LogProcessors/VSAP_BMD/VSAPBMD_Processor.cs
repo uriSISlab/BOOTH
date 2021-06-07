@@ -1,15 +1,5 @@
-﻿using BOOTH.LogProcessors;
-using BOOTH.LogProcessors.VSAP_BMD;
-using Microsoft.Office.Core;
-using Microsoft.Office.Interop.Excel;
+﻿using Microsoft.Office.Interop.Excel;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 
 namespace BOOTH.LogProcessors.VSAP_BMD
 {
@@ -96,7 +86,8 @@ namespace BOOTH.LogProcessors.VSAP_BMD
             {
                 outline += ", Ballot printed and cast, Successful";
                 outline += pollPassUsed ? ", Yes" : ", No";
-            } else
+            }
+            else
             {
                 outline += ", Pre-printed ballot cast, Successful, -";
             }
@@ -110,7 +101,8 @@ namespace BOOTH.LogProcessors.VSAP_BMD
             {
                 outline += ", Provisional ballot printed and ejected, Successful";
                 outline += pollPassUsed ? ", Yes" : ", No";
-            } else
+            }
+            else
             {
                 outline += ", Pre-printed provisional ballot ejected, Successful, -";
             }
@@ -302,7 +294,7 @@ namespace BOOTH.LogProcessors.VSAP_BMD
                                 this.WriteMachineRestartedLog(Util.GetTimeDifference(startTime, thisTime), this.pollPassUsed);
                                 this.state = BMDState.INIT;
                                 break;
-                            // TODO Find out whether provisional ballots can be cast just after printing
+                                // TODO Find out whether provisional ballots can be cast just after printing
                         }
                         break;
                 }
@@ -324,7 +316,8 @@ namespace BOOTH.LogProcessors.VSAP_BMD
             if (fileName.Length > 0)
             {
                 writer.WriteLine("Duration (mm:ss)", "Scan Type", "Ballot Cast Status", "Poll Pass Used", "Filename");
-            } else
+            }
+            else
             {
                 writer.WriteLine("Duration (mm:ss)", "Scan Type", "Ballot Cast Status", "Poll Pass Used");
             }

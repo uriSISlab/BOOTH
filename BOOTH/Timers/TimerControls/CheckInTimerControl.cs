@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Security.Policy;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading;
-using Microsoft.VisualStudio.Tools.Applications.Runtime;
 
 namespace BOOTH
 {
@@ -85,7 +75,7 @@ namespace BOOTH
         {
             DateTime now = DateTime.Now;
             writer.LineBreak();
-            writer.WriteLineArrWithoutLineBreak(new string[] { now.ToString() },  new FieldType[] { FieldType.DATETIME });
+            writer.WriteLineArrWithoutLineBreak(new string[] { now.ToString() }, new FieldType[] { FieldType.DATETIME });
             writer.Return();
             this.startButton.Enabled = false;
             this.stopButton.Enabled = true;
@@ -142,7 +132,7 @@ namespace BOOTH
                 return;
             }
             writer.Return();
-            writer.WriteLineArrWithoutLineBreak(new string[] {"", "", "", "", ""});
+            writer.WriteLineArrWithoutLineBreak(new string[] { "", "", "", "", "" });
             writer.PreviousLine();
         }
 

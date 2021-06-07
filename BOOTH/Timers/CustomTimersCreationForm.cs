@@ -1,14 +1,8 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 
 namespace BOOTH
 {
@@ -88,7 +82,8 @@ namespace BOOTH
             if (itemIdx != 0)
             {
                 this.timersListBox.SetSelected(itemIdx - 1, true);
-            } else if (this.timersListBox.Items.Count > 0)
+            }
+            else if (this.timersListBox.Items.Count > 0)
             {
                 this.timersListBox.SetSelected(0, true);
             }
@@ -104,7 +99,7 @@ namespace BOOTH
             }
             string[] niceNames = new string[count];
             this.timersListBox.Items.CopyTo(niceNames, 0);
-            TimerControl.TimerType[] toCreateTypes =  niceNames.Select(
+            TimerControl.TimerType[] toCreateTypes = niceNames.Select(
                 name => this.allTypes[Array.IndexOf(this.allNiceNames, name)]).ToArray();
             TimerBaseForm.CreateWithTimerTypes(toCreateTypes, this.arrivalTimerCheckbox.Checked, this.worksheet,
                 Properties.Resources.customTimersTitle).Show();

@@ -1,11 +1,4 @@
-﻿using Microsoft.Office.Interop.Excel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BOOTH.LogProcessors.VSAP_BMD
+﻿namespace BOOTH.LogProcessors.VSAP_BMD
 {
     class VSAPBMD_Summarizer : LogSummarizer
     {

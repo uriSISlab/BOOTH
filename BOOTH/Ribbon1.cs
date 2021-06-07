@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using BOOTH.LogProcessors;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
-using Microsoft.VisualStudio.Tools.Applications.Runtime;
-using BOOTH.LogProcessors;
+using System;
+using System.Collections.Generic;
 
 namespace BOOTH
 {
@@ -27,7 +23,8 @@ namespace BOOTH
                     if (processor != null)
                     {
                         Dispatch.ProcessSheetWithProcessor(sheet, processor);
-                    } else
+                    }
+                    else
                     {
                         Util.MessageBox("Active worksheet not recognized as a valid log.");
                     }

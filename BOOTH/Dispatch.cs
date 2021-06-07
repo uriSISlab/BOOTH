@@ -1,8 +1,8 @@
-﻿using Microsoft.Office.Core;
+﻿using BOOTH.LogProcessors;
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.IO;
-using BOOTH.LogProcessors;
 
 namespace BOOTH
 {
