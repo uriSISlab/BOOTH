@@ -210,6 +210,7 @@
     <Compile Include="LogProcessors\DS200\DS200_Summarizer.cs" />
     <Compile Include="LogProcessors\LogSummarizer.cs" />
     <Compile Include="LogProcessors\LogImporter.cs" />
+    <Compile Include="LogProcessors\Pollpad\PollPad_Importer.cs" />
     <Compile Include="LogProcessors\VSAP_BMD\VSAPBMD_Summarizer.cs" />
     <Compile Include="Timers\HelpForm.cs">
       <SubType>Form</SubType>
@@ -377,9 +378,7 @@
   <ItemGroup>
     <None Include="Resources\UpIcon.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="LogProcessors\Pollpad\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

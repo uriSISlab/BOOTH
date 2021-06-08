@@ -68,7 +68,7 @@ namespace BOOTH
                     (new LogProcessors.Dominion_ICX.DICX_Importer()).ImportIntoCurrentSheet();
                     break;
                 case "ImportPollPadButton":
-                    Module1.PollpadImport();
+                    (new LogProcessors.Pollpad.PollPad_Importer()).ImportIntoCurrentSheet();
                     break;
                 default:
                     break;

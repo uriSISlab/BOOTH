@@ -1,6 +1,8 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace BOOTH
 {
@@ -121,9 +123,9 @@ namespace BOOTH
             this.columnNum += line.Length;
         }
 
-        public void WriteLineArr(string[] line, FieldType[] fieldTypes = null)
+        public void WriteLineArr(IEnumerable<string> line, IEnumerable<FieldType> fieldTypes = null)
         {
-            this.WriteLineArrWithoutLineBreak(line, fieldTypes);
+            this.WriteLineArrWithoutLineBreak(line.ToArray(), fieldTypes == null ? null : fieldTypes.ToArray());
             this.LineBreak();
         }
     }

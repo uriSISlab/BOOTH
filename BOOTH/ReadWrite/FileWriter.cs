@@ -1,4 +1,5 @@
 ﻿using CsvHelper;
+using System.Collections.Generic;
 using System.IO;
 
 namespace BOOTH
@@ -36,7 +37,7 @@ namespace BOOTH
             this.WriteLineArr(line);
         }
 
-        public void WriteLineArr(string[] line, FieldType[] fieldTypes = null)
+        public void WriteLineArr(IEnumerable<string> line, IEnumerable<FieldType> fieldTypes = null)
         {
             foreach (string field in line)
             {
