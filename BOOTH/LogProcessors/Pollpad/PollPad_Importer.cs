@@ -23,24 +23,25 @@ namespace BOOTH.LogProcessors.PollPad
         {
             // Open the file as a text stream for reading
             StreamReader inputStream = new StreamReader(filePath);
-            SheetWriter writer = new SheetWriter(sheet);
-            System.Diagnostics.Debug.WriteLine("Reading pollpad log from file " + filePath);
-            int lines = 0;
+            int numLines = File.ReadLines(filePath).Count();
+            string[][] table = new string[numLines][];
+            int line = 0;
+            int maxCols = 0;
             while (!inputStream.EndOfStream)
             {
                 string lineStr = inputStream.ReadLine();
-                // Test if line is well-formed (has a timestamp)
-                if (!timestampRegex.IsMatch(lineStr))
-                {
-                    continue;
-                }
-                lines++;
+                // The pipe character is used to separate fields in
+                // VSAP BMD logs.
                 string[] lineArr = lineStr.Split('|');
-                IEnumerable<string> lineArray = lineArr.Select(s => s.Trim());
-                writer.WriteLineArr(lineArray);
+                string[] lineArray = lineArr.Select(s => s.Trim()).ToArray();
+                table[line] = lineArray;
+                maxCols = Math.Max(maxCols, lineArray.Length);
+                line += 1;
             }
             inputStream.Close();
-            System.Diagnostics.Debug.WriteLine(lines + " lines read.");
+            Range topLeft = sheet.Cells[1, 1];
+            Range bottomRight = sheet.Cells[numLines, maxCols];
+            sheet.Range[topLeft, bottomRight].Value2 = Util.JaggedTo2DArray(table, maxCols);
         }
     }
 }

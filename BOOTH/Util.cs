@@ -236,5 +236,29 @@ namespace BOOTH
             }
             return sheet;
         }
+
+        public static T[,] JaggedTo2DArray<T>(T[][] jagged, int? maxCols = null)
+        {
+            int maxColsActual = 0;
+            if (maxCols == null)
+            {
+                for (int i = 0; i < jagged.Length; i++)
+                {
+                    maxColsActual = Math.Max(maxColsActual, jagged[i].Length);
+                }
+            } else
+            {
+                maxColsActual = (int)maxCols;
+            }
+            T[,] twoDArray = new T[jagged.Length, maxColsActual];
+            for (int i = 0; i < jagged.Length; i++)
+            {
+                for (int j = 0; j < jagged[i].Length; j++)
+                {
+                    twoDArray[i,j] = jagged[i][j];
+                }
+            }
+            return twoDArray;
+        }
     }
 }

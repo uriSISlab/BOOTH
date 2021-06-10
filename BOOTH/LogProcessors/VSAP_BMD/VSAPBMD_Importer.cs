@@ -1,5 +1,7 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using System.IO;
+using System.Linq;
+using System;
 
 namespace BOOTH.LogProcessors.VSAP_BMD
 {
@@ -13,16 +15,24 @@ namespace BOOTH.LogProcessors.VSAP_BMD
         {
             // Open the file as a text stream for reading
             StreamReader inputStream = new StreamReader(filePath);
-            SheetWriter writer = new SheetWriter(sheet);
+            int numLines = File.ReadLines(filePath).Count();
+            string[][] table = new string[numLines][];
+            int line = 0;
+            int maxCols = 0;
             while (!inputStream.EndOfStream)
             {
                 string lineStr = inputStream.ReadLine();
                 // The pipe character is used to separate fields in
                 // VSAP BMD logs.
                 string[] lineArr = lineStr.Split('|');
-                writer.WriteLineArr(lineArr);
+                table[line] = lineArr;
+                maxCols = Math.Max(maxCols, lineArr.Length);
+                line += 1;
             }
             inputStream.Close();
+            Range topLeft = sheet.Cells[1, 1];
+            Range bottomRight = sheet.Cells[numLines, maxCols];
+            sheet.Range[topLeft, bottomRight].Value2 = Util.JaggedTo2DArray(table, maxCols);
         }
     }
 }
