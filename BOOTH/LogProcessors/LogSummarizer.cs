@@ -54,6 +54,7 @@ namespace BOOTH.LogProcessors
             pvt.PivotFields(eventTypeField).Orientation = Microsoft.Office.Interop.Excel.XlPivotFieldOrientation.xlRowField;
 
             // Formatting and labeling
+            // TODO check if this name is already taken
             outSheet.Name = outSheetName;
             outSheet.Range["A2"].Font.Bold = true;
             outSheet.Range["A2"].Value = outSheetName;

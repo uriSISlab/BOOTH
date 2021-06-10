@@ -25,7 +25,11 @@ namespace BOOTH.LogProcessors.PollPad
         private static readonly string s_cancelCheckin = "CANCEL CHECKIN | Cancelling checkin";
         private static readonly string s_voterSearch = "VOTER LOOKUP SEARCH FOR VOTER | TIME TAKEN IN SECONDS:";
         private static readonly string s_toIdSelectionScreen = "TO: ID SELECTION FOR LOOKUP SCREEN";
-
+        private static readonly FieldType[] recordFieldTypes =
+            {
+                FieldType.TIMESPAN_MMSS, FieldType.STRING, FieldType.DATETIME, FieldType.STRING,
+                FieldType.STRING, FieldType.INTEGER, FieldType.STRING, FieldType.STRING
+            };
         enum PollPadState
         {
             INIT,
@@ -374,11 +378,16 @@ namespace BOOTH.LogProcessors.PollPad
                 startTime = this.startTime;
             }
             TimeSpan delta = (TimeSpan)(endTime - startTime);
-            // Use dash for number of searches if the lookup wasn't manual
-            string searches = this.scanIdLookup ? "-" : this.searches.ToString();
-            writer.WriteLine(Util.ToMMSS(delta), this.durationHighConfidence ? "High" : "Low", this.endTime.ToString(),
+            // Use zero for number of searches if the lookup wasn't manual (???)
+            string searches = this.scanIdLookup ? "0" : this.searches.ToString();
+            string[] record = new string[]
+            {
+                Util.ToMMSS(delta), this.durationHighConfidence ? "High" : "Low", this.endTime.ToString(),
                 GetPrettyStringForRecordType(recordType), this.scanIdLookup ? "ID Scan" : "Manual",
-                searches, this.vbmCancelled ? "Yes" : "No", this.assistanceRequired ? "Yes" : "No");
+                searches, this.vbmCancelled ? "Yes" : "No", this.assistanceRequired ? "Yes" : "No"
+            };
+
+            writer.WriteLineArr(record, recordFieldTypes);
         }
 
         private void ClearState()

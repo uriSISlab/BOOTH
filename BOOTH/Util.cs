@@ -109,6 +109,10 @@ namespace BOOTH
             {
                 return new LogProcessors.Dominion_ICX.DICX_Summarizer();
             }
+            else if (machineTypeTag == LogProcessors.PollPad.PollPad_Summarizer.MACHINE_TYPE_TAG)
+            {
+                return new LogProcessors.PollPad.PollPad_Summarizer();
+            }
             return null;
         }
 
