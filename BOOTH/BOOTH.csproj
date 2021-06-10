@@ -210,7 +210,9 @@
     <Compile Include="LogProcessors\DS200\DS200_Summarizer.cs" />
     <Compile Include="LogProcessors\LogSummarizer.cs" />
     <Compile Include="LogProcessors\LogImporter.cs" />
-    <Compile Include="LogProcessors\Pollpad\PollPad_Importer.cs" />
+    <Compile Include="LogProcessors\PollPad\PollPad_Importer.cs" />
+    <Compile Include="LogProcessors\PollPad\PollPad_Processor.cs" />
+    <Compile Include="LogProcessors\PollPad\PollPad_Summarizer.cs" />
     <Compile Include="LogProcessors\VSAP_BMD\VSAPBMD_Summarizer.cs" />
     <Compile Include="Timers\HelpForm.cs">
       <SubType>Form</SubType>

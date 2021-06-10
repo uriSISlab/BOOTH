@@ -34,6 +34,8 @@ namespace BOOTH
 
         public static readonly string MACHINE_TYPE_MARK_NAME = "MachineType";
 
+        public static readonly DateTime nullTimestamp;
+
         public static string GetColumnLetterFromNumber(long number)
         {
             return GetColumnLetterFromNumberZeroBased(number - 1);
@@ -53,6 +55,11 @@ namespace BOOTH
         public static string GetTimeDifference(DateTime startTime, DateTime endTime)
         {
             return (endTime - startTime).ToString(@"mm\:ss");
+        }
+
+        public static string ToMMSS(TimeSpan timeSpan)
+        {
+            return timeSpan.ToString(@"mm\:ss");
         }
 
         public static string GetProcessedName(string name)
@@ -77,6 +84,8 @@ namespace BOOTH
                     return new LogProcessors.Dominion_ICX.DICX_Processor();
                 case LogType.DS200:
                     return new LogProcessors.DS200.DS200_Processor();
+                case LogType.POLLPAD:
+                    return new LogProcessors.PollPad.PollPad_Processor();
                 default:
                     return null;
             }
@@ -115,6 +124,8 @@ namespace BOOTH
                     return "ICX_AUDIT_LOG.*.log";
                 case LogType.DS200:
                     return "*.TXT";
+                case LogType.POLLPAD:
+                    return "user.txt";
                 default:
                     return "*.*";
             }

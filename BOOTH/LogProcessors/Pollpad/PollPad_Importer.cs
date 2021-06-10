@@ -7,13 +7,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace BOOTH.LogProcessors.Pollpad
+namespace BOOTH.LogProcessors.PollPad
 {
     class PollPad_Importer : LogImporter
     {
         private static readonly string monthPattern = "(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)";
         private static readonly string timestampPattern = @"\A" + monthPattern + @" \d\d?, \d\d\d\d at " + @"\d\d?:\d\d:\d\d (AM|PM)";
-        private static readonly Regex timestampRegex = new Regex(timestampPattern, RegexOptions.Compiled);
+        public static readonly Regex timestampRegex = new Regex(timestampPattern, RegexOptions.Compiled);
 
         public PollPad_Importer() : base (new string[][] { new string[] { "Text files", "*.txt"}})
         {
