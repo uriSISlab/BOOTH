@@ -34,11 +34,11 @@ namespace BOOTH
 
             Worksheet outputSheet = AddSheetForOutput(sheet);
             SheetReader reader = new SheetReader(sheet, processor.GetSeparator());
-            SheetWriter writer = new SheetWriter(outputSheet);
+            FastSheetWriter writer = new FastSheetWriter(outputSheet);
 
             Util.RunPipeline(reader, processor, writer, true);
 
-            writer.FormatPretty();
+            writer.Flush();
 
             // Tag the sheet with a machine type mark so we don't have to dig into the cell
             // data to identify machine type when trying to generate summary statistics
@@ -97,7 +97,7 @@ namespace BOOTH
                 progress.Step();
             }
 
-            writer.Done();
+            writer.Flush();
             progress.Done();
             System.Windows.Forms.MessageBox.Show("Processed output written to " + outputFileName);
         }

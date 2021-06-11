@@ -59,7 +59,7 @@ namespace BOOTH
                     return 5;
             }
         }
-        public static TimerControl GetTimerControl(TimerType timerType, SheetWriter writer, int number)
+        public static TimerControl GetTimerControl(TimerType timerType, DynamicSheetWriter writer, int number)
         {
             switch (timerType)
             {
@@ -106,7 +106,7 @@ namespace BOOTH
             return new string[] { startShortcut, stopShortcut };
         }
 
-        protected SheetWriter writer;
+        protected DynamicSheetWriter writer;
         protected int number;
 
         public TimerControl()
@@ -117,7 +117,7 @@ namespace BOOTH
             // as abstract.
         }
 
-        public TimerControl(SheetWriter writer, int number)
+        public TimerControl(DynamicSheetWriter writer, int number)
         {
             this.writer = writer;
             this.number = number;

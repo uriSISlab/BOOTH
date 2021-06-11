@@ -237,7 +237,7 @@ namespace BOOTH
             return sheet;
         }
 
-        public static T[,] JaggedTo2DArray<T>(T[][] jagged, int? maxCols = null)
+        public static T[,] JaggedTo2DArray<T>(T[][] jagged, long? maxCols = null)
         {
             int maxColsActual = 0;
             if (maxCols == null)

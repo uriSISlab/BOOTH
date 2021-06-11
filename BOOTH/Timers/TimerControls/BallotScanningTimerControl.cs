@@ -2,7 +2,7 @@
 {
     public class BallotScanningTimerControl : VotingBoothTimerControl
     {
-        public BallotScanningTimerControl(SheetWriter writer, int number) : base(writer, number)
+        public BallotScanningTimerControl(DynamicSheetWriter writer, int number) : base(writer, number)
         {
             base.GetPicture().Image = global::BOOTH.Properties.Resources.DS200_BallotBox_resized;
             base.GetHeadingLabel().Text = "Ballot Scanning " + number;

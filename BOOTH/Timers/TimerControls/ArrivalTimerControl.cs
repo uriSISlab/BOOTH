@@ -9,7 +9,7 @@ namespace BOOTH
         private bool neverStarted;
         private int totalArrivals;
 
-        public ArrivalTimerControl(SheetWriter writer) : base(writer, 0)
+        public ArrivalTimerControl(DynamicSheetWriter writer) : base(writer, 0)
         {
             InitializeComponent();
             writer.WriteLineArrWithoutLineBreak(new string[] {

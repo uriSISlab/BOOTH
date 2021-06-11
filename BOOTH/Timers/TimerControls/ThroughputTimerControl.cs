@@ -2,7 +2,7 @@
 {
     public class ThroughputTimerControl : VotingBoothTimerControl
     {
-        public ThroughputTimerControl(SheetWriter writer, int number) : base(writer, number)
+        public ThroughputTimerControl(DynamicSheetWriter writer, int number) : base(writer, number)
         {
             base.GetPicture().Image = global::BOOTH.Properties.Resources.Vote_scaled;
             base.GetHeadingLabel().Text = "Throughput " + number;

@@ -115,7 +115,7 @@ namespace BOOTH
 
         private void PopulateArrivalTimer(Worksheet sheet)
         {
-            SheetWriter writer = new SheetWriter(sheet, 0, 0);
+            DynamicSheetWriter writer = new DynamicSheetWriter(sheet, 0, 0);
             ArrivalTimerControl arrivalTimer = new ArrivalTimerControl(writer);
             this.leftPanel.Controls.Add(arrivalTimer);
             this.RegisterTimer(arrivalTimer);
@@ -129,7 +129,7 @@ namespace BOOTH
             for (int i = 0; i < timerTypes.Length; i++)
             {
                 int columnCount = i > 0 ? TimerControl.GetColumnCountForTimerType(timerTypes[i - 1]) : 0;
-                SheetWriter writer = new SheetWriter(sheet, rowOffset + 0, columnOffset + i * columnCount);
+                DynamicSheetWriter writer = new DynamicSheetWriter(sheet, rowOffset + 0, columnOffset + i * columnCount);
                 TimerControl control = TimerControl.GetTimerControl(timerTypes[i], writer, i + 1);
                 this.timersPanel.Controls.Add(control, i, 0);
                 if (timerTypes.Length <= 6)

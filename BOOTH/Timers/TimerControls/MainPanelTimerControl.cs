@@ -15,7 +15,7 @@
             // as abstract.
         }
 
-        public MainPanelTimerControl(SheetWriter writer, int number) : base(writer, number)
+        public MainPanelTimerControl(DynamicSheetWriter writer, int number) : base(writer, number)
         {
         }
     }

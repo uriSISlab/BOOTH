@@ -18,7 +18,7 @@ namespace BOOTH
             // This constructor should not be used in practice.
         }
 
-        public VotingBoothTimerControl(SheetWriter writer, int number) : base(writer, number)
+        public VotingBoothTimerControl(DynamicSheetWriter writer, int number) : base(writer, number)
         {
             InitializeComponent();
             this.headingLabel.Text = "Vooting Booth " + number;

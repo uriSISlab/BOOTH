@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace BOOTH
 {
-    public class SheetWriter : IOutputWriter
+    public class DynamicSheetWriter : IOutputWriter
     {
         private readonly Worksheet sheet;
         private long rowNum;
@@ -15,7 +15,7 @@ namespace BOOTH
         private long startColumnOffset;
         private long columns;
 
-        public SheetWriter(Worksheet sheet)
+        public DynamicSheetWriter(Worksheet sheet)
         {
             this.sheet = sheet;
             this.rowNum = 1;
@@ -25,7 +25,7 @@ namespace BOOTH
             this.startColumnOffset = 0;
         }
 
-        public SheetWriter(Worksheet sheet, long startRowOffset, long startColumnOffset)
+        public DynamicSheetWriter(Worksheet sheet, long startRowOffset, long startColumnOffset)
         {
             this.sheet = sheet;
             this.rowNum = 1;
@@ -35,7 +35,7 @@ namespace BOOTH
             this.startColumnOffset = startColumnOffset;
         }
 
-        public void Done()
+        public void Flush()
         {
             FormatPretty();
         }

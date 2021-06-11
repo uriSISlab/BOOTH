@@ -12,7 +12,7 @@ namespace BOOTH
         private bool neverStarted;
         private Color previousColor;
 
-        public CheckInTimerControl(SheetWriter writer, int number) : base(writer, number)
+        public CheckInTimerControl(DynamicSheetWriter writer, int number) : base(writer, number)
         {
             InitializeComponent();
             this.heading.Text = "Check in " + number;

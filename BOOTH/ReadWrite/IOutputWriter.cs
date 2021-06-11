@@ -10,6 +10,6 @@ namespace BOOTH
 
         long GetRowNum();
 
-        void Done();
+        void Flush();
     }
 }

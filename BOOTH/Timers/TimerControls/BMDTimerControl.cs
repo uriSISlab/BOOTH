@@ -11,7 +11,7 @@ namespace BOOTH
         private bool helped;
         private Color previousColor;
 
-        public BMDTimerControl(SheetWriter writer, int number) : base(writer, number)
+        public BMDTimerControl(DynamicSheetWriter writer, int number) : base(writer, number)
         {
             InitializeComponent();
             this.headingLabel.Text = "BMD " + number;

@@ -18,7 +18,7 @@ namespace BOOTH
             this.rowNum = 1;
         }
 
-        public void Done()
+        public void Flush()
         {
             this.stream.Close();
         }
