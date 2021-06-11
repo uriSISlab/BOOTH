@@ -30,6 +30,7 @@ namespace BOOTH.LogProcessors.PollPad
                 FieldType.TIMESPAN_MMSS, FieldType.STRING, FieldType.DATETIME, FieldType.STRING,
                 FieldType.STRING, FieldType.INTEGER, FieldType.STRING, FieldType.STRING
             };
+
         enum PollPadState
         {
             INIT,
@@ -77,6 +78,8 @@ namespace BOOTH.LogProcessors.PollPad
         private bool durationHighConfidence = true;
         private DateTime lastTimestamp;
 
+        private string[] recordLine = new string[8];
+
         private static string GetPrettyStringForRecordType(RecordType recordType)
         {
             switch (recordType)
@@ -118,7 +121,7 @@ namespace BOOTH.LogProcessors.PollPad
 
         public bool IsThisLog(Worksheet sheet)
         {
-            SheetReader reader = new SheetReader(sheet, this.GetSeparator());
+            DynamicSheetReader reader = new DynamicSheetReader(sheet, this.GetSeparator());
             while (!reader.NoMoreLines())
             {
                 string line = reader.ReadLine();
@@ -135,7 +138,7 @@ namespace BOOTH.LogProcessors.PollPad
             MatchCollection matches = PollPad_Importer.timestampRegex.Matches(line);
             if (matches.Count == 0)
             {
-                System.Diagnostics.Debug.WriteLine("Timestamp-less line passed to PollPad_Processor!");
+                // System.Diagnostics.Debug.WriteLine("Timestamp-less line passed to PollPad_Processor!");
                 return;
             }
             // Extract and parse timestamp
@@ -380,14 +383,15 @@ namespace BOOTH.LogProcessors.PollPad
             TimeSpan delta = (TimeSpan)(endTime - startTime);
             // Use zero for number of searches if the lookup wasn't manual (???)
             string searches = this.scanIdLookup ? "0" : this.searches.ToString();
-            string[] record = new string[]
-            {
-                Util.ToMMSS(delta), this.durationHighConfidence ? "High" : "Low", this.endTime.ToString(),
-                GetPrettyStringForRecordType(recordType), this.scanIdLookup ? "ID Scan" : "Manual",
-                searches, this.vbmCancelled ? "Yes" : "No", this.assistanceRequired ? "Yes" : "No"
-            };
-
-            writer.WriteLineArr(record, recordFieldTypes);
+            this.recordLine[0] = Util.ToMMSS(delta);
+            this.recordLine[1] = this.durationHighConfidence ? "High" : "Low";
+            this.recordLine[2] = this.endTime.ToString();
+            this.recordLine[3] = GetPrettyStringForRecordType(recordType);
+            this.recordLine[4] = this.scanIdLookup ? "ID Scan" : "Manual";
+            this.recordLine[5] = searches;
+            this.recordLine[6] = vbmCancelled ? "Yes" : "No";
+            this.recordLine[7] = assistanceRequired ? "Yes" : "No";
+            writer.WriteLineArr(recordLine, recordFieldTypes);
         }
 
         private void ClearState()

@@ -33,12 +33,17 @@ namespace BOOTH
 
 
             Worksheet outputSheet = AddSheetForOutput(sheet);
-            SheetReader reader = new SheetReader(sheet, processor.GetSeparator());
+            System.Diagnostics.Trace.WriteLine("About to construct FastSheetReader at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
+            FastSheetReader reader = new FastSheetReader(sheet, processor.GetSeparator());
+            System.Diagnostics.Trace.WriteLine("Finished constructing FastSheetReader at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
             FastSheetWriter writer = new FastSheetWriter(outputSheet);
+            System.Diagnostics.Trace.WriteLine("Finished constructing FastSheetWriter at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
 
             Util.RunPipeline(reader, processor, writer, true);
+            System.Diagnostics.Trace.WriteLine("Finished running pipeline at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
 
             writer.Flush();
+            System.Diagnostics.Trace.WriteLine("Flushed writer at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
 
             // Tag the sheet with a machine type mark so we don't have to dig into the cell
             // data to identify machine type when trying to generate summary statistics
@@ -46,6 +51,7 @@ namespace BOOTH
 
             // Re-enable UI updates
             ThisAddIn.app.ScreenUpdating = true;
+            System.Diagnostics.Trace.WriteLine("Returning at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
         }
 
         public static void ProcessSheetForLogType(Worksheet sheet, LogType t)

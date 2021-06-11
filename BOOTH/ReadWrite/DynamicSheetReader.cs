@@ -2,7 +2,7 @@
 
 namespace BOOTH
 {
-    class SheetReader : IInputReader
+    class DynamicSheetReader : IInputReader
     {
 
         private readonly Worksheet sheet;
@@ -10,7 +10,7 @@ namespace BOOTH
         private readonly int columns;
         private long currentLine;
 
-        public SheetReader(Worksheet sheet, string separator)
+        public DynamicSheetReader(Worksheet sheet, string separator)
         {
             this.sheet = sheet;
             this.separator = separator;
@@ -33,11 +33,6 @@ namespace BOOTH
             }
             this.currentLine++;
             return line;
-        }
-
-        public void SetSkipLines(int skipCount)
-        {
-            this.currentLine = 1 + skipCount;
         }
     }
 }

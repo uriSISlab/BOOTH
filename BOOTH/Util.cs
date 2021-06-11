@@ -93,6 +93,7 @@ namespace BOOTH
 
         public static LogSummarizer CreateSummarizer(string machineTypeTag)
         {
+            System.Diagnostics.Debug.WriteLine("Machine type tag read: " + machineTypeTag);
             if (machineTypeTag == LogProcessors.VSAP_BMD.VSAPBMD_Summarizer.MACHINE_TYPE_TAG)
             {
                 return new LogProcessors.VSAP_BMD.VSAPBMD_Summarizer();
@@ -151,7 +152,6 @@ namespace BOOTH
 
         public static LogSummarizer GetCorrectSummarizerForProcessedSheet(Worksheet sheet)
         {
-            System.Diagnostics.Debug.WriteLine("Count when reading is " + sheet.CustomProperties.Count);
             foreach (CustomProperty prop in sheet.CustomProperties)
             {
                 if (prop.Name == Util.MACHINE_TYPE_MARK_NAME)

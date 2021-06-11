@@ -215,6 +215,7 @@
     <Compile Include="LogProcessors\PollPad\PollPad_Summarizer.cs" />
     <Compile Include="LogProcessors\VSAP_BMD\VSAPBMD_Summarizer.cs" />
     <Compile Include="ReadWrite\FastSheetWriter.cs" />
+    <Compile Include="ReadWrite\FastSheetReader.cs" />
     <Compile Include="Timers\HelpForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -288,7 +289,7 @@
     <Compile Include="ReadWrite\DynamicSheetWriter.cs" />
     <Compile Include="ReadWrite\FileReader.cs" />
     <Compile Include="ReadWrite\IOutputWriter.cs" />
-    <Compile Include="ReadWrite\SheetReader.cs" />
+    <Compile Include="ReadWrite\DynamicSheetReader.cs" />
     <Compile Include="ReadWrite\IInputReader.cs" />
     <Compile Include="LogProcessors\VSAP_BMD\VSAPBMD_Importer.cs" />
     <Compile Include="Util.cs" />

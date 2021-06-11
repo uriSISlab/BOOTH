@@ -4,7 +4,7 @@ namespace BOOTH
 {
     public interface IOutputWriter
     {
-        void WriteLineArr(IEnumerable<string> line, IEnumerable<FieldType> fieldTypes = null);
+        void WriteLineArr(string[] line, FieldType[] fieldTypes = null);
 
         void WriteLine(params string[] line);
 

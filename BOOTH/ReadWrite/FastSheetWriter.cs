@@ -13,8 +13,8 @@ namespace BOOTH
         private readonly long startColumnOffset = 0;
         private long columns = 0;
         private long rowNum = 1;
-        private List<object[]> lines = new List<object[]>();
-        private List<string[]> numberFormats = new List<string[]>();
+        private readonly List<object[]> lines = new List<object[]>();
+        private readonly List<string[]> numberFormats = new List<string[]>();
 
         public FastSheetWriter(Worksheet sheet)
         {
@@ -39,16 +39,18 @@ namespace BOOTH
         public void Flush()
         {
             this.GetOutputRange().Value = Util.JaggedTo2DArray(this.lines.ToArray(), this.columns);
+            System.Diagnostics.Trace.WriteLine("Finished writing values at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
             this.GetOutputRange().NumberFormat = Util.JaggedTo2DArray(this.numberFormats.ToArray(), this.columns);
+            System.Diagnostics.Trace.WriteLine("Finished writing numformats at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
             this.FormatPretty();
+            System.Diagnostics.Trace.WriteLine("Finished format pretty at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
         }
 
         public void FormatPretty()
         {
-            string left = Util.GetColumnLetterFromNumber(1 + this.startColumnOffset);
-            string right = Util.GetColumnLetterFromNumber(this.columns + this.startColumnOffset);
-            this.sheet.Range[left + "1", right + "1"].Font.Bold = true;
-            this.sheet.Range[left + "1", right + (this.rowNum - 1)].Columns.AutoFit();
+            // TODO use startRowOffset and startColumnOffset
+            this.sheet.Rows[1].Font.Bold = true;
+            this.sheet.UsedRange.Columns.AutoFit();
         }
 
         public long GetRowNum()
@@ -61,43 +63,42 @@ namespace BOOTH
             this.WriteLineArr(line);
         }
 
-        public void WriteLineArr(IEnumerable<string> line, IEnumerable<FieldType> fieldTypes = null)
+        public void WriteLineArr(string[] line, FieldType[] fieldTypes = null)
         {
-            string[] lineArr = line.ToArray();
             FieldType[] fieldTypesArr = fieldTypes?.ToArray();
-            this.columns = Math.Max(this.columns, lineArr.Length);
-            object[] lineObjArr = new object[lineArr.Length];
-            string[] numFormatArr = new string[lineArr.Length];
-            for (int c = 0; c < lineArr.Length; c++)
+            this.columns = Math.Max(this.columns, line.Length);
+            object[] lineObjArr = new object[line.Length];
+            string[] numFormatArr = new string[line.Length];
+            for (int c = 0; c < line.Length; c++)
             {
                 if (fieldTypesArr == null || fieldTypesArr.Length - 1 < c)
                 {
                     numFormatArr[c] = "@";
-                    lineObjArr[c] = lineArr[c];
+                    lineObjArr[c] = line[c];
                     continue;
                 }
                 switch (fieldTypesArr[c])
                 {
                     case FieldType.INTEGER:
-                        lineObjArr[c] = int.Parse(lineArr[c]);
+                        lineObjArr[c] = int.Parse(line[c]);
                         numFormatArr[c] = "@";
                         break;
                     case FieldType.FLOATING:
-                        lineObjArr[c] = double.Parse(lineArr[c]);
+                        lineObjArr[c] = double.Parse(line[c]);
                         numFormatArr[c] = "@";
                         break;
                     case FieldType.DATETIME:
-                        lineObjArr[c] = DateTime.Parse(lineArr[c]).ToOADate();
+                        lineObjArr[c] = DateTime.Parse(line[c]).ToOADate();
                         numFormatArr[c] = "MM/DD/YYYY hh:mm:ss";
                         break;
                     case FieldType.TIMESPAN_MMSS:
-                        lineObjArr[c] = TimeSpan.ParseExact(lineArr[c], @"mm\:ss", CultureInfo.InvariantCulture).TotalDays;
+                        lineObjArr[c] = TimeSpan.ParseExact(line[c], @"mm\:ss", CultureInfo.InvariantCulture).TotalDays;
                         numFormatArr[c] = "mm:ss";
                         break;
                     case FieldType.STRING:
                     default:
                         numFormatArr[c] = "@";
-                        lineObjArr[c] = lineArr[c];
+                        lineObjArr[c] = line[c];
                         break;
                 }
             }
