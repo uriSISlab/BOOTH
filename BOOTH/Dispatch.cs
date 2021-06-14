@@ -51,6 +51,10 @@ namespace BOOTH
 
             // Re-enable UI updates
             ThisAddIn.app.ScreenUpdating = true;
+            writer.FormatPretty();
+            System.Diagnostics.Trace.WriteLine("Finished format pretty at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
+
+            outputSheet.Columns.AutoFit();
             System.Diagnostics.Trace.WriteLine("Returning at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
         }
 

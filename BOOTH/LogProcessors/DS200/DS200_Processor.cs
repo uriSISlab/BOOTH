@@ -117,7 +117,7 @@ namespace BOOTH.LogProcessors.DS200
             return int.Parse(elements[0]);
         }
 
-        private TimeSpan getDuration(string line2, string line1)
+        private TimeSpan GetDuration(string line2, string line1)
         {
             return GetTimestamp(line2) - GetTimestamp(line1);
         }
@@ -136,8 +136,8 @@ namespace BOOTH.LogProcessors.DS200
                     && GetCode(lines[i + 1]) != overvotedBallotCode)
                 {
                     string[] outputArr = new string[4];
-                    outputArr[0] = getDuration(lines[i + 1], lines[i]).ToString(@"mm\:ss");
-                    outputArr[3] = ((int)getDuration(lines[i + 1], lines[i]).TotalSeconds).ToString();
+                    outputArr[0] = GetDuration(lines[i + 1], lines[i]).ToString(@"mm\:ss");
+                    outputArr[3] = ((int)GetDuration(lines[i + 1], lines[i]).TotalSeconds).ToString();
                     if (GetCode(lines[i + 1]) != votingCompleteCode)
                     {
                         outputArr[2] = "Unsuccessful";
@@ -155,8 +155,8 @@ namespace BOOTH.LogProcessors.DS200
                   && GetCode(lines[i + 2]) == votingCompleteCode)
                 {
                     string[] outputArr = new string[4];
-                    outputArr[0] = getDuration(lines[i + 2], lines[i]).ToString(@"mm\:ss");
-                    outputArr[3] = ((int)getDuration(lines[i + 2], lines[i]).TotalSeconds).ToString();
+                    outputArr[0] = GetDuration(lines[i + 2], lines[i]).ToString(@"mm\:ss");
+                    outputArr[3] = ((int)GetDuration(lines[i + 2], lines[i]).TotalSeconds).ToString();
                     outputArr[2] = "Successful";
                     outputArr[1] = GetElements(lines[i + 1])[6];
                     i += 2;
@@ -166,8 +166,8 @@ namespace BOOTH.LogProcessors.DS200
                   && GetCode(lines[i - 1]) != votingStartedCode && GetCode(lines[i + 1]) == jamClearedCode)
                 {
                     string[] outputArr = new string[4];
-                    outputArr[0] = getDuration(lines[i + 1], lines[i]).ToString(@"mm\:ss");
-                    outputArr[3] = ((int)getDuration(lines[i + 1], lines[i]).TotalSeconds).ToString();
+                    outputArr[0] = GetDuration(lines[i + 1], lines[i]).ToString(@"mm\:ss");
+                    outputArr[3] = ((int)GetDuration(lines[i + 1], lines[i]).TotalSeconds).ToString();
                     outputArr[2] = "Jam";
                     outputArr[1] = GetElements(lines[i])[6];
                     i++;
@@ -177,8 +177,8 @@ namespace BOOTH.LogProcessors.DS200
                   && GetCode(lines[i - 1]) == unknownCode && GetCode(lines[i + 1]) == votingModeCode)
                 {
                     string[] outputArr = new string[4];
-                    outputArr[0] = getDuration(lines[i + 2], lines[i]).ToString(@"mm\:ss");
-                    outputArr[3] = ((int)getDuration(lines[i + 2], lines[i]).TotalSeconds).ToString();
+                    outputArr[0] = GetDuration(lines[i + 2], lines[i]).ToString(@"mm\:ss");
+                    outputArr[3] = ((int)GetDuration(lines[i + 2], lines[i]).TotalSeconds).ToString();
                     outputArr[2] = "Shutdown";
                     outputArr[1] = GetElements(lines[i])[6];
                     i++;
