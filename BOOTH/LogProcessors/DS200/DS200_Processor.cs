@@ -16,19 +16,38 @@ namespace BOOTH.LogProcessors.DS200
         private const int ballotJamCode = 3013004;
         private const int jamClearedCode = 1004328;
         private const int shutDownCode = 1004016;
-        private const int unknownCode = 1004163;
+        private const int unknownCode = 1004163; // ??
         private const int votingModeCode = 1004056;
 
-        private int[] recognizedCodes = new int[]
+        private readonly int[] recognizedCodes = new int[]
         {
-            1004115, 1004163, 3013006, 1004138, 1004016, 1004056,
-            1004022, 1004111, 1004113, 3013005, 3003337, 3013001,
-            3013004, 3013008, 3013002, 7003009, 3013003, 3013007,
-            3013009, 3003335, 3003336, 3003339, 3003340, 3003318,
-            3003341, 1004122, 1004112, 1004114, 1004328
+            1004115, 1004163, 1004016, 1004056,
+            1004022, 1004111, 1004113, 3013004,
+            1004328,
+
+            3013006,    // ??
+            1004138,    // Exiting Administration Menus
+            3013005,    // Multiple Ballots Detected
+            3003337,    // Ballot could not be read. Reinsert opposite end.
+            3013001,    // Ballot removed during scanning. Reinsert ballot.
+            3013008,    // Error scanning ballot. Reinsert opposite end, remove all stubs.
+            3013002,    // Ballot not inserted far enough. Reinsert.
+            7003009,    // Voting machine not programmed for your ballot.
+            3013003,    // Ballot jam. Reinsert.
+            3013007,    // Ballot jam. Check paper path.
+            3013009,    // Ballot too short. Remove ballot.
+            3003335,    // Ballot could not be read. Reinsert opposite end.
+            3003336,    // Ballot could not be read. Reinsert opposite end.
+            3003339,    // Ballot could not be read. Reinsert opposite end.
+            3003340,    // ??
+            3003318,    // Ballot could not be read. Reinsert opposite end.
+            3003341,    // ??
+            1004122,    // Rejected ballot with unreadable mark.
+            1004112,    // Voter rejected overvoted ballot
+            1004114,    // Voter rejected blank ballot
         };
 
-        private FieldType[] fieldTypes = new FieldType[] { FieldType.TIMESPAN_MMSS, FieldType.STRING,
+        private readonly FieldType[] fieldTypes = new FieldType[] { FieldType.TIMESPAN_MMSS, FieldType.STRING,
             FieldType.STRING, FieldType.INTEGER};
 
         private string fileName;
