@@ -13,6 +13,8 @@ namespace BOOTH.LogProcessors
             this.fileTypeFilters = fileTypeFilters;
         }
 
+        protected abstract bool IsCorrectLogType(string filePath);
+
         protected abstract void ImportFileToSheet(string filePath, Worksheet sheet);
 
         public void ImportIntoCurrentSheet()
@@ -37,6 +39,12 @@ namespace BOOTH.LogProcessors
             {
                 // Pull file path for the specific file
                 string filePath = fileDialog.SelectedItems.Item(j);
+
+                if (!this.IsCorrectLogType(filePath))
+                {
+                    Util.MessageBox(Path.GetFileName(filePath) + " could not be imported because it is not the correct log type.");
+                    continue;
+                }
 
                 // Add an additional sheet and activate it
                 string sheetName = Path.GetFileNameWithoutExtension(filePath);

@@ -11,6 +11,21 @@ namespace BOOTH.LogProcessors.Dominion_ICE
         {
         }
 
+        protected override bool IsCorrectLogType(string filePath)
+        {
+            // Open the file as a text stream for reading
+            StreamReader inputStream = new StreamReader(filePath);
+            while (!inputStream.EndOfStream)
+            {
+                string lineStr = inputStream.ReadLine();
+                if (lineStr.Contains("[Main thread] INFO : [Init] Starting the event loop "))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         protected override void ImportFileToSheet(string filePath, Worksheet sheet)
         {
             // Open the file as a text stream for reading

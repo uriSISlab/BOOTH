@@ -11,6 +11,21 @@ namespace BOOTH.LogProcessors.VSAP_BMD
         {
         }
 
+        protected override bool IsCorrectLogType(string filePath)
+        {
+            // Open the file as a text stream for reading
+            StreamReader inputStream = new StreamReader(filePath);
+            while (!inputStream.EndOfStream)
+            {
+                string lineStr = inputStream.ReadLine();
+                if (lineStr.Contains("|Logger.js-Loading page-Manual Diagnostic Status|system|info|"))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         protected override void ImportFileToSheet(string filePath, Worksheet sheet)
         {
             // Open the file as a text stream for reading

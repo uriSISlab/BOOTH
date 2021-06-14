@@ -13,7 +13,7 @@
             InitializeComponent();
         }
 
-        /// <summary> 
+        /// <summary>
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -73,9 +73,9 @@
             this.group5.SuspendLayout();
             this.group6.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // ImportSplitButton
-            // 
+            //
             ImportSplitButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             ImportSplitButton.Items.Add(this.ImportDS200Button);
             ImportSplitButton.Items.Add(this.ImportDICEButton);
@@ -84,37 +84,37 @@
             ImportSplitButton.Label = "Import BMD Log File(s)";
             ImportSplitButton.Name = "ImportSplitButton";
             ImportSplitButton.OfficeImageId = "GetExternalDataFromText";
-            // 
+            //
             // ImportDS200Button
-            // 
+            //
             this.ImportDS200Button.Label = "Import DS200 File(s)";
             this.ImportDS200Button.Name = "ImportDS200Button";
             this.ImportDS200Button.ShowImage = true;
             this.ImportDS200Button.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ImportButton_Click);
-            // 
+            //
             // ImportDICEButton
-            // 
+            //
             this.ImportDICEButton.Label = "Import Dominion ICE File(s)";
             this.ImportDICEButton.Name = "ImportDICEButton";
             this.ImportDICEButton.ShowImage = true;
             this.ImportDICEButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ImportButton_Click);
-            // 
+            //
             // ImportVSAPBMDButton
-            // 
+            //
             this.ImportVSAPBMDButton.Label = "Import VSAP BMD File(s)";
             this.ImportVSAPBMDButton.Name = "ImportVSAPBMDButton";
             this.ImportVSAPBMDButton.ShowImage = true;
             this.ImportVSAPBMDButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ImportButton_Click);
-            // 
+            //
             // ImportDICXButton
-            // 
+            //
             this.ImportDICXButton.Label = "Import Dominion ICX File(s)";
             this.ImportDICXButton.Name = "ImportDICXButton";
             this.ImportDICXButton.ShowImage = true;
             this.ImportDICXButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ImportButton_Click);
-            // 
+            //
             // ImportPollPadButton
-            // 
+            //
             ImportPollPadButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             ImportPollPadButton.Label = "Import PollPad File(s)";
             ImportPollPadButton.Name = "ImportPollPadButton";
@@ -123,9 +123,9 @@
             ImportPollPadButton.SuperTip = "Import PollPad log file(s) in *.txt* and *.csv* format. Create new Worksheet(s) a" +
     "nd populate with the selected file(s).";
             ImportPollPadButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ImportButton_Click);
-            // 
+            //
             // ProcessFolderButton
-            // 
+            //
             ProcessFolderButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             ProcessFolderButton.Items.Add(this.ProcessDS200Button);
             ProcessFolderButton.Items.Add(this.ProcessVSAPBMDButton);
@@ -135,37 +135,37 @@
             ProcessFolderButton.Name = "ProcessFolderButton";
             ProcessFolderButton.OfficeImageId = "LoadFromQuery";
             ProcessFolderButton.SuperTip = "Open a folder and process all BMD log files in it into a single output file.";
-            // 
+            //
             // ProcessDS200Button
-            // 
+            //
             this.ProcessDS200Button.Label = "Process DS200 Folder";
             this.ProcessDS200Button.Name = "ProcessDS200Button";
             this.ProcessDS200Button.ShowImage = true;
             this.ProcessDS200Button.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessFolderMenuButton_Click);
-            // 
+            //
             // ProcessVSAPBMDButton
-            // 
+            //
             this.ProcessVSAPBMDButton.Label = "Process VSAP BMD Folder";
             this.ProcessVSAPBMDButton.Name = "ProcessVSAPBMDButton";
             this.ProcessVSAPBMDButton.ShowImage = true;
             this.ProcessVSAPBMDButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessFolderMenuButton_Click);
-            // 
+            //
             // ProcessDICEButton
-            // 
+            //
             this.ProcessDICEButton.Label = "Process Dominion IC E Folder";
             this.ProcessDICEButton.Name = "ProcessDICEButton";
             this.ProcessDICEButton.ShowImage = true;
             this.ProcessDICEButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessFolderMenuButton_Click);
-            // 
+            //
             // ProcessDICXButton
-            // 
+            //
             this.ProcessDICXButton.Label = "Process Dominion IC X Folder";
             this.ProcessDICXButton.Name = "ProcessDICXButton";
             this.ProcessDICXButton.ShowImage = true;
             this.ProcessDICXButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessFolderMenuButton_Click);
-            // 
+            //
             // TimersButton
-            // 
+            //
             TimersButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             TimersButton.Items.Add(this.CheckinTimerButton);
             TimersButton.Items.Add(this.CheckinArrivalTimerButton);
@@ -177,58 +177,58 @@
             TimersButton.Label = "Timers";
             TimersButton.Name = "TimersButton";
             TimersButton.OfficeImageId = "StartTimer";
-            // 
+            //
             // CheckinTimerButton
-            // 
+            //
             this.CheckinTimerButton.Label = "Check-In Timer";
             this.CheckinTimerButton.Name = "CheckinTimerButton";
             this.CheckinTimerButton.ShowImage = true;
             this.CheckinTimerButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.TimerOpenButton_Click);
-            // 
+            //
             // CheckinArrivalTimerButton
-            // 
+            //
             this.CheckinArrivalTimerButton.Label = "Check-In Arrival Timer";
             this.CheckinArrivalTimerButton.Name = "CheckinArrivalTimerButton";
             this.CheckinArrivalTimerButton.ShowImage = true;
             this.CheckinArrivalTimerButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.TimerOpenButton_Click);
-            // 
+            //
             // VotingBoothTimerButton
-            // 
+            //
             this.VotingBoothTimerButton.Label = "Voting Booth Timer";
             this.VotingBoothTimerButton.Name = "VotingBoothTimerButton";
             this.VotingBoothTimerButton.ShowImage = true;
             this.VotingBoothTimerButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.TimerOpenButton_Click);
-            // 
+            //
             // BMDTimerButton
-            // 
+            //
             this.BMDTimerButton.Label = "BMD Timer";
             this.BMDTimerButton.Name = "BMDTimerButton";
             this.BMDTimerButton.ShowImage = true;
             this.BMDTimerButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.TimerOpenButton_Click);
-            // 
+            //
             // BallotScanningTimerButton
-            // 
+            //
             this.BallotScanningTimerButton.Label = "Ballot Scanning Timer";
             this.BallotScanningTimerButton.Name = "BallotScanningTimerButton";
             this.BallotScanningTimerButton.ShowImage = true;
             this.BallotScanningTimerButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.TimerOpenButton_Click);
-            // 
+            //
             // ThroughputArrivalTimerButton
-            // 
+            //
             this.ThroughputArrivalTimerButton.Label = "Throughput Arrival Timer";
             this.ThroughputArrivalTimerButton.Name = "ThroughputArrivalTimerButton";
             this.ThroughputArrivalTimerButton.ShowImage = true;
             this.ThroughputArrivalTimerButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.TimerOpenButton_Click);
-            // 
+            //
             // customTimersButton
-            // 
+            //
             this.customTimersButton.Label = "Custom Timers";
             this.customTimersButton.Name = "customTimersButton";
             this.customTimersButton.ShowImage = true;
             this.customTimersButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CustomTimersButton_Click);
-            // 
+            //
             // BoothTab
-            // 
+            //
             this.BoothTab.Groups.Add(this.group2);
             this.BoothTab.Groups.Add(this.group3);
             this.BoothTab.Groups.Add(this.group4);
@@ -236,23 +236,23 @@
             this.BoothTab.Groups.Add(this.group6);
             this.BoothTab.Label = "BOOTH";
             this.BoothTab.Name = "BoothTab";
-            // 
+            //
             // group2
-            // 
+            //
             this.group2.Items.Add(ImportSplitButton);
             this.group2.Items.Add(ImportPollPadButton);
             this.group2.Label = "Import Data";
             this.group2.Name = "group2";
-            // 
+            //
             // group3
-            // 
+            //
             this.group3.Items.Add(this.ProcessSingleButton);
             this.group3.Items.Add(this.ProcessAllButton);
             this.group3.Label = "Process Data";
             this.group3.Name = "group3";
-            // 
+            //
             // ProcessSingleButton
-            // 
+            //
             this.ProcessSingleButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.ProcessSingleButton.Label = "Single Data Sheet";
             this.ProcessSingleButton.Name = "ProcessSingleButton";
@@ -261,9 +261,9 @@
             this.ProcessSingleButton.SuperTip = "Create a new Worksheet and populate with processed data from the active Worksheet" +
     ".";
             this.ProcessSingleButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessButton_Click);
-            // 
+            //
             // ProcessAllButton
-            // 
+            //
             this.ProcessAllButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.ProcessAllButton.Label = "All Open Data Sheets";
             this.ProcessAllButton.Name = "ProcessAllButton";
@@ -272,21 +272,21 @@
             this.ProcessAllButton.SuperTip = "Create new Worksheets populated with processed data from every applicable Workshe" +
     "et in an open Workbook.";
             this.ProcessAllButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessButton_Click);
-            // 
+            //
             // group4
-            // 
+            //
             this.group4.Items.Add(ProcessFolderButton);
             this.group4.Label = "Process Entire Folder";
             this.group4.Name = "group4";
-            // 
+            //
             // group5
-            // 
+            //
             this.group5.Items.Add(this.CreateSumStatsButton);
             this.group5.Label = "Analysis";
             this.group5.Name = "group5";
-            // 
+            //
             // CreateSumStatsButton
-            // 
+            //
             this.CreateSumStatsButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.CreateSumStatsButton.Label = "Create Summary Statistics";
             this.CreateSumStatsButton.Name = "CreateSumStatsButton";
@@ -295,15 +295,15 @@
             this.CreateSumStatsButton.SuperTip = "Generates summary statistics for the open worksheet. Autodetects the type of data" +
     " inserted. Can only be used on already processed sheets.";
             this.CreateSumStatsButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SumStatsButton_Click);
-            // 
+            //
             // group6
-            // 
+            //
             this.group6.Items.Add(TimersButton);
             this.group6.Label = "Voting Timers";
             this.group6.Name = "group6";
-            // 
+            //
             // Ribbon1
-            // 
+            //
             this.Name = "Ribbon1";
             this.RibbonType = "Microsoft.Excel.Workbook";
             this.Tabs.Add(this.BoothTab);
