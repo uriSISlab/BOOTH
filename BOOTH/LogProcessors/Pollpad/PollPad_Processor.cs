@@ -143,6 +143,11 @@ namespace BOOTH.LogProcessors.PollPad
             }
             // Extract and parse timestamp
             DateTime timestamp = DateTime.ParseExact(matches[0].Value, @"MMM d, yyyy \a\t h:mm:ss tt", CultureInfo.InvariantCulture);
+            if (timestamp.Year < 2015)
+            {
+                System.Diagnostics.Debug.WriteLine("Anomalous timestamp at line:");
+                System.Diagnostics.Debug.WriteLine(line);
+            }
             // Reset the state if there's a large (> 15 minute) gap between the previous and the current timestamp
             if (this.lastTimestamp != Util.nullTimestamp && (timestamp - this.lastTimestamp).TotalMinutes > 15)
             {
@@ -385,7 +390,7 @@ namespace BOOTH.LogProcessors.PollPad
             string searches = this.scanIdLookup ? "0" : this.searches.ToString();
             this.recordLine[0] = Util.ToMMSS(delta);
             this.recordLine[1] = this.durationHighConfidence ? "High" : "Low";
-            this.recordLine[2] = this.endTime.ToString();
+            this.recordLine[2] = endTime.ToString();
             this.recordLine[3] = GetPrettyStringForRecordType(recordType);
             this.recordLine[4] = this.scanIdLookup ? "ID Scan" : "Manual";
             this.recordLine[5] = searches;
