@@ -55,7 +55,13 @@ namespace BOOTH.LogProcessors.DS200
         {
             Ready,
             VotingStarted,
-            BallotJammed,
+        }
+
+        private enum BallotType
+        {
+            Normal,
+            Overvoted,
+            Blank
         }
 
         private readonly int[] recognizedCodes = new int[]
@@ -94,12 +100,14 @@ namespace BOOTH.LogProcessors.DS200
         private readonly List<string> lines;
         private State state;
         private DateTime startTimestamp;
+        private BallotType ballotType;
 
         public DS200_Processor()
         {
             this.fileName = "";
             this.lines = new List<string>();
             this.state = State.Ready;
+            this.ballotType = BallotType.Normal;
         }
 
         public string GetSeparator()
@@ -122,6 +130,7 @@ namespace BOOTH.LogProcessors.DS200
                 {
                     this.startTimestamp = timestamp;
                     this.state = State.VotingStarted;
+                    this.ballotType = BallotType.Normal;
                 }
             } else if (this.state == State.VotingStarted)
             {
@@ -208,6 +217,12 @@ namespace BOOTH.LogProcessors.DS200
                     System.Diagnostics.Debug.WriteLine(line);
                     this.startTimestamp = timestamp;
                     this.state = State.VotingStarted;
+                    this.ballotType = BallotType.Normal;
+                } else if (line.Contains(s_overVotedBallotAccepted)) {
+                    this.ballotType = BallotType.Overvoted;
+                } else if (line.Contains(s_blankBallotAccepted))
+                {
+                    this.ballotType = BallotType.Blank;
                 }
             }
         }
@@ -224,7 +239,7 @@ namespace BOOTH.LogProcessors.DS200
 
         public void WriteHeader()
         {
-            string line = "Duration (mm:ss),Scan Type,Ballot Cast Status,Simio Input (seconds)";
+            string line = "Duration (mm:ss),Scan Type,Ballot Cast Status,Simio Input (seconds), Ballot Type";
             line += this.fileName.Length > 0 ? ",File Name" : "";
             this.writer.WriteLineArr(line.Split(','));
         }
@@ -236,12 +251,13 @@ namespace BOOTH.LogProcessors.DS200
 
         private void WriteRecord(DateTime currentTimestamp, string eventStr, bool successful)
         {
-            string[] outputArr = new string[4];
+            string[] outputArr = new string[5];
             TimeSpan delta = (currentTimestamp - this.startTimestamp);
             outputArr[0] = delta.ToString(@"mm\:ss");
             outputArr[1] = eventStr;
             outputArr[2] = successful ? "Successful" : "Unsuccessful";
             outputArr[3] = ((int)delta.TotalSeconds).ToString();
+            outputArr[4] = this.ballotType.ToString();
             this.WriteLineArr(outputArr);
         }
 
