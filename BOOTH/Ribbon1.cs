@@ -80,7 +80,8 @@ namespace BOOTH
             switch (e.Control.Id)
             {
                 case "ProcessDS200Button":
-                    throw new NotImplementedException();
+                    Dispatch.ProcessEntireDirectory(LogType.DS200);
+                    break;
                 case "ProcessVSAPBMDButton":
                     Dispatch.ProcessEntireDirectory(LogType.VSAP_BMD);
                     break;
