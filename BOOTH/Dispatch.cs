@@ -30,6 +30,12 @@ namespace BOOTH
 
             // Disable UI updates
             ThisAddIn.app.ScreenUpdating = false;
+            bool displayStatusBar = ThisAddIn.app.DisplayStatusBar;
+            ThisAddIn.app.DisplayStatusBar = false;
+            XlCalculation calculation = ThisAddIn.app.Calculation;
+            ThisAddIn.app.Calculation = XlCalculation.xlCalculationManual;
+            bool enableEvents = ThisAddIn.app.EnableEvents;
+            ThisAddIn.app.EnableEvents = false;
 
 
             Worksheet outputSheet = AddSheetForOutput(sheet);
@@ -49,10 +55,14 @@ namespace BOOTH
             // data to identify machine type when trying to generate summary statistics
             outputSheet.CustomProperties.Add(Util.MACHINE_TYPE_MARK_NAME, processor.GetUniqueTag());
 
-            // Re-enable UI updates
-            ThisAddIn.app.ScreenUpdating = true;
             writer.FormatPretty();
             System.Diagnostics.Trace.WriteLine("Finished format pretty at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
+
+            // Re-enable UI updates
+            ThisAddIn.app.ScreenUpdating = true;
+            ThisAddIn.app.DisplayStatusBar = displayStatusBar;
+            ThisAddIn.app.Calculation = calculation;
+            ThisAddIn.app.EnableEvents = enableEvents;
 
             outputSheet.Columns.AutoFit();
             System.Diagnostics.Trace.WriteLine("Returning at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());

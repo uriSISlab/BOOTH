@@ -19,6 +19,7 @@ namespace BOOTH
         public FastSheetWriter(Worksheet sheet)
         {
             this.sheet = sheet;
+            this.sheet.DisplayPageBreaks = false;
         }
 
         public FastSheetWriter(Worksheet sheet, long startRowOffset, long startColumnOffset)
@@ -26,6 +27,7 @@ namespace BOOTH
             this.sheet = sheet;
             this.startRowOffset = startRowOffset;
             this.startColumnOffset = startColumnOffset;
+            this.sheet.DisplayPageBreaks = false;
         }
 
         private Range GetOutputRange()
@@ -42,6 +44,7 @@ namespace BOOTH
             System.Diagnostics.Trace.WriteLine("Finished writing values at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
             this.GetOutputRange().NumberFormat = Util.JaggedTo2DArray(this.numberFormats.ToArray(), this.columns);
             System.Diagnostics.Trace.WriteLine("Finished writing numformats at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
+            // this.sheet.DisplayPageBreaks = true;
         }
 
         public void FormatPretty()

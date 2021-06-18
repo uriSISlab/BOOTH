@@ -92,7 +92,7 @@ namespace BOOTH.LogProcessors.DS200
             1004114,    // Voter rejected blank ballot
         };
 
-        private readonly FieldType[] fieldTypes = new FieldType[] { FieldType.TIMESPAN_MMSS, FieldType.STRING,
+        private readonly FieldType[] fieldTypes = new FieldType[] { FieldType.TIMESPAN_MMSS, FieldType.DATETIME, FieldType.STRING,
             FieldType.STRING, FieldType.INTEGER};
 
         private string fileName;
@@ -239,7 +239,7 @@ namespace BOOTH.LogProcessors.DS200
 
         public void WriteHeader()
         {
-            string line = "Duration (mm:ss),Scan Type,Ballot Cast Status,Simio Input (seconds), Ballot Type";
+            string line = "Duration (mm:ss),Timestamp,Scan Type,Ballot Cast Status,Simio Input (seconds),Ballot Type";
             line += this.fileName.Length > 0 ? ",File Name" : "";
             this.writer.WriteLineArr(line.Split(','));
         }
@@ -251,13 +251,14 @@ namespace BOOTH.LogProcessors.DS200
 
         private void WriteRecord(DateTime currentTimestamp, string eventStr, bool successful)
         {
-            string[] outputArr = new string[5];
+            string[] outputArr = new string[6];
             TimeSpan delta = (currentTimestamp - this.startTimestamp);
             outputArr[0] = delta.ToString(@"mm\:ss");
-            outputArr[1] = eventStr;
-            outputArr[2] = successful ? "Successful" : "Unsuccessful";
-            outputArr[3] = ((int)delta.TotalSeconds).ToString();
-            outputArr[4] = this.ballotType.ToString();
+            outputArr[1] = currentTimestamp.ToString();
+            outputArr[2] = eventStr;
+            outputArr[3] = successful ? "Successful" : "Unsuccessful";
+            outputArr[4] = ((int)delta.TotalSeconds).ToString();
+            outputArr[5] = this.ballotType.ToString();
             this.WriteLineArr(outputArr);
         }
 

@@ -61,27 +61,33 @@ namespace BOOTH.LogProcessors.VSAP_BMD
             {
                 lineArr = Util.AppendToArray(lineArr, fileName);
             }
-            FieldType[] fieldTypes = null;
+            FieldType[] fieldTypes = { FieldType.STRING, FieldType.STRING };
             if (lineArr[0] != "-")
             {
-                fieldTypes = new FieldType[] { FieldType.TIMESPAN_MMSS };
+                fieldTypes[0] = FieldType.TIMESPAN_MMSS;
+            }
+            if (lineArr[1] != "-")
+            {
+                fieldTypes[1] = FieldType.DATETIME;
             }
             writer.WriteLineArr(lineArr, fieldTypes);
         }
 
         private void WriteBallotRemovedRecordNoTime()
         {
-            this.WriteLineToWriter("-, Voter removed ballot before read by BMD, Unsuccessful, -");
+            this.WriteLineToWriter("-, -, Voter removed ballot before read by BMD, Unsuccessful, -");
         }
 
-        private void WriteBallotRemovedRecord(string duration)
+        private void WriteBallotRemovedRecord(DateTime start, DateTime end)
         {
-            this.WriteLineToWriter(duration + ", Voter removed ballot before read by BMD, Unsuccessful, -");
+            string duration = Util.GetTimeDifference(start, end);
+            this.WriteLineToWriter(duration + ", " + end.ToString() + ", Voter removed ballot before read by BMD, Unsuccessful, -");
         }
 
-        private void WriteBallotCastRecord(string duration, bool printed, bool pollPassUsed)
+        private void WriteBallotCastRecord(DateTime start, DateTime end, bool printed, bool pollPassUsed)
         {
-            string outline = duration;
+            string duration = Util.GetTimeDifference(start, end);
+            string outline = duration + ", " + end.ToString();
             if (printed)
             {
                 outline += ", Ballot printed and cast, Successful";
@@ -94,9 +100,10 @@ namespace BOOTH.LogProcessors.VSAP_BMD
             this.WriteLineToWriter(outline);
         }
 
-        private void WriteProvisionalBallotEjectedRecord(string duration, bool printed, bool pollPassUsed)
+        private void WriteProvisionalBallotEjectedRecord(DateTime start, DateTime end, bool printed, bool pollPassUsed)
         {
-            string outline = duration;
+            string duration = Util.GetTimeDifference(start, end);
+            string outline = duration + ", " + end.ToString();
             if (printed)
             {
                 outline += ", Provisional ballot printed and ejected, Successful";
@@ -109,35 +116,40 @@ namespace BOOTH.LogProcessors.VSAP_BMD
             this.WriteLineToWriter(outline);
         }
 
-        private void WritePrintedBallotRemovedRecord(string duration, bool pollPassUsed)
+        private void WritePrintedBallotRemovedRecord(DateTime start, DateTime end, bool pollPassUsed)
         {
-            string outline = duration + ", Ballot printed and removed, Unsuccessful";
+            string duration = Util.GetTimeDifference(start, end);
+            string outline = duration + ", " + end.ToString() + ", Ballot printed and removed, Unsuccessful";
             outline += pollPassUsed ? ", Yes" : ", No";
             this.WriteLineToWriter(outline);
         }
 
-        private void WriteVotingTimedOutLog(string duration, bool pollPassUsed)
+        private void WriteVotingTimedOutLog(DateTime start, DateTime end, bool pollPassUsed)
         {
-            string outline = duration + ", Voting session timed out, Unsuccessful";
+            string duration = Util.GetTimeDifference(start, end);
+            string outline = duration + ", " + end.ToString() + ", Voting session timed out, Unsuccessful";
             outline += pollPassUsed ? ", Yes" : ", No";
             this.WriteLineToWriter(outline);
         }
 
-        private void WriteBPMScanErrorLog(string duration)
+        private void WriteBPMScanErrorLog(DateTime start, DateTime end)
         {
-            this.WriteLineToWriter(duration + ", BPM Scan Error, Unsuccessful");
+            string duration = Util.GetTimeDifference(start, end);
+            this.WriteLineToWriter(duration + ", " + end.ToString() + ", BPM Scan Error, Unsuccessful");
         }
 
-        private void WriteQuitVotingLog(string duration, bool pollPassUsed)
+        private void WriteQuitVotingLog(DateTime start, DateTime end, bool pollPassUsed)
         {
-            string outline = duration + ", Voter quit voting, Unsuccessful";
+            string duration = Util.GetTimeDifference(start, end);
+            string outline = duration + ", " + end.ToString() + ", Voter quit voting, Unsuccessful";
             outline += pollPassUsed ? ", Yes" : ", No";
             this.WriteLineToWriter(outline);
         }
 
-        private void WriteMachineRestartedLog(string duration, bool pollPassUsed)
+        private void WriteMachineRestartedLog(DateTime start, DateTime end, bool pollPassUsed)
         {
-            string outline = duration + ", Voting machine restarted unexpectedly, Unsuccessful";
+            string duration = Util.GetTimeDifference(start, end);
+            string outline = duration + ", " + end.ToString() + ", Voting machine restarted unexpectedly, Unsuccessful";
             outline += pollPassUsed ? ", Yes" : ", No";
             this.WriteLineToWriter(outline);
         }
@@ -218,22 +230,22 @@ namespace BOOTH.LogProcessors.VSAP_BMD
                             case removedBallotLog:
                                 // This means the ballot was removed from the machine before it could
                                 // be read and activated. We need to record it and reset state.
-                                this.WriteBallotRemovedRecord(Util.GetTimeDifference(startTime, thisTime));
+                                this.WriteBallotRemovedRecord(startTime, thisTime);
                                 this.state = BMDState.INIT;
                                 break;
                             case ballotActivatedLog:
                                 this.state = BMDState.Activated;
                                 break;
                             case errorScanningBPMLog:
-                                this.WriteBPMScanErrorLog(Util.GetTimeDifference(startTime, thisTime));
+                                this.WriteBPMScanErrorLog(startTime, thisTime);
                                 this.state = BMDState.INIT;
                                 break;
                             case startLog:
-                                this.WriteMachineRestartedLog(Util.GetTimeDifference(startTime, thisTime), false);
+                                this.WriteMachineRestartedLog(startTime, thisTime, false);
                                 this.state = BMDState.INIT;
                                 break;
                             case quitVotingLog:
-                                this.WriteQuitVotingLog(Util.GetTimeDifference(startTime, thisTime), this.pollPassUsed);
+                                this.WriteQuitVotingLog(startTime, thisTime, this.pollPassUsed);
                                 this.state = BMDState.INIT;
                                 break;
                         }
@@ -250,27 +262,27 @@ namespace BOOTH.LogProcessors.VSAP_BMD
                             case castBallotLog:
                                 // If the ballot was cast withut being printed in this transaction.
                                 // This means a pre-printed ballot was inserted.
-                                this.WriteBallotCastRecord(Util.GetTimeDifference(startTime, thisTime), false, this.pollPassUsed);
+                                this.WriteBallotCastRecord(startTime, thisTime, false, this.pollPassUsed);
                                 this.state = BMDState.INIT;
                                 break;
                             case provisionalBallotEjectedLog:
-                                this.WriteProvisionalBallotEjectedRecord(Util.GetTimeDifference(startTime, thisTime), false, this.pollPassUsed);
+                                this.WriteProvisionalBallotEjectedRecord(startTime, thisTime, false, this.pollPassUsed);
                                 this.state = BMDState.INIT;
                                 break;
                             case votingSessionLockedLog:
-                                this.WriteVotingTimedOutLog(Util.GetTimeDifference(startTime, thisTime), this.pollPassUsed);
+                                this.WriteVotingTimedOutLog(startTime, thisTime, this.pollPassUsed);
                                 this.state = BMDState.INIT;
                                 break;
                             case quitVotingLog:
-                                this.WriteQuitVotingLog(Util.GetTimeDifference(startTime, thisTime), this.pollPassUsed);
+                                this.WriteQuitVotingLog(startTime, thisTime, this.pollPassUsed);
                                 this.state = BMDState.INIT;
                                 break;
                             case startLog:
-                                this.WriteMachineRestartedLog(Util.GetTimeDifference(startTime, thisTime), this.pollPassUsed);
+                                this.WriteMachineRestartedLog(startTime, thisTime, this.pollPassUsed);
                                 this.state = BMDState.INIT;
                                 break;
                             case languageSelectedLog:
-                                this.WriteQuitVotingLog(Util.GetTimeDifference(startTime, thisTime), this.pollPassUsed);
+                                this.WriteQuitVotingLog(startTime, thisTime, this.pollPassUsed);
                                 this.state = BMDState.INIT;
                                 break;
                         }
@@ -279,19 +291,19 @@ namespace BOOTH.LogProcessors.VSAP_BMD
                         switch (thisLog.Trim())
                         {
                             case removedPrintedBallotLog:
-                                this.WritePrintedBallotRemovedRecord(Util.GetTimeDifference(startTime, thisTime), this.pollPassUsed);
+                                this.WritePrintedBallotRemovedRecord(startTime, thisTime, this.pollPassUsed);
                                 this.state = BMDState.INIT;
                                 break;
                             case castBallotLog:
-                                this.WriteBallotCastRecord(Util.GetTimeDifference(startTime, thisTime), true, this.pollPassUsed);
+                                this.WriteBallotCastRecord(startTime, thisTime, true, this.pollPassUsed);
                                 this.state = BMDState.INIT;
                                 break;
                             case provisionalBallotEjectedLog:
-                                this.WriteProvisionalBallotEjectedRecord(Util.GetTimeDifference(startTime, thisTime), true, this.pollPassUsed);
+                                this.WriteProvisionalBallotEjectedRecord(startTime, thisTime, true, this.pollPassUsed);
                                 this.state = BMDState.INIT;
                                 break;
                             case startLog:
-                                this.WriteMachineRestartedLog(Util.GetTimeDifference(startTime, thisTime), this.pollPassUsed);
+                                this.WriteMachineRestartedLog(startTime, thisTime, this.pollPassUsed);
                                 this.state = BMDState.INIT;
                                 break;
                                 // TODO Find out whether provisional ballots can be cast just after printing
@@ -315,11 +327,11 @@ namespace BOOTH.LogProcessors.VSAP_BMD
         {
             if (fileName.Length > 0)
             {
-                writer.WriteLine("Duration (mm:ss)", "Scan Type", "Ballot Cast Status", "Poll Pass Used", "Filename");
+                writer.WriteLine("Duration (mm:ss)", "Timestamp", "Scan Type", "Ballot Cast Status", "Poll Pass Used", "Filename");
             }
             else
             {
-                writer.WriteLine("Duration (mm:ss)", "Scan Type", "Ballot Cast Status", "Poll Pass Used");
+                writer.WriteLine("Duration (mm:ss)", "Timestamp", "Scan Type", "Ballot Cast Status", "Poll Pass Used");
             }
         }
 
