@@ -51,7 +51,6 @@ namespace BOOTH
         {
             // TODO use startRowOffset and startColumnOffset
             this.sheet.Rows[1].Font.Bold = true;
-            this.sheet.Columns.AutoFit();
         }
 
         public long GetRowNum()

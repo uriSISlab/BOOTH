@@ -4,19 +4,14 @@
     {
         public static readonly string MACHINE_TYPE_TAG = "DICX";
 
-        protected override string GetDurationFieldColumn()
+        protected override ColumnInfo GetDurationColumnInfo()
         {
-            return "A";
+            return new ColumnInfo("A", "Duration (mm:ss)");
         }
 
-        protected override string GetDurationFieldName()
+        protected override ColumnInfo GetEventTypeColumnInfo()
         {
-            return "Duration (mm:ss)";
-        }
-
-        protected override string GetEventTypeFieldName()
-        {
-            return "Event";
+            return new ColumnInfo("C", "Event");
         }
     }
 }

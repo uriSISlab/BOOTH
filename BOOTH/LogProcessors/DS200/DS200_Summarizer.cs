@@ -5,19 +5,14 @@
 
         public static readonly string MACHINE_TYPE_TAG = "DS200";
 
-        protected override string GetDurationFieldColumn()
+        protected override ColumnInfo GetDurationColumnInfo()
         {
-            return "A";
+            return new ColumnInfo("A", "Duration (mm:ss)");
         }
 
-        protected override string GetDurationFieldName()
+        protected override ColumnInfo GetEventTypeColumnInfo()
         {
-            return "Duration (mm:ss)";
-        }
-
-        protected override string GetEventTypeFieldName()
-        {
-            return "Scan Type";
+            return new ColumnInfo("C", "Scan Type");
         }
     }
 }

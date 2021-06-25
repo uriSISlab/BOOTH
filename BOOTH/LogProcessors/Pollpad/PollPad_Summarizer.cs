@@ -10,19 +10,19 @@ namespace BOOTH.LogProcessors.PollPad
     {
         public static readonly string MACHINE_TYPE_TAG = "PollPad";
 
-        protected override string GetDurationFieldColumn()
+        protected override ColumnInfo GetDurationColumnInfo()
         {
-            return "A";
+            return new ColumnInfo("A", "Duration (mm:ss)");
         }
 
-        protected override string GetDurationFieldName()
+        protected override ColumnInfo GetEventTypeColumnInfo()
         {
-            return "Duration (mm:ss)";
+            return new ColumnInfo("D", "Event");
         }
 
-        protected override string GetEventTypeFieldName()
+        protected override ColumnInfo GetTimestampColumnInfo()
         {
-            return "Event";
+            return new ColumnInfo("C", "End Timestamp");
         }
     }
 }
