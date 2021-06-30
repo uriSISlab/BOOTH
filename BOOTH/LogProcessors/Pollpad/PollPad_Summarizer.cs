@@ -24,5 +24,15 @@ namespace BOOTH.LogProcessors.PollPad
         {
             return new ColumnInfo("C", "End Timestamp");
         }
+
+        protected override ColumnInfo[] GetCategoricalColumnInfos()
+        {
+            return new ColumnInfo[]
+            {
+                new ColumnInfo("E", "Lookup Method"),
+                new ColumnInfo("G", "VBM Cancelled"),
+                new ColumnInfo("H", "Assistance Required")
+            };
+        }
     }
 }

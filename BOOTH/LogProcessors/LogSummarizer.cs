@@ -26,9 +26,13 @@ namespace BOOTH.LogProcessors
             return new ColumnInfo("B", "Timestamp");
         }
 
+        protected virtual ColumnInfo[] GetCategoricalColumnInfos()
+        {
+            return new ColumnInfo[] { };
+        }
+
         public void CreateSummaryFrom(Worksheet sheet)
         {
-            Workbook workbook = ThisAddIn.app.ActiveWorkbook;
             // Create sheet for output
             string suffix = ".. Stats";
             string prefix = Util.Clip(sheet.Name, (31 - suffix.Length));
@@ -40,18 +44,35 @@ namespace BOOTH.LogProcessors
                 return;
             }
 
-            Range outRange = AddTimestampSummaryTable(sheet, outSheet);
+            this.CreateMainPivotTable(sheet, outSheet);
+            ColumnInfo timestampColumn = this.GetTimestampColumnInfo();
+            Range timestampRange = sheet.Range[String.Format("{0}2:{0}50", timestampColumn.columnId)];
+            // AddTimeStampContinuousChart(sheet, outSheet, timestampRange);
+            CreateCategoricalPieCharts(sheet, outSheet);
+            object[,] timestamps = GetColumn(sheet, timestampColumn);
+            Range outRange = AddTimestampSummaryTable(timestamps, outSheet);
             AddTimeStampChart(outSheet, outRange);
 
+
+            // Formatting and labeling
+            // TODO check if this name is already taken
+            outSheet.Name = outSheetName;
+            outSheet.Range["A2"].Font.Bold = true;
+            outSheet.Range["A2"].Value = outSheetName;
+        }
+
+        private void CreateMainPivotTable(Worksheet inSheet, Worksheet outSheet)
+        {
+            Workbook workbook = ThisAddIn.app.ActiveWorkbook;
             ColumnInfo durationColumn = this.GetDurationColumnInfo();
             ColumnInfo eventTypeColumn = this.GetEventTypeColumnInfo();
             string A = durationColumn.columnId;
-            sheet.Range[A + ":" + A].NumberFormat = "mm:ss";
+            inSheet.Range[A + ":" + A].NumberFormat = "mm:ss";
 
             // Create Pivot Cache from Source Data
             PivotCache pvtCache = workbook.PivotCaches().Create(SourceType: XlPivotTableSourceType.xlDatabase,
                 //SourceData: srcData);
-                SourceData: sheet.UsedRange);
+                SourceData: inSheet.UsedRange);
 
             // Create Pivot table from Pivot Cache
             //PivotTable pvt = pvtCache.CreatePivotTable(TableDestination: startPvt, TableName: "PivotTable2");
@@ -71,35 +92,41 @@ namespace BOOTH.LogProcessors
             pvt.PivotFields("Standard Deviation of " + eventTypeField).NumberFormat = "mm:ss";
 
             pvt.PivotFields(eventTypeField).Orientation = Microsoft.Office.Interop.Excel.XlPivotFieldOrientation.xlRowField;
-
-            // Formatting and labeling
-            // TODO check if this name is already taken
-            outSheet.Name = outSheetName;
-            outSheet.Range["A2"].Font.Bold = true;
-            outSheet.Range["A2"].Value = outSheetName;
-
         }
 
-        private void AddTimeStampChart(Worksheet outSheet, Range outRange)
+        private void AddTimeStampChart(Worksheet outSheet, Range sourceRange)
         {
             // Add timestamp chart
             var charts = outSheet.ChartObjects(Type.Missing) as ChartObjects;
-            Range targetRange = outSheet.Range["L1"];
+            Range targetRange = outSheet.Range["K1"];
             var chartObject = charts.Add(targetRange.Left, targetRange.Top, 300, 300) as ChartObject;
             outSheet.Activate();
-            outRange.Select();
+            sourceRange.Select();
             // chartObject.Select();
             var chart = chartObject.Chart;
-            chart.SetSourceData(outRange, System.Reflection.Missing.Value);
+            chart.SetSourceData(sourceRange, System.Reflection.Missing.Value);
 
             chart.ChartType = XlChartType.xlColumnClustered;
-            // chart.ChartWizard(Source: outRange, Title: "Time distribution", CategoryTitle: "Hour", ValueTitle: "Number of Events");
+            chart.ChartWizard(Title: "Event Count by Hour");
         }
 
-        private Range AddTimestampSummaryTable(Worksheet inSheet, Worksheet outSheet)
+        private void AddTimeStampContinuousChart(Worksheet inSheet, Worksheet outSheet, Range sourceRange)
         {
-            ColumnInfo timestampColumn = this.GetTimestampColumnInfo();
-            object[,] timestamps = inSheet.Range[timestampColumn.columnId + ":" + timestampColumn.columnId].Value2;
+            // Add timestamp chart
+            var charts = outSheet.ChartObjects(Type.Missing) as ChartObjects;
+            Range targetRange = outSheet.Range["A20"];
+            var chartObject = charts.Add(targetRange.Left, targetRange.Top, 300, 300) as ChartObject;
+            sourceRange.Select();
+            var chart = chartObject.Chart;
+            chart.SetSourceData(sourceRange, System.Reflection.Missing.Value);
+
+            chart.ChartType = (XlChartType)118;
+            chart.ChartWizard(Title: "Event time histogram");
+            outSheet.Activate();
+        }
+
+        private Range AddTimestampSummaryTable(object[,] timestamps, Worksheet outSheet)
+        {
             Dictionary<int, int> hourCounts = new Dictionary<int, int>();
             int lowestHour = 23;
             int highestHour = 0;
@@ -132,7 +159,7 @@ namespace BOOTH.LogProcessors
             // This throws an exception if lowestHour > highestHour + 2, as happens when the
             // timestamps column doesn't contain any timestamps.
             object[,] countsTable = new object[(highestHour - lowestHour + 1) + 1, 2];
-            countsTable[0, 0] = "Hour";
+            countsTable[0, 0] = "Hour (Across all days)";
             countsTable[0, 1] = "Number of Events";
             for (int h = lowestHour; h <= highestHour; h++)
             {
@@ -149,9 +176,40 @@ namespace BOOTH.LogProcessors
                 }
             }
             outSheet.Range["H:H"].NumberFormat = "hh:mm";
+            outSheet.Range["H1:I1"].Font.Bold = true;
             Range outRange = outSheet.Range["H1", "I" + countsTable.GetLength(0)];
             outRange.Value = countsTable;
+            outSheet.Columns["H:I"].AutoFit();
             return outSheet.get_Range("$H$1", "$I$" + countsTable.GetLength(0));
+        }
+
+        private object[,] GetColumn(Worksheet sheet, ColumnInfo column)
+        {
+            return sheet.Range[column.columnId + ":" + column.columnId].Value2;
+        }
+
+        private void CreateCategoricalPieCharts(Worksheet inSheet, Worksheet outSheet)
+        {
+            foreach (ColumnInfo cinfo in this.GetCategoricalColumnInfos())
+            {
+                var rows = inSheet.UsedRange.Rows.Count;
+                var sourceRange = inSheet.Range[String.Format("{0}1:{0}{1}", cinfo.columnId, rows)];
+                Range targetRange = outSheet.Range["A20"];
+                var pivotCache = ThisAddIn.app.ActiveWorkbook.PivotCaches().Create(XlPivotTableSourceType.xlDatabase, sourceRange,
+                    XlPivotTableVersionList.xlPivotTableVersion12);
+                var pivotTable = pivotCache.CreatePivotTable(targetRange, "PivotTable");
+                pivotTable.AddDataField(pivotTable.PivotFields(cinfo.name), "Count", XlConsolidationFunction.xlCount);
+                pivotTable.PivotFields(cinfo.name).Orientation = XlPivotFieldOrientation.xlRowField;
+
+                var charts = outSheet.ChartObjects(Type.Missing) as ChartObjects;
+                targetRange = outSheet.Range["C20"];
+                var chartObject = charts.Add(targetRange.Left, targetRange.Top, 200, 200) as ChartObject;
+                var chart = chartObject.Chart;
+                chart.SetSourceData(pivotTable.TableRange1, System.Reflection.Missing.Value);
+                chart.ChartType = XlChartType.xlPie;
+                chart.ChartWizard(Title: "Counts");
+                break;
+            }
         }
     }
 }
