@@ -45,7 +45,8 @@ namespace BOOTH
             string left = Util.GetColumnLetterFromNumber(1 + this.startColumnOffset);
             string right = Util.GetColumnLetterFromNumber(this.columns + this.startColumnOffset);
             this.sheet.Range[left + "1", right + "1"].Font.Bold = true;
-            this.sheet.Range[left + "1", right + this.rowNum].Columns.AutoFit();
+            // Don't AutoFit, as it can be really slow sometimes.
+            // this.sheet.Range[left + "1", right + this.rowNum].Columns.AutoFit();
         }
 
         public long GetRowNum()

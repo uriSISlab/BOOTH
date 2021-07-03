@@ -51,7 +51,8 @@ namespace BOOTH.LogProcessors
                 Worksheet addedSheet = Util.AddSheet(sheetName, workbook.ActiveSheet);
 
                 this.ImportFileToSheet(filePath, addedSheet);
-                addedSheet.Columns.AutoFit();
+                // Don't AutoFit, as it can be really slow sometimes.
+                // addedSheet.Columns.AutoFit();
             }
 
 

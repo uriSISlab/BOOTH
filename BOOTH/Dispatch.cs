@@ -55,15 +55,16 @@ namespace BOOTH
             // data to identify machine type when trying to generate summary statistics
             outputSheet.CustomProperties.Add(Util.MACHINE_TYPE_MARK_NAME, processor.GetUniqueTag());
 
-            writer.FormatPretty();
-            System.Diagnostics.Trace.WriteLine("Finished format pretty at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
-
             // Re-enable UI updates
             ThisAddIn.app.ScreenUpdating = true;
             ThisAddIn.app.DisplayStatusBar = displayStatusBar;
             ThisAddIn.app.Calculation = calculation;
             ThisAddIn.app.EnableEvents = enableEvents;
 
+            writer.FormatPretty();
+            System.Diagnostics.Trace.WriteLine("Finished format pretty at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
+
+            // Don't AutoFit, as it can be really slow.
             outputSheet.Columns.AutoFit();
             System.Diagnostics.Trace.WriteLine("Returning at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
         }

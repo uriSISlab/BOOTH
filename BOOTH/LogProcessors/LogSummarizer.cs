@@ -49,10 +49,10 @@ namespace BOOTH.LogProcessors
             System.Diagnostics.Trace.WriteLine("Created main pivot table at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
             ColumnInfo timestampColumn = this.GetTimestampColumnInfo();
             Range timestampRange = sheet.Range[String.Format("{0}2:{0}50", timestampColumn.columnId)];
-            // AddTimeStampContinuousChart(sheet, outSheet, timestampRange);
             CreateCategoricalPieCharts(sheet, outSheet);
             System.Diagnostics.Trace.WriteLine("Created categorical pie chart(s) at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
             object[,] timestamps = GetColumn(sheet, timestampColumn);
+            System.Diagnostics.Trace.WriteLine("Obtained range array at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
             Range outRange = AddTimestampSummaryTable(timestamps, outSheet);
             System.Diagnostics.Trace.WriteLine("Created timestamp summary table at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
             AddTimeStampChart(outSheet, outRange);
@@ -106,28 +106,12 @@ namespace BOOTH.LogProcessors
             Range targetRange = outSheet.Range["K1"];
             var chartObject = charts.Add(targetRange.Left, targetRange.Top, 300, 300) as ChartObject;
             outSheet.Activate();
-            sourceRange.Select();
             // chartObject.Select();
             var chart = chartObject.Chart;
             chart.SetSourceData(sourceRange, System.Reflection.Missing.Value);
 
             chart.ChartType = XlChartType.xlColumnClustered;
             chart.ChartWizard(Title: "Event Count by Hour");
-        }
-
-        private void AddTimeStampContinuousChart(Worksheet inSheet, Worksheet outSheet, Range sourceRange)
-        {
-            // Add timestamp chart
-            var charts = outSheet.ChartObjects(Type.Missing) as ChartObjects;
-            Range targetRange = outSheet.Range["A20"];
-            var chartObject = charts.Add(targetRange.Left, targetRange.Top, 300, 300) as ChartObject;
-            sourceRange.Select();
-            var chart = chartObject.Chart;
-            chart.SetSourceData(sourceRange, System.Reflection.Missing.Value);
-
-            chart.ChartType = (XlChartType)118;
-            chart.ChartWizard(Title: "Event time histogram");
-            outSheet.Activate();
         }
 
         private Range AddTimestampSummaryTable(object[,] timestamps, Worksheet outSheet)
@@ -161,6 +145,7 @@ namespace BOOTH.LogProcessors
                     }
                 }
             }
+            System.Diagnostics.Trace.WriteLine("Iteration complete at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
             // This throws an exception if lowestHour > highestHour + 2, as happens when the
             // timestamps column doesn't contain any timestamps.
             object[,] countsTable = new object[(highestHour - lowestHour + 1) + 1, 2];
@@ -180,11 +165,14 @@ namespace BOOTH.LogProcessors
                     countsTable[row, 1] = 0;
                 }
             }
+            System.Diagnostics.Trace.WriteLine("Created countsTable at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
             outSheet.Range["H:H"].NumberFormat = "hh:mm";
             outSheet.Range["H1:I1"].Font.Bold = true;
             Range outRange = outSheet.Range["H1", "I" + countsTable.GetLength(0)];
             outRange.Value = countsTable;
-            outSheet.Columns["H:I"].AutoFit();
+            // Don't AutoFit, as it can be really slow.
+            // outSheet.Columns["H:I"].AutoFit();
+            System.Diagnostics.Trace.WriteLine("Autofit at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
             return outSheet.get_Range("$H$1", "$I$" + countsTable.GetLength(0));
         }
 
