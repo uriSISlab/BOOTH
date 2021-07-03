@@ -13,5 +13,13 @@
         {
             return new ColumnInfo("C", "Event");
         }
+
+        protected override ColumnInfo[] GetCategoricalColumnInfos()
+        {
+            return new ColumnInfo[]
+            {
+                new ColumnInfo("E", "Ballot Reviewed"),
+            };
+        }
     }
 }

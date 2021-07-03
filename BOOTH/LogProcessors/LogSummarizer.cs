@@ -44,21 +44,26 @@ namespace BOOTH.LogProcessors
                 return;
             }
 
+            System.Diagnostics.Trace.WriteLine("Created new sheet at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
             this.CreateMainPivotTable(sheet, outSheet);
+            System.Diagnostics.Trace.WriteLine("Created main pivot table at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
             ColumnInfo timestampColumn = this.GetTimestampColumnInfo();
             Range timestampRange = sheet.Range[String.Format("{0}2:{0}50", timestampColumn.columnId)];
             // AddTimeStampContinuousChart(sheet, outSheet, timestampRange);
             CreateCategoricalPieCharts(sheet, outSheet);
+            System.Diagnostics.Trace.WriteLine("Created categorical pie chart(s) at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
             object[,] timestamps = GetColumn(sheet, timestampColumn);
             Range outRange = AddTimestampSummaryTable(timestamps, outSheet);
+            System.Diagnostics.Trace.WriteLine("Created timestamp summary table at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
             AddTimeStampChart(outSheet, outRange);
+            System.Diagnostics.Trace.WriteLine("Created timestamp chart at " + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds());
 
 
             // Formatting and labeling
             // TODO check if this name is already taken
             outSheet.Name = outSheetName;
             outSheet.Range["A2"].Font.Bold = true;
-            outSheet.Range["A2"].Value = outSheetName;
+            outSheet.Range["A2"].Value = "Event Statistics";
         }
 
         private void CreateMainPivotTable(Worksheet inSheet, Worksheet outSheet)
@@ -190,25 +195,29 @@ namespace BOOTH.LogProcessors
 
         private void CreateCategoricalPieCharts(Worksheet inSheet, Worksheet outSheet)
         {
+            int outColumnIndex = 1;
             foreach (ColumnInfo cinfo in this.GetCategoricalColumnInfos())
             {
                 var rows = inSheet.UsedRange.Rows.Count;
                 var sourceRange = inSheet.Range[String.Format("{0}1:{0}{1}", cinfo.columnId, rows)];
-                Range targetRange = outSheet.Range["A20"];
+                Range targetRange = outSheet.Range[Util.GetColumnLetterFromNumber(outColumnIndex) + "27"];
                 var pivotCache = ThisAddIn.app.ActiveWorkbook.PivotCaches().Create(XlPivotTableSourceType.xlDatabase, sourceRange,
                     XlPivotTableVersionList.xlPivotTableVersion12);
-                var pivotTable = pivotCache.CreatePivotTable(targetRange, "PivotTable");
+                var pivotTable = pivotCache.CreatePivotTable(targetRange, "PivotTable" + outColumnIndex);
                 pivotTable.AddDataField(pivotTable.PivotFields(cinfo.name), "Count", XlConsolidationFunction.xlCount);
                 pivotTable.PivotFields(cinfo.name).Orientation = XlPivotFieldOrientation.xlRowField;
 
                 var charts = outSheet.ChartObjects(Type.Missing) as ChartObjects;
-                targetRange = outSheet.Range["C20"];
-                var chartObject = charts.Add(targetRange.Left, targetRange.Top, 200, 200) as ChartObject;
+                targetRange = outSheet.Range[Util.GetColumnLetterFromNumber(outColumnIndex + 2) + "27"];
+                Range bottomRight = outSheet.Range[Util.GetColumnLetterFromNumber(outColumnIndex + 5) + "37"];
+                int width = (int) (bottomRight.Left - targetRange.Left);
+                int height = (int) (bottomRight.Top - targetRange.Top);
+                var chartObject = charts.Add(targetRange.Left, targetRange.Top, width, height) as ChartObject;
                 var chart = chartObject.Chart;
                 chart.SetSourceData(pivotTable.TableRange1, System.Reflection.Missing.Value);
                 chart.ChartType = XlChartType.xlPie;
-                chart.ChartWizard(Title: "Counts");
-                break;
+                chart.ChartWizard(Title: cinfo.name);
+                outColumnIndex += 6;
             }
         }
     }

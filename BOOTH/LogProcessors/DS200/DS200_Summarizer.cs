@@ -14,5 +14,14 @@
         {
             return new ColumnInfo("C", "Scan Type");
         }
+
+        protected override ColumnInfo[] GetCategoricalColumnInfos()
+        {
+            return new ColumnInfo[]
+            {
+                new ColumnInfo("D", "Ballot Cast Status"),
+                new ColumnInfo("F", "Ballot Type"),
+            };
+        }
     }
 }
